@@ -28,7 +28,7 @@
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg-0);color:var(--text-0);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;overflow:hidden;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
 body{display:flex;height:100vh}
-#loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg-0);overflow:hidden}
+#loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg-0);overflow-y:auto}
 #loginScreen.hide{opacity:0;pointer-events:none;transition:opacity .5s}
 #loginScreen.hidden{display:none}
 .login-bg{position:absolute;inset:0;background:radial-gradient(circle at 20% 30%,rgba(99,102,241,.18),transparent 45%),radial-gradient(circle at 80% 70%,rgba(168,85,247,.15),transparent 45%);animation:bgPulse 8s ease-in-out infinite}
@@ -40,31 +40,32 @@ body{display:flex;height:100vh}
 @keyframes float1{0%,100%{transform:translate(0,0)}50%{transform:translate(40px,-30px)}}
 @keyframes float2{0%,100%{transform:translate(0,0)}50%{transform:translate(-30px,40px)}}
 @keyframes float3{0%,100%{transform:translate(-50%,-50%)}50%{transform:translate(-30%,-60%)}}
-.login-card{position:relative;z-index:2;width:100%;max-width:400px;background:rgba(10,10,10,.7);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:36px 28px 28px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:cardIn .6s cubic-bezier(.2,.8,.2,1)}
+.login-card{position:relative;z-index:2;width:100%;max-width:400px;background:rgba(10,10,10,.7);backdrop-filter:blur(20px);border:1px solid var(--border);border-radius:20px;padding:32px 26px 24px;text-align:center;box-shadow:0 30px 80px rgba(0,0,0,.6);animation:cardIn .6s cubic-bezier(.2,.8,.2,1);margin:auto}
 @keyframes cardIn{from{opacity:0;transform:translateY(20px) scale(.96)}to{opacity:1;transform:none}}
-.login-logo{width:72px;height:72px;margin:0 auto 18px;display:block;filter:drop-shadow(0 8px 24px rgba(99,102,241,.4));animation:logoIn 1s cubic-bezier(.2,.8,.2,1)}
+.login-logo{width:64px;height:64px;margin:0 auto 14px;display:block;filter:drop-shadow(0 8px 24px rgba(99,102,241,.4));animation:logoIn 1s cubic-bezier(.2,.8,.2,1)}
 @keyframes logoIn{from{opacity:0;transform:scale(.6) rotate(-10deg)}to{opacity:1;transform:none}}
-.login-title{font-size:26px;font-weight:700;letter-spacing:-.5px;margin-bottom:6px}
+.login-title{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
 .login-title span{color:var(--text-1);font-weight:400}
-.login-sub{font-size:13.5px;color:var(--text-2);margin-bottom:28px;line-height:1.5}
-#googleBtnWrapper{width:100%;display:flex;justify-content:center;min-height:44px}
-.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:13px;background:#fff;color:#1a1a1a;border:none;border-radius:10px;font-weight:600;font-size:14.5px;cursor:pointer;transition:transform .12s,box-shadow .2s;font-family:inherit}
+.login-sub{font-size:13px;color:var(--text-2);margin-bottom:22px;line-height:1.5}
+.auth-tabs{display:flex;gap:4px;background:var(--bg-2);border-radius:10px;padding:4px;margin-bottom:16px}
+.auth-tab{flex:1;padding:10px;background:none;border:none;color:var(--text-2);font-weight:600;font-size:13.5px;cursor:pointer;border-radius:7px;font-family:inherit;transition:background .15s,color .15s}
+.auth-tab.active{background:var(--bg-1);color:var(--text-0)}
+.auth-panel{display:flex;flex-direction:column;gap:10px;text-align:left}
+.auth-panel input{width:100%;padding:12px 14px;background:var(--bg-2);border:1px solid var(--border);border-radius:9px;color:var(--text-0);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
+.auth-panel input:focus{border-color:var(--text-2)}
+.auth-submit{width:100%;padding:12px;background:var(--accent);color:var(--bg-0);border:none;border-radius:9px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;margin-top:4px}
+.auth-submit:hover{opacity:.9}
+.auth-submit:disabled{opacity:.5;cursor:wait}
+.auth-error{color:#f87171;font-size:12.5px;margin-top:10px;min-height:16px;text-align:center}
+#googleBtnWrapper{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;background:#fff;color:#1a1a1a;border:none;border-radius:9px;font-weight:600;font-size:13.5px;cursor:pointer;transition:transform .12s,box-shadow .2s;font-family:inherit}
 .google-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
-.google-btn.loading{pointer-events:none;opacity:.85}
-.spinner{width:18px;height:18px;border:2px solid #ccc;border-top-color:#4285f4;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
-@keyframes spin{to{transform:rotate(360deg)}}
-.divider{display:flex;align-items:center;gap:12px;margin:18px 0;color:var(--text-2);font-size:12px}
-.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.guest-btn{width:100%;padding:13px;background:var(--bg-2);color:var(--text-0);border:1px solid var(--border);border-radius:10px;font-weight:500;font-size:14px;cursor:pointer;font-family:inherit;transition:background .15s}
+.guest-btn{width:100%;padding:11px;background:var(--bg-2);color:var(--text-0);border:1px solid var(--border);border-radius:9px;font-weight:500;font-size:13.5px;cursor:pointer;font-family:inherit;transition:background .15s}
 .guest-btn:hover{background:var(--bg-3)}
-.login-note{margin-top:20px;font-size:11.5px;color:var(--text-2);line-height:1.6}
+.divider{display:flex;align-items:center;gap:12px;margin:16px 0 0;color:var(--text-2);font-size:11.5px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.login-note{margin-top:16px;font-size:11px;color:var(--text-2);line-height:1.5}
 .login-note b{color:var(--text-1)}
-.g-form{display:none;margin-top:16px;text-align:left;animation:fadeSlide .3s}
-.g-form.show{display:block}
-@keyframes fadeSlide{from{opacity:0;transform:translateY(-8px)}to{opacity:1;transform:none}}
-.g-form label{display:block;font-size:12px;color:var(--text-1);margin-bottom:6px;margin-top:10px}
-.g-form input{width:100%;padding:11px 12px;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;color:var(--text-0);font-size:14px;font-family:inherit;outline:none}
-.g-form button{margin-top:14px;width:100%;padding:12px;background:var(--accent);color:var(--bg-0);border:none;border-radius:8px;font-weight:600;cursor:pointer;font-size:14px;font-family:inherit}
 #app{display:none;height:100vh;width:100%}
 #app.show{display:flex;animation:appIn .5s ease}
 @keyframes appIn{from{opacity:0}to{opacity:1}}
@@ -307,20 +308,26 @@ textarea#input::placeholder{color:var(--text-2)}
 <div class="login-card">
 <svg class="login-logo" viewBox="0 0 100 100"><rect x="2" y="2" width="96" height="96" rx="24" fill="#fff"/><path d="M66 36 Q66 24 50 24 Q34 24 34 38 Q34 49 50 51 Q66 53 66 64 Q66 76 50 76 Q34 76 34 64" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round"/></svg>
 <div class="login-title">Syon <span>AI</span></div>
-<div class="login-sub">Asisten AI pribadi kamu.<br>Pilih cara masuk untuk memulai.</div>
-<div id="googleBtnWrapper"></div>
-<div class="g-form" id="googleForm">
-<label>Nama</label>
-<input type="text" id="gNameInput" placeholder="Nama kamu" maxlength="40">
-<label>Email</label>
-<input type="email" id="gEmailInput" placeholder="email@example.com" maxlength="60">
-<button id="gFormSubmit">Masuk sebagai Akun Google</button>
+<div class="login-sub">Masuk atau daftar untuk memulai.</div>
+<div class="auth-tabs">
+<button class="auth-tab active" data-tab="login">Masuk</button>
+<button class="auth-tab" data-tab="register">Daftar</button>
 </div>
+<div class="auth-panel" id="panelLogin">
+<input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
+<input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+<button class="auth-submit" id="loginSubmit">Masuk</button>
+</div>
+<div class="auth-panel" id="panelRegister" style="display:none">
+<input type="text" id="regName" placeholder="Nama lengkap" autocomplete="name" maxlength="40">
+<input type="email" id="regEmail" placeholder="Email" autocomplete="email">
+<input type="password" id="regPassword" placeholder="Password (min 6 karakter)" autocomplete="new-password">
+<button class="auth-submit" id="regSubmit">Daftar</button>
+</div>
+<div class="auth-error" id="authError"></div>
 <div class="divider">atau</div>
-<button class="guest-btn" id="guestLoginBtn">Lanjut sebagai Tamu</button>
-<div class="login-note">
-<b>Privasi:</b> API key & chat disimpan <b>lokal di browser kamu</b>.
-</div>
+<div id="googleBtnWrapper"></div>
+<div class="login-note"><b>Privasi:</b> Akun & API key disimpan <b>lokal di browser kamu</b>.</div>
 </div>
 </div>
 
@@ -340,6 +347,7 @@ textarea#input::placeholder{color:var(--text-2)}
 <div class="sidebar-footer">
 <button id="promptsBtn">Prompt</button>
 <button id="settingsBtn">Setelan</button>
+<button id="logoutBtn" style="grid-column:1/-1;color:#f87171;border-color:rgba(239,68,68,.3)">Keluar</button>
 </div>
 </aside>
 <main class="main">
@@ -427,21 +435,9 @@ textarea#input::placeholder{color:var(--text-2)}
 <div class="modal-head"><h2>Profil & Akun</h2><button class="close" id="closeProfile">×</button></div>
 <div class="modal-body">
 <div id="profileList"></div>
-<button class="btn-ghost" id="addLocalProfileBtn" style="margin-top:6px">+ Profil Lokal Baru</button>
 <div style="font-size:12px;color:var(--text-2);margin-top:12px;line-height:1.6">
 <b style="color:var(--text-1)">Info:</b> API key disimpan per profil.
 </div>
-</div>
-</div>
-</div>
-
-<div class="modal-backdrop" id="newProfileModal">
-<div class="modal" style="max-width:400px">
-<div class="modal-head"><h2>Profil Baru</h2><button class="close" id="closeNewProfile">×</button></div>
-<div class="modal-body">
-<div class="field"><label>Nama Profil</label><input type="text" id="newProfileName" placeholder="Nama profil" maxlength="30"></div>
-<div class="field"><label>Warna Avatar</label><div class="color-grid" id="colorGrid"></div></div>
-<button class="btn-primary" id="createProfileBtn">Buat Profil</button>
 </div>
 </div>
 </div>
@@ -473,9 +469,9 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <div class="toast" id="toast"></div>
 
-  <script>
+<script>
 /* ============================================================
-   SYON AI v9 — Multi-profile + Voice + Theme + Typography Polish
+   SYON AI v10 — Login (email+password) + Auto-login + Guest Mode
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '';
@@ -533,7 +529,7 @@ const PROVIDERS = {
 };
 
 const state = {
-  loggedIn:false,
+  session:null,
   profiles:[],
   activeProfileId:null,
   theme:'dark',
@@ -546,7 +542,7 @@ const state = {
   searchQuery:''
 };
 
-const LS = 'syon_v9';
+const LS = 'syon_v10';
 
 function defaultSettings(){
   return {
@@ -560,18 +556,42 @@ function defaultSettings(){
 
 function loadAll(){
   try{const d=localStorage.getItem(LS);if(d)Object.assign(state,JSON.parse(d));}catch(e){}
-  if(!state.profiles||!state.profiles.length){
-    const p={id:'local-default',type:'local',name:'Profil Utama',color:COLORS[4],createdAt:Date.now()};
-    state.profiles=[p];
-    state.activeProfileId=p.id;
-    state.chatsByProfile[p.id]=[];
-    state.settingsByProfile[p.id]=defaultSettings();
+  if(!state.profiles)state.profiles=[];
+  if(!state.chatsByProfile)state.chatsByProfile={};
+  if(!state.settingsByProfile)state.settingsByProfile={};
+  if(!state.activeChatByProfile)state.activeChatByProfile={};
+  if(state.session&&state.session.userId){
+    const u=state.profiles.find(p=>p.id===state.session.userId);
+    if(u){state.activeProfileId=u.id;}
+    else{state.session=null;state.activeProfileId=null;}
   }
-  if(!state.activeProfileId||!state.profiles.find(p=>p.id===state.activeProfileId))state.activeProfileId=state.profiles[0].id;
-  if(!state.settingsByProfile[state.activeProfileId])state.settingsByProfile[state.activeProfileId]=defaultSettings();
-  if(!state.chatsByProfile[state.activeProfileId])state.chatsByProfile[state.activeProfileId]=[];
 }
 function saveAll(){try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){}}
+
+async function hashPassword(password,salt){
+  const enc=new TextEncoder();
+  const data=enc.encode(salt+':'+password);
+  const buf=await crypto.subtle.digest('SHA-256',data);
+  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function makeSalt(){
+  const arr=new Uint8Array(16);crypto.getRandomValues(arr);
+  return Array.from(arr).map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+function logout(){
+  if(!confirm('Keluar dari akun ini?'))return;
+  if(state.session&&state.session.isGuest){
+    const id=state.session.userId;
+    state.profiles=state.profiles.filter(p=>p.id!==id);
+    delete state.settingsByProfile[id];
+    delete state.chatsByProfile[id];
+    delete state.activeChatByProfile[id];
+  }
+  state.session=null;
+  state.activeProfileId=null;
+  saveAll();
+  location.reload();
+}
 
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
@@ -747,6 +767,8 @@ async function streamChat(onDelta,signal){
     for(let i=0;i<reply.length;i++){if(signal&&signal.aborted)break;onDelta(reply[i]);if(i%3===0)await new Promise(r=>setTimeout(r,8));}
     return;
   }
+  // Guest lock — tidak boleh pakai provider eksternal
+  if(state.session?.isGuest)throw new Error('Mode Tamu hanya bisa pakai Syon Bot. Daftar akun untuk membuka provider lain.');
   const key=s.keys[p];
   if(!key&&p!=='custom')throw new Error('API key belum diisi untuk '+cfg.name);
   if(p==='custom'&&!s.customUrl)throw new Error('URL endpoint custom belum diisi');
@@ -1061,7 +1083,8 @@ function renderProfileHeader(){
     if(p.picture){av.style.backgroundImage=`url(${p.picture})`;av.style.backgroundSize='cover';av.textContent='';}
     else{av.style.background=p.color;av.style.backgroundImage='';av.textContent=(p.name[0]||'S').toUpperCase();}
   }
-  if(nm)nm.innerHTML=esc(p.name)+'<span> · AI</span>';
+  const isGuest = state.session?.isGuest;
+  if(nm)nm.innerHTML=esc(p.name)+(isGuest?'<span> · Tamu</span>':'<span> · AI</span>');
 }
 function renderProfileList(){
   const list=$('#profileList');if(!list)return;
@@ -1071,9 +1094,9 @@ function renderProfileList(){
     const el=document.createElement('div');
     el.className='profile-row'+(isActive?' active':'');
     const avatarHtml=p.picture?`<div class="profile-avatar lg" style="background-image:url(${p.picture})"></div>`:`<div class="profile-avatar lg" style="background:${p.color}">${(p.name[0]||'S').toUpperCase()}</div>`;
-    el.innerHTML=`${avatarHtml}<div class="profile-info"><div class="pname">${esc(p.name)} ${p.type==='google'?'<span style="font-size:10px;color:var(--text-2)">· Google</span>':''}</div><div class="pmeta">${isActive?'Aktif · ':''}${esc(p.email||new Date(p.createdAt).toLocaleDateString('id-ID'))}</div></div><div class="profile-actions">${!isActive?`<button data-act="switch" title="Aktifkan">✓</button>`:''}${state.profiles.length>1?`<button data-act="del" class="del" title="Hapus">🗑</button>`:''}</div>`;
+    const typeLabel = p.type==='google'?'· Google':(p.type==='guest'?'· Tamu':'');
+    el.innerHTML=`${avatarHtml}<div class="profile-info"><div class="pname">${esc(p.name)} ${typeLabel?'<span style="font-size:10px;color:var(--text-2)">'+typeLabel+'</span>':''}</div><div class="pmeta">${isActive?'Aktif · ':''}${esc(p.email||new Date(p.createdAt).toLocaleDateString('id-ID'))}</div></div><div class="profile-actions">${!isActive?`<button data-act="switch" title="Aktifkan">✓</button>`:''}</div>`;
     el.addEventListener('click',e=>{
-      if(e.target.closest('[data-act="del"]')){e.stopPropagation();deleteProfile(p.id);return;}
       if(isActive)return;
       switchProfile(p.id);
     });
@@ -1082,6 +1105,7 @@ function renderProfileList(){
 }
 function switchProfile(id){
   state.activeProfileId=id;
+  state.session={userId:id,isGuest:state.session?.isGuest||false};
   if(!state.settingsByProfile[id])state.settingsByProfile[id]=defaultSettings();
   if(!state.chatsByProfile[id])state.chatsByProfile[id]=[];
   saveAll();
@@ -1099,16 +1123,6 @@ function deleteProfile(id){
   renderProfileList();renderProfileHeader();renderChatList();renderChat();updateTopbar();
   toast('Profil dihapus');
 }
-let newProfileColor=COLORS[3];
-function renderColorGrid(){
-  const grid=$('#colorGrid');if(!grid)return;
-  grid.innerHTML='';
-  COLORS.forEach(c=>{
-    const d=document.createElement('div');d.className='color-swatch'+(c===newProfileColor?' selected':'');d.style.background=c;
-    d.addEventListener('click',()=>{newProfileColor=c;renderColorGrid();});
-    grid.appendChild(d);
-  });
-}
 
 function captureCurrentInputs(){
   const s=currentSettings();
@@ -1125,7 +1139,11 @@ function renderSettingsModal(){
   const s=currentSettings();
   const sel=$('#activeProvider');if(!sel)return;
   sel.innerHTML='';
-  Object.entries(PROVIDERS).forEach(([id,p])=>{const o=document.createElement('option');o.value=id;o.textContent=p.name;if(s.provider===id)o.selected=true;sel.appendChild(o);});
+  const isGuest = state.session?.isGuest;
+  Object.entries(PROVIDERS).forEach(([id,p])=>{
+    if(isGuest && id!=='syonbot')return;
+    const o=document.createElement('option');o.value=id;o.textContent=p.name;if(s.provider===id)o.selected=true;sel.appendChild(o);
+  });
   renderModelSelect('#modelSelect',s.provider,s.model);
   renderProviderList();
   $('#systemPrompt').value=s.systemPrompt||'';
@@ -1149,18 +1167,24 @@ function renderProviderList(){
   const s=currentSettings();
   const list=$('#providerList');if(!list)return;
   list.innerHTML='';
+  const isGuest = state.session?.isGuest;
   Object.entries(PROVIDERS).forEach(([id,p])=>{
     const status=s.keyStatus[id];
-    const cls='provider-card'+(s.provider===id?' active':'')+(status==='ok'?' valid':'')+(status==='bad'?' invalid':'');
+    const lockedForGuest = isGuest && id!=='syonbot';
+    const cls='provider-card'+(s.provider===id?' active':'')+(status==='ok'?' valid':'')+(status==='bad'?' invalid':'')+(lockedForGuest?' invalid':'');
     const div=document.createElement('div');div.className=cls;div.dataset.pid=id;
     const badge=p.free===true?'<span class="badge">Gratis</span>':p.free===false?'<span class="badge paid">Berbayar</span>':p.type==='syonbot'?'<span class="badge local">Lokal</span>':'';
     let statusTag='';
-    if(id==='syonbot')statusTag='<span class="status-tag ok">Siap</span>';
+    if(lockedForGuest)statusTag='<span class="status-tag bad">🔒 Khusus akun</span>';
+    else if(id==='syonbot')statusTag='<span class="status-tag ok">Siap</span>';
     else if(status==='ok')statusTag='<span class="status-tag ok">✓ Valid</span>';
     else if(status==='bad')statusTag='<span class="status-tag bad">✗ Gagal</span>';
     else if(id!=='custom')statusTag='<span class="status-tag pending">Belum dites</span>';
     let body='';
-    if(id==='syonbot'){body=`<div class="help" style="margin-bottom:8px">Chatbot deterministik: kalkulator + database dasar. 100% akurat untuk scope yang didukung.</div>`;}
+    if(lockedForGuest){
+      body=`<div class="help" style="margin-bottom:8px;color:var(--text-2)">Daftar akun untuk membuka provider ini.</div>`;
+    }
+    else if(id==='syonbot'){body=`<div class="help" style="margin-bottom:8px">Chatbot deterministik: kalkulator + database dasar. 100% akurat untuk scope yang didukung.</div>`;}
     else if(id==='custom'){body=`<input type="text" class="customUrlInput" placeholder="https://.../v1/chat/completions" value="${esc(s.customUrl||'')}" style="margin-bottom:6px"><input type="text" class="customModelsInput" placeholder="model1, model2" value="${esc(s.customModels||'')}"><div class="help" style="margin-top:6px">Endpoint harus OpenAI-compatible.</div><div class="actions"><button class="test" data-test="custom">Test</button></div>`;}
     else{body=`<div class="key-row"><input type="password" data-provider="${id}" class="key-input" placeholder="API key ${esc(p.name)}" value="${esc(s.keys[id]||'')}"><button data-toggle="${id}">👁</button></div><div class="actions"><button class="test" data-test="${id}">Test</button><button data-diag="${id}">Diagnostik</button></div>`;}
     div.innerHTML=`<div class="top"><div class="pname">${esc(p.name)} ${badge}</div>${statusTag}</div>${body}<div class="diag-box" data-result="${id}"></div>${p.keyUrl?`<a class="plink" href="${p.keyUrl}" target="_blank" rel="noopener">Dapatkan API key →</a>`:''}`;
@@ -1248,7 +1272,11 @@ function openModelModal(){
   const s=currentSettings();
   const p=$('#quickProvider');if(!p)return;
   p.innerHTML='';
-  Object.entries(PROVIDERS).forEach(([id,cfg])=>{const o=document.createElement('option');o.value=id;o.textContent=cfg.name;if(s.provider===id)o.selected=true;p.appendChild(o);});
+  const isGuest = state.session?.isGuest;
+  Object.entries(PROVIDERS).forEach(([id,cfg])=>{
+    if(isGuest && id!=='syonbot')return;
+    const o=document.createElement('option');o.value=id;o.textContent=cfg.name;if(s.provider===id)o.selected=true;p.appendChild(o);
+  });
   renderModelSelect('#quickModel',s.provider,s.model);
   $('#modelModal').classList.add('show');
 }
@@ -1343,8 +1371,12 @@ function hideLogin(){
   const ls=$('#loginScreen');if(ls){ls.classList.add('hide');setTimeout(()=>ls.classList.add('hidden'),500);}
   $('#app')?.classList.add('show');
 }
-function completeLogin(){
-  state.loggedIn=true;saveAll();
+function completeLogin(userId,isGuest){
+  state.session={userId,isGuest:!!isGuest};
+  state.activeProfileId=userId;
+  if(!state.settingsByProfile[userId])state.settingsByProfile[userId]=defaultSettings();
+  if(!state.chatsByProfile[userId])state.chatsByProfile[userId]=[];
+  saveAll();
   hideLogin();
   setTimeout(()=>{
     renderProfileHeader();
@@ -1357,43 +1389,74 @@ function completeLogin(){
   },100);
 }
 
-function initGoogleLogin(){
+function initAuthScreen(){
   const wrapper=$('#googleBtnWrapper');if(!wrapper)return;
   wrapper.innerHTML='';
+  const errEl=$('#authError');
+  const showErr=(msg)=>{if(errEl)errEl.textContent=msg||'';};
+  $$('.auth-tab').forEach(tab=>{
+    tab.addEventListener('click',()=>{
+      $$('.auth-tab').forEach(t=>t.classList.remove('active'));
+      tab.classList.add('active');
+      const target=tab.dataset.tab;
+      $('#panelLogin').style.display=target==='login'?'flex':'none';
+      $('#panelRegister').style.display=target==='register'?'flex':'none';
+      showErr('');
+    });
+  });
+  $('#loginSubmit').addEventListener('click',async()=>{
+    const email=$('#loginEmail').value.trim().toLowerCase();
+    const password=$('#loginPassword').value;
+    showErr('');
+    if(!email||!password){showErr('Isi email & password');return;}
+    const user=state.profiles.find(p=>p.email&&p.email.toLowerCase()===email&&p.passwordHash);
+    if(!user){showErr('Akun tidak ditemukan. Daftar dulu?');return;}
+    const hash=await hashPassword(password,user.salt);
+    if(hash!==user.passwordHash){showErr('Password salah');return;}
+    completeLogin(user.id,false);
+  });
+  $('#regSubmit').addEventListener('click',async()=>{
+    const name=$('#regName').value.trim();
+    const email=$('#regEmail').value.trim().toLowerCase();
+    const password=$('#regPassword').value;
+    showErr('');
+    if(!name||!email||!password){showErr('Semua kolom wajib diisi');return;}
+    if(!email.includes('@')){showErr('Email tidak valid');return;}
+    if(password.length<6){showErr('Password minimal 6 karakter');return;}
+    if(state.profiles.find(p=>p.email&&p.email.toLowerCase()===email)){showErr('Email sudah terdaftar');return;}
+    const salt=makeSalt();
+    const hash=await hashPassword(password,salt);
+    const id='local-'+uid();
+    const color=COLORS[name.charCodeAt(0)%COLORS.length];
+    state.profiles.push({id,type:'local',name,email,salt,passwordHash:hash,color,createdAt:Date.now()});
+    completeLogin(id,false);
+    toast('Selamat datang, '+name+'!');
+  });
+  const guestBtn=document.createElement('button');
+  guestBtn.className='guest-btn';
+  guestBtn.textContent='Masuk sebagai Tamu';
+  guestBtn.addEventListener('click',()=>{
+    const id='guest-'+uid();
+    state.profiles.push({id,type:'guest',name:'Tamu',isGuest:true,color:COLORS[7],createdAt:Date.now()});
+    completeLogin(id,true);
+    toast('Mode Tamu — hanya Syon Bot yang aktif');
+  });
+  wrapper.appendChild(guestBtn);
   const canUseReal = GOOGLE_CLIENT_ID && location.protocol!=='file:';
   if(canUseReal){
-    try{
+    const gbtn=document.createElement('button');
+    gbtn.className='google-btn';
+    gbtn.innerHTML='<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Lanjutkan dengan Google</span>';
+    const initG=()=>{
       if(window.google&&window.google.accounts){
-        window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false});
-        window.google.accounts.id.renderButton(wrapper,{theme:'filled_black',size:'large',text:'signin_with',shape:'rectangular',logo_alignment:'left',width:340});
-        return;
-      }
-    }catch(e){console.warn('GSI init failed',e);}
+        try{
+          window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false});
+          window.google.accounts.id.renderButton(wrapper,{theme:'filled_black',size:'large',text:'signin_with',shape:'rectangular',logo_alignment:'left',width:340});
+        }catch(e){console.warn(e);wrapper.appendChild(gbtn);}
+      } else setTimeout(initG,400);
+    };
+    initG();
   }
-  const btn=document.createElement('button');
-  btn.className='google-btn';
-  btn.innerHTML=`<svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg><span>Lanjutkan dengan Google</span>`;
-  btn.addEventListener('click',()=>{
-    btn.classList.add('loading');
-    const txt=btn.querySelector('span');const old=txt.textContent;
-    txt.textContent='Menghubungkan...';
-    setTimeout(()=>{btn.classList.remove('loading');txt.textContent=old;$('#googleForm').classList.add('show');$('#gNameInput').focus();},900);
-  });
-  wrapper.appendChild(btn);
-  $('#gFormSubmit').addEventListener('click',()=>{
-    const name=$('#gNameInput').value.trim();
-    const email=$('#gEmailInput').value.trim();
-    if(!name){toast('Isi nama dulu',true);return;}
-    if(!email||!email.includes('@')){toast('Email tidak valid',true);return;}
-    const id='google-'+uid();
-    const color=COLORS[name.charCodeAt(0)%COLORS.length];
-    state.profiles.push({id,type:'google',name,email,color,createdAt:Date.now()});
-    state.settingsByProfile[id]=defaultSettings();
-    state.chatsByProfile[id]=[];
-    state.activeProfileId=id;
-    completeLogin();
-    toast('Masuk sebagai '+name);
-  });
 }
 
 function decodeJwt(token){
@@ -1411,8 +1474,7 @@ function handleGoogleCredential(resp){
   else{p.name=j.name||p.name;p.email=j.email;p.picture=j.picture;}
   if(!state.settingsByProfile[id])state.settingsByProfile[id]=defaultSettings();
   if(!state.chatsByProfile[id])state.chatsByProfile[id]=[];
-  state.activeProfileId=id;
-  completeLogin();
+  completeLogin(id,false);
   toast('Masuk: '+p.name);
 }
 
@@ -1425,38 +1487,23 @@ function init(){
     speechSynthesis.onvoiceschanged=()=>{loadVoices();populateVoiceSelect();};
   }
 
-  const tryInitGoogle=()=>{
-    if(window.google&&window.google.accounts)initGoogleLogin();
-    else setTimeout(tryInitGoogle,400);
-  };
-  if(!GOOGLE_CLIENT_ID||location.protocol==='file:')initGoogleLogin();
-  else{
-    setTimeout(tryInitGoogle,500);
-    setTimeout(()=>{if(!$('#googleBtnWrapper').children.length)initGoogleLogin();},3000);
+  initAuthScreen();
+
+  // Auto-login kalau ada session
+  if(state.session&&state.session.userId){
+    const u=state.profiles.find(p=>p.id===state.session.userId);
+    if(u){
+      completeLogin(u.id,state.session.isGuest);
+    } else {
+      state.session=null;
+      state.activeProfileId=null;
+    }
   }
 
-  $('#guestLoginBtn').addEventListener('click',()=>{
-    if(!state.profiles.length){
-      const p={id:'guest-'+uid(),type:'local',name:'Tamu',color:COLORS[7],createdAt:Date.now()};
-      state.profiles=[p];state.activeProfileId=p.id;
-      state.settingsByProfile[p.id]=defaultSettings();state.chatsByProfile[p.id]=[];
-    } else state.activeProfileId=state.profiles[0].id;
-    completeLogin();
-  });
+  // Logout
+  $('#logoutBtn')?.addEventListener('click',logout);
 
-  if(state.loggedIn){
-    hideLogin();
-    setTimeout(()=>{
-      renderProfileHeader();
-      if(!currentChats().length)createChat();
-      else{
-        if(!currentChatId()||!currentChats().find(c=>c.id===currentChatId()))setCurrentChatId(currentChats()[0].id);
-        renderChatList();renderChat();
-      }
-      updateTopbar();
-    },100);
-  }
-
+  // Chat events
   $('#newChatBtn')?.addEventListener('click',()=>{createChat();closeSidebarMobile();});
   $('#menuBtn')?.addEventListener('click',openSidebarMobile);
   $('#sendBtn')?.addEventListener('click',()=>{if(state.generating&&currentAbort){currentAbort.abort();return;}sendMessage();});
@@ -1475,24 +1522,12 @@ function init(){
   $('#exportBtn')?.addEventListener('click',exportChat);
   $('#themeBtn')?.addEventListener('click',toggleTheme);
 
+  // Profile
   $('#profileHeader')?.addEventListener('click',()=>{renderProfileList();$('#profileModal').classList.add('show');});
   $('#closeProfile')?.addEventListener('click',()=>$('#profileModal').classList.remove('show'));
   $('#profileModal')?.addEventListener('click',e=>{if(e.target.id==='profileModal')e.currentTarget.classList.remove('show');});
-  $('#addLocalProfileBtn')?.addEventListener('click',()=>{newProfileColor=COLORS[Math.floor(Math.random()*COLORS.length)];renderColorGrid();$('#newProfileName').value='';$('#newProfileModal').classList.add('show');});
-  $('#closeNewProfile')?.addEventListener('click',()=>$('#newProfileModal').classList.remove('show'));
-  $('#newProfileModal')?.addEventListener('click',e=>{if(e.target.id==='newProfileModal')e.currentTarget.classList.remove('show');});
-  $('#createProfileBtn')?.addEventListener('click',()=>{
-    const name=$('#newProfileName').value.trim()||'Profil';
-    const id='local-'+uid();
-    state.profiles.push({id,type:'local',name,color:newProfileColor,createdAt:Date.now()});
-    state.settingsByProfile[id]=defaultSettings();
-    state.chatsByProfile[id]=[];
-    saveAll();
-    $('#newProfileModal').classList.remove('show');
-    switchProfile(id);
-    renderProfileList();
-  });
 
+  // Voice modal
   $('#voiceToggleBtn')?.addEventListener('click',()=>{renderVoiceModal();$('#voiceModal').classList.add('show');});
   $('#closeVoice')?.addEventListener('click',()=>$('#voiceModal').classList.remove('show'));
   $('#voiceModal')?.addEventListener('click',e=>{if(e.target.id==='voiceModal')e.currentTarget.classList.remove('show');});
@@ -1504,12 +1539,20 @@ function init(){
   $('#testVoiceBtn')?.addEventListener('click',()=>{speak('Halo, aku Syon. Suaraku seperti ini.');});
   $('#saveVoice')?.addEventListener('click',()=>{saveAll();toast('Pengaturan suara disimpan');$('#voiceModal').classList.remove('show');});
 
+  // Settings
   $('#settingsBtn')?.addEventListener('click',()=>{renderSettingsModal();$('#settingsModal').classList.add('show');});
   $('#closeSettings')?.addEventListener('click',()=>{captureCurrentInputs();saveAll();updateTopbar();$('#settingsModal').classList.remove('show');});
   $('#settingsModal')?.addEventListener('click',e=>{if(e.target.id==='settingsModal'){captureCurrentInputs();saveAll();updateTopbar();e.currentTarget.classList.remove('show');}});
   $('#activeProvider')?.addEventListener('change',e=>{
     captureCurrentInputs();
     const s=currentSettings();
+    const isGuest = state.session?.isGuest;
+    if(isGuest && e.target.value!=='syonbot'){
+      toast('Mode Tamu hanya bisa Syon Bot',true);
+      e.target.value='syonbot';
+      s.provider='syonbot';
+      return;
+    }
     s.provider=e.target.value;
     const p=PROVIDERS[s.provider];
     if(p.models.length)s.model=p.models[0];
@@ -1521,14 +1564,17 @@ function init(){
   $('#modelSelect')?.addEventListener('change',e=>{currentSettings().model=e.target.value;saveAll();updateTopbar();});
   $('#saveSettings')?.addEventListener('click',()=>{captureCurrentInputs();saveAll();updateTopbar();toast('Pengaturan disimpan');$('#settingsModal').classList.remove('show');});
 
+  // Prompts
   $('#promptsBtn')?.addEventListener('click',()=>{renderPrompts();$('#promptsModal').classList.add('show');});
   $('#closePrompts')?.addEventListener('click',()=>$('#promptsModal').classList.remove('show'));
   $('#promptsModal')?.addEventListener('click',e=>{if(e.target.id==='promptsModal')e.currentTarget.classList.remove('show');});
 
+  // Shortcuts
   $('#shortcutsBtn')?.addEventListener('click',()=>{renderShortcuts();$('#shortcutsModal').classList.add('show');});
   $('#closeShortcuts')?.addEventListener('click',()=>$('#shortcutsModal').classList.remove('show'));
   $('#shortcutsModal')?.addEventListener('click',e=>{if(e.target.id==='shortcutsModal')e.currentTarget.classList.remove('show');});
 
+  // Model picker
   $('#modelPill')?.addEventListener('click',openModelModal);
   $('#closeModel')?.addEventListener('click',()=>$('#modelModal').classList.remove('show'));
   $('#modelModal')?.addEventListener('click',e=>{if(e.target.id==='modelModal')e.currentTarget.classList.remove('show');});
@@ -1539,12 +1585,16 @@ function init(){
   });
   $('#applyModel')?.addEventListener('click',()=>{
     const s=currentSettings();
-    s.provider=$('#quickProvider').value;
+    const isGuest = state.session?.isGuest;
+    const chosen=$('#quickProvider').value;
+    if(isGuest && chosen!=='syonbot'){toast('Mode Tamu hanya bisa Syon Bot',true);return;}
+    s.provider=chosen;
     s.model=$('#quickModel').value;
     saveAll();updateTopbar();
     toast('Model: '+s.model);$('#modelModal').classList.remove('show');
   });
 
+  // Keyboard
   document.addEventListener('keydown',e=>{
     const cmd=e.ctrlKey||e.metaKey;
     if(cmd&&e.key==='k'){e.preventDefault();$('#searchChats').focus();}
