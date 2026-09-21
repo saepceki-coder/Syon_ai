@@ -12,7 +12,19 @@
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
 :root{--bg-0:#000;--bg-1:#0a0a0a;--bg-2:#141414;--bg-3:#1f1f1f;--border:#262626;--text-0:#ededed;--text-1:#a3a3a3;--text-2:#737373;--accent:#fff;--success:#10b981;--danger:#ef4444;--warn:#f59e0b;--radius:12px;--radius-sm:8px;--font-mono:'JetBrains Mono',Consolas,monospace}
-[data-theme="light"]{--bg-0:#fff;--bg-1:#f7f7f8;--bg-2:#ececec;--bg-3:#e0e0e0;--border:#d4d4d4;--text-0:#111;--text-1:#555;--text-2:#888;--accent:#111}
+[data-theme="light"]{--bg-0:#fff;--bg-1:#f7f7f8;--bg-2:#ececec;--bg-3:#e0e0e0;--border:#e5e5e5;--text-0:#111;--text-1:#555;--text-2:#888;--accent:#111}
+[data-theme="light"] .login-card{background:rgba(255,255,255,.94);box-shadow:0 20px 50px rgba(0,0,0,.08)}
+[data-theme="light"] .login-bg{background:radial-gradient(circle at 20% 30%,rgba(99,102,241,.06),transparent 45%),radial-gradient(circle at 80% 70%,rgba(168,85,247,.05),transparent 45%)}
+[data-theme="light"] .login-orb{opacity:.15}
+[data-theme="light"] .modal{box-shadow:0 20px 60px rgba(0,0,0,.12)}
+[data-theme="light"] .toast{box-shadow:0 8px 30px rgba(0,0,0,.12)}
+[data-theme="light"] .msg .content pre{background:#f5f7fa!important;border-color:#e5e5e5}
+[data-theme="light"] .msg .content code{background:#f0f0f0;color:#c7254e;border-color:#e0e0e0}
+[data-theme="light"] .msg .content pre code{color:#333;background:none;border:none}
+[data-theme="light"] .code-head{background:#ececec;border-color:#e5e5e5}
+[data-theme="light"] .msg .content blockquote{background:#f9f9f9;border-left-color:#ddd;color:#555}
+[data-theme="light"] .login-logo rect{fill:#111}
+[data-theme="light"] .login-logo path{stroke:#fff}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg-0);color:var(--text-0);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;overflow:hidden;-webkit-font-smoothing:antialiased;transition:background .25s,color .25s}
 body{display:flex;height:100vh}
@@ -37,7 +49,7 @@ body{display:flex;height:100vh}
 .login-sub{font-size:13.5px;color:var(--text-2);margin-bottom:28px;line-height:1.5}
 #googleBtnWrapper{width:100%;display:flex;justify-content:center;min-height:44px}
 .google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:12px;padding:13px;background:#fff;color:#1a1a1a;border:none;border-radius:10px;font-weight:600;font-size:14.5px;cursor:pointer;transition:transform .12s,box-shadow .2s;font-family:inherit}
-.google-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(255,255,255,.15)}
+.google-btn:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,.2)}
 .google-btn.loading{pointer-events:none;opacity:.85}
 .spinner{width:18px;height:18px;border:2px solid #ccc;border-top-color:#4285f4;border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -116,45 +128,59 @@ body{display:flex;height:100vh}
 .msg.bot .avatar{background:var(--accent);color:var(--bg-0)}
 .msg.bot .avatar svg{width:16px;height:16px}
 .msg .body{flex:1;min-width:0;padding-top:2px}
-.msg .name{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:4px}
-.msg .content{line-height:1.6;color:var(--text-0);font-size:14.5px;word-wrap:break-word;overflow-wrap:anywhere}
-.msg .content p{margin-bottom:10px}
+.msg .name{font-size:12.5px;font-weight:600;letter-spacing:.01em;color:var(--text-2);margin-bottom:4px}
+.msg .content{line-height:1.75;color:var(--text-0);font-size:15px;word-wrap:break-word;overflow-wrap:anywhere;letter-spacing:.003em}
+.msg .content p{margin-bottom:14px}
 .msg .content p:last-child{margin-bottom:0}
-.msg .content ul,.msg .content ol{padding-left:20px;margin-bottom:10px}
-.msg .content li{margin-bottom:4px}
-.msg .content h1,.msg .content h2,.msg .content h3{margin:16px 0 8px;font-weight:600}
-.msg .content h1{font-size:20px}
-.msg .content h2{font-size:17px}
-.msg .content h3{font-size:15px}
-.msg .content a{color:var(--text-0);text-decoration:underline;text-underline-offset:2px}
-.msg .content code{background:var(--bg-2);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:13px}
-.msg .content pre{background:var(--bg-1)!important;border:1px solid var(--border);border-radius:var(--radius-sm);padding:12px;margin:12px 0;overflow-x:auto}
-.msg .content pre code{background:none;padding:0;font-size:13px}
-.code-head{display:flex;justify-content:space-between;align-items:center;background:var(--bg-2);border:1px solid var(--border);border-bottom:none;padding:6px 12px;border-radius:var(--radius-sm) var(--radius-sm) 0 0;font-size:12px;color:var(--text-2);font-family:var(--font-mono)}
-.code-head + pre{margin-top:0!important;border-radius:0 0 var(--radius-sm) var(--radius-sm)!important}
-.copy-btn{background:none;border:none;color:var(--text-2);cursor:pointer;font-size:12px;padding:2px 8px;border-radius:4px;font-family:inherit}
+.msg .content strong{font-weight:650;color:var(--text-0)}
+.msg .content em{font-style:italic;color:var(--text-1)}
+.msg .content ul,.msg .content ol{padding-left:24px;margin-bottom:14px}
+.msg .content ul li::marker{color:var(--text-2)}
+.msg .content ol li::marker{color:var(--text-2);font-weight:600}
+.msg .content li{margin-bottom:6px;padding-left:2px}
+.msg .content h1,.msg .content h2,.msg .content h3,.msg .content h4{margin:22px 0 12px;font-weight:650;line-height:1.3;letter-spacing:-.015em;color:var(--text-0)}
+.msg .content h1{font-size:22px}
+.msg .content h2{font-size:18px}
+.msg .content h3{font-size:16.5px}
+.msg .content h4{font-size:15px;color:var(--text-1)}
+.msg .content h1:first-child,.msg .content h2:first-child,.msg .content h3:first-child{margin-top:0}
+.msg .content blockquote{border-left:3px solid var(--accent);padding:10px 16px;margin:14px 0;background:var(--bg-2);border-radius:0 8px 8px 0;color:var(--text-1);font-style:italic}
+.msg .content hr{border:none;border-top:1px solid var(--border);margin:22px 0}
+.msg .content table{border-collapse:collapse;width:100%;margin:16px 0;font-size:14px;border-radius:8px;overflow:hidden}
+.msg .content th,.msg .content td{border:1px solid var(--border);padding:9px 13px;text-align:left}
+.msg .content th{background:var(--bg-2);font-weight:650;color:var(--text-0)}
+.msg .content tr:nth-child(even) td{background:var(--bg-1)}
+.msg .content img{border-radius:10px;max-width:100%;margin:12px 0;border:1px solid var(--border)}
+.msg .content code{background:var(--bg-2);padding:3px 7px;border-radius:5px;font-size:13px;font-weight:500;border:1px solid var(--border);font-family:var(--font-mono);color:#e9d5ff}
+.msg .content pre{background:var(--bg-1)!important;border:1px solid var(--border);border-radius:10px;padding:16px;margin:16px 0;overflow-x:auto;font-size:13.5px;line-height:1.65}
+.msg .content pre code{background:none;border:none;padding:0;font-weight:400;color:inherit;font-size:13.5px}
+.msg .content a{color:var(--text-0);text-decoration:underline;text-decoration-color:var(--text-2);text-underline-offset:3px;transition:text-decoration-color .2s}
+.msg .content a:hover{text-decoration-color:var(--text-0)}
+.code-head{display:flex;justify-content:space-between;align-items:center;background:var(--bg-2);border:1px solid var(--border);border-bottom:none;padding:8px 14px;border-radius:10px 10px 0 0;font-size:12px;color:var(--text-2);font-family:var(--font-mono)}
+.code-head + pre{margin-top:0!important;border-radius:0 0 10px 10px!important}
+.copy-btn{background:none;border:none;color:var(--text-2);cursor:pointer;font-size:12px;padding:3px 9px;border-radius:5px;font-family:inherit;font-weight:500}
 .copy-btn:hover{background:var(--bg-3);color:var(--text-0)}
-.msg-toolbar{display:flex;gap:2px;margin-top:8px;opacity:0;transition:opacity .15s;flex-wrap:wrap}
+.msg-toolbar{display:flex;gap:4px;margin-top:10px;opacity:0;transition:opacity .15s;flex-wrap:wrap}
 .msg:hover .msg-toolbar{opacity:1}
-.msg-toolbar button{background:none;border:none;color:var(--text-2);cursor:pointer;padding:5px 7px;border-radius:5px;display:flex;align-items:center;gap:4px;font-size:11.5px;font-family:inherit}
+.msg-toolbar button{background:none;border:none;color:var(--text-2);cursor:pointer;padding:5px 8px;border-radius:5px;display:flex;align-items:center;gap:4px;font-size:11.5px;font-family:inherit;font-weight:500}
 .msg-toolbar button:hover{background:var(--bg-2);color:var(--text-0)}
 .msg-toolbar button.speaking{color:var(--success)}
-.thinking{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-1);margin-bottom:12px;overflow:hidden}
-.thinking summary{padding:10px 14px;cursor:pointer;font-size:13px;color:var(--text-1);display:flex;align-items:center;gap:8px;list-style:none}
+.thinking{border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--bg-1);margin-bottom:14px;overflow:hidden}
+.thinking summary{padding:11px 14px;cursor:pointer;font-size:13px;color:var(--text-1);display:flex;align-items:center;gap:8px;list-style:none;font-weight:500}
 .thinking summary::-webkit-details-marker{display:none}
 .thinking summary::before{content:'';width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--text-2);transition:transform .2s}
 .thinking[open] summary::before{transform:rotate(90deg)}
-.thinking .think-body{padding:10px 14px 14px;color:var(--text-2);font-size:13px;line-height:1.6;border-top:1px solid var(--border);white-space:pre-wrap}
+.thinking .think-body{padding:10px 14px 14px;color:var(--text-2);font-size:13px;line-height:1.7;border-top:1px solid var(--border);white-space:pre-wrap;font-style:italic}
 .cursor-blink::after{content:'';display:inline-block;width:8px;height:15px;background:var(--text-0);margin-left:2px;animation:blink 1s infinite;vertical-align:middle}
 @keyframes blink{50%{opacity:0}}
-.media-thumb{max-width:240px;border-radius:var(--radius-sm);margin:8px 0;border:1px solid var(--border);display:block}
-.edit-area{width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text-0);font-family:inherit;font-size:14.5px;resize:vertical;min-height:60px;outline:none}
+.media-thumb{max-width:240px;border-radius:10px;margin:8px 0;border:1px solid var(--border);display:block}
+.edit-area{width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text-0);font-family:inherit;font-size:14.5px;resize:vertical;min-height:60px;outline:none;line-height:1.6}
 .edit-area:focus{border-color:var(--text-2)}
 .edit-actions{display:flex;gap:6px;margin-top:8px}
-.edit-actions button{padding:6px 12px;border-radius:6px;border:1px solid var(--border);background:var(--bg-3);color:var(--text-1);cursor:pointer;font-size:12.5px;font-family:inherit}
+.edit-actions button{padding:7px 14px;border-radius:6px;border:1px solid var(--border);background:var(--bg-3);color:var(--text-1);cursor:pointer;font-size:12.5px;font-family:inherit;font-weight:500}
 .edit-actions button.save{background:var(--accent);color:var(--bg-0);border-color:var(--accent)}
 .input-wrap{position:absolute;bottom:0;left:270px;right:0;padding:16px 16px 20px;background:linear-gradient(to top,var(--bg-0) 60%,transparent);pointer-events:none}
-.input-box{max-width:760px;margin:0 auto;background:var(--bg-1);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;pointer-events:auto}
+.input-box{max-width:760px;margin:0 auto;background:var(--bg-1);border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;pointer-events:auto;transition:border-color .15s}
 .input-box:focus-within{border-color:var(--text-2)}
 .attach-preview{display:none;gap:8px;flex-wrap:wrap;margin-bottom:8px}
 .attach-preview.show{display:flex}
@@ -168,14 +194,15 @@ body{display:flex;height:100vh}
 @keyframes pulse{50%{opacity:.6}}
 textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:8px 4px;max-height:180px;line-height:1.5}
 textarea#input::placeholder{color:var(--text-2)}
-.send-btn{width:36px;height:36px;flex-shrink:0;background:var(--accent);border:none;border-radius:8px;color:var(--bg-0);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.send-btn{width:36px;height:36px;flex-shrink:0;background:var(--accent);border:none;border-radius:8px;color:var(--bg-0);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s,transform .1s}
 .send-btn:hover{opacity:.85}
+.send-btn:active{transform:scale(.96)}
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.8);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
 .modal-backdrop.show{display:flex}
 .modal{background:var(--bg-1);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:540px;max-height:90vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,.6)}
 .modal-head{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
 .modal-head h2{font-size:16px;font-weight:600}
-.modal-head .close{background:none;border:none;color:var(--text-2);cursor:pointer;padding:4px;display:flex}
+.modal-head .close{background:none;border:none;color:var(--text-2);cursor:pointer;padding:4px;display:flex;font-size:20px}
 .modal-head .close:hover{color:var(--text-0)}
 .modal-body{padding:16px 20px;overflow-y:auto}
 .field{margin-bottom:16px}
@@ -258,228 +285,228 @@ textarea#input::placeholder{color:var(--text-2)}
 .shortcut-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border);font-size:13.5px}
 .shortcut-row:last-child{border-bottom:none}
 @media (max-width:768px){
-  .sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-100%);box-shadow:20px 0 60px rgba(0,0,0,.8)}
-  .sidebar.open{transform:translateX(0)}
-  .menu-btn{display:block}
-  .input-wrap{left:0;padding:12px 12px 16px}
-  .chat-scroll{padding:16px 12px 120px}
-  .suggestions{grid-template-columns:1fr}
-  .welcome h1{font-size:24px}
-  .model-pill .name{max-width:100px}
-  .msg-toolbar{opacity:1}
+.sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-100%);box-shadow:20px 0 60px rgba(0,0,0,.8)}
+.sidebar.open{transform:translateX(0)}
+.menu-btn{display:block}
+.input-wrap{left:0;padding:12px 12px 16px}
+.chat-scroll{padding:16px 12px 120px}
+.suggestions{grid-template-columns:1fr}
+.welcome h1{font-size:24px}
+.model-pill .name{max-width:100px}
+.msg-toolbar{opacity:1}
 }
 </style>
 </head>
 <body>
 
 <div id="loginScreen">
-  <div class="login-bg"></div>
-  <div class="login-orb o1"></div>
-  <div class="login-orb o2"></div>
-  <div class="login-orb o3"></div>
-  <div class="login-card">
-    <svg class="login-logo" viewBox="0 0 100 100"><rect x="2" y="2" width="96" height="96" rx="24" fill="#fff"/><path d="M66 36 Q66 24 50 24 Q34 24 34 38 Q34 49 50 51 Q66 53 66 64 Q66 76 50 76 Q34 76 34 64" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round"/></svg>
-    <div class="login-title">Syon <span>AI</span></div>
-    <div class="login-sub">Asisten AI pribadi kamu.<br>Pilih cara masuk untuk memulai.</div>
-    <div id="googleBtnWrapper"></div>
-    <div class="g-form" id="googleForm">
-      <label>Nama</label>
-      <input type="text" id="gNameInput" placeholder="Nama kamu" maxlength="40">
-      <label>Email</label>
-      <input type="email" id="gEmailInput" placeholder="email@example.com" maxlength="60">
-      <button id="gFormSubmit">Masuk sebagai Akun Google</button>
-    </div>
-    <div class="divider">atau</div>
-    <button class="guest-btn" id="guestLoginBtn">Lanjut sebagai Tamu</button>
-    <div class="login-note">
-      <b>Privasi:</b> API key & chat disimpan <b>lokal di browser kamu</b>. Nggak dikirim ke server mana pun.
-    </div>
-  </div>
+<div class="login-bg"></div>
+<div class="login-orb o1"></div>
+<div class="login-orb o2"></div>
+<div class="login-orb o3"></div>
+<div class="login-card">
+<svg class="login-logo" viewBox="0 0 100 100"><rect x="2" y="2" width="96" height="96" rx="24" fill="#fff"/><path d="M66 36 Q66 24 50 24 Q34 24 34 38 Q34 49 50 51 Q66 53 66 64 Q66 76 50 76 Q34 76 34 64" fill="none" stroke="#000" stroke-width="9" stroke-linecap="round"/></svg>
+<div class="login-title">Syon <span>AI</span></div>
+<div class="login-sub">Asisten AI pribadi kamu.<br>Pilih cara masuk untuk memulai.</div>
+<div id="googleBtnWrapper"></div>
+<div class="g-form" id="googleForm">
+<label>Nama</label>
+<input type="text" id="gNameInput" placeholder="Nama kamu" maxlength="40">
+<label>Email</label>
+<input type="email" id="gEmailInput" placeholder="email@example.com" maxlength="60">
+<button id="gFormSubmit">Masuk sebagai Akun Google</button>
+</div>
+<div class="divider">atau</div>
+<button class="guest-btn" id="guestLoginBtn">Lanjut sebagai Tamu</button>
+<div class="login-note">
+<b>Privasi:</b> API key & chat disimpan <b>lokal di browser kamu</b>.
+</div>
+</div>
 </div>
 
 <div id="app">
-  <aside class="sidebar" id="sidebar">
-    <div class="sidebar-header" id="profileHeader" title="Ganti profil">
-      <div class="profile-avatar" id="headerAvatar">S</div>
-      <div class="brand" id="headerName">Syon<span> AI</span></div>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-2)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-    </div>
-    <div class="search-box">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-2)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="searchChats" placeholder="Cari obrolan..." />
-    </div>
-    <button class="new-chat-btn" id="newChatBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Obrolan Baru</button>
-    <div class="chat-list" id="chatList"></div>
-    <div class="sidebar-footer">
-      <button id="promptsBtn">Prompt</button>
-      <button id="settingsBtn">Setelan</button>
-    </div>
-  </aside>
-  <main class="main">
-    <div class="topbar">
-      <button class="menu-btn" id="menuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
-      <div class="model-pill" id="modelPill">
-        <span class="dot" id="statusDot"></span>
-        <span class="name" id="modelName">Pilih Model</span>
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-      </div>
-      <div class="spacer"></div>
-      <button class="icon-top" id="voiceToggleBtn" title="Suara AI"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
-      <button class="icon-top" id="themeBtn" title="Tema"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/></svg></button>
-      <button class="icon-top" id="exportBtn" title="Export chat"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
-      <button class="icon-top" id="shortcutsBtn" title="Shortcuts"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/></svg></button>
-    </div>
-    <div class="chat-scroll" id="chatScroll"><div class="chat-inner" id="chatInner"></div></div>
-    <div class="input-wrap">
-      <div class="input-box">
-        <div class="attach-preview" id="attachPreview"></div>
-        <div class="input-row">
-          <button class="icon-btn" id="attachBtn" title="Lampirkan gambar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
-          <input type="file" id="fileInput" accept="image/*" multiple hidden />
-          <button class="icon-btn" id="micBtn" title="Rekam suara"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
-          <textarea id="input" placeholder="Tanya apa saja atau soal matematika..." rows="1"></textarea>
-          <button class="send-btn" id="sendBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-        </div>
-      </div>
-    </div>
-  </main>
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header" id="profileHeader" title="Ganti profil">
+<div class="profile-avatar" id="headerAvatar">S</div>
+<div class="brand" id="headerName">Syon<span> AI</span></div>
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-2)" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+</div>
+<div class="search-box">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--text-2)" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<input type="text" id="searchChats" placeholder="Cari obrolan..." />
+</div>
+<button class="new-chat-btn" id="newChatBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Obrolan Baru</button>
+<div class="chat-list" id="chatList"></div>
+<div class="sidebar-footer">
+<button id="promptsBtn">Prompt</button>
+<button id="settingsBtn">Setelan</button>
+</div>
+</aside>
+<main class="main">
+<div class="topbar">
+<button class="menu-btn" id="menuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<div class="model-pill" id="modelPill">
+<span class="dot" id="statusDot"></span>
+<span class="name" id="modelName">Pilih Model</span>
+<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+</div>
+<div class="spacer"></div>
+<button class="icon-top" id="voiceToggleBtn" title="Suara AI"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
+<button class="icon-top" id="themeBtn" title="Tema"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/></svg></button>
+<button class="icon-top" id="exportBtn" title="Export chat"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
+<button class="icon-top" id="shortcutsBtn" title="Shortcuts"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="6" width="20" height="12" rx="2"/></svg></button>
+</div>
+<div class="chat-scroll" id="chatScroll"><div class="chat-inner" id="chatInner"></div></div>
+<div class="input-wrap">
+<div class="input-box">
+<div class="attach-preview" id="attachPreview"></div>
+<div class="input-row">
+<button class="icon-btn" id="attachBtn" title="Lampirkan gambar"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
+<input type="file" id="fileInput" accept="image/*" multiple hidden />
+<button class="icon-btn" id="micBtn" title="Rekam suara"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg></button>
+<textarea id="input" placeholder="Tanya apa saja..." rows="1"></textarea>
+<button class="send-btn" id="sendBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
+</div>
+</div>
+</div>
+</main>
 </div>
 
 <div class="modal-backdrop" id="settingsModal">
-  <div class="modal">
-    <div class="modal-head"><h2>Pengaturan</h2><button class="close" id="closeSettings">×</button></div>
-    <div class="modal-body">
-      <div class="field"><label>Provider Aktif</label><select id="activeProvider"></select></div>
-      <div class="field"><label>Model</label><select id="modelSelect"></select></div>
-      <div class="field"><label>Parameter</label>
-        <div style="display:flex;gap:12px">
-          <div style="flex:1"><label style="font-size:11px;color:var(--text-2);margin-bottom:4px;display:block">Temperature</label><input type="number" id="tempInput" min="0" max="2" step="0.1" value="0.7" /></div>
-          <div style="flex:1"><label style="font-size:11px;color:var(--text-2);margin-bottom:4px;display:block">Max Tokens</label><input type="number" id="maxTokenInput" min="100" max="8192" step="100" value="2048" /></div>
-        </div>
-      </div>
-      <div class="field"><label>Provider & API Key</label><div class="provider-list" id="providerList"></div></div>
-      <div class="field"><label>System Prompt</label><textarea id="systemPrompt" placeholder="Kamu adalah Syon, asisten AI yang ramah."></textarea></div>
-      <button class="btn-primary" id="saveSettings">Simpan Pengaturan</button>
-    </div>
-  </div>
+<div class="modal">
+<div class="modal-head"><h2>Pengaturan</h2><button class="close" id="closeSettings">×</button></div>
+<div class="modal-body">
+<div class="field"><label>Provider Aktif</label><select id="activeProvider"></select></div>
+<div class="field"><label>Model</label><select id="modelSelect"></select></div>
+<div class="field"><label>Parameter</label>
+<div style="display:flex;gap:12px">
+<div style="flex:1"><label style="font-size:11px;color:var(--text-2);margin-bottom:4px;display:block">Temperature</label><input type="number" id="tempInput" min="0" max="2" step="0.1" value="0.7" /></div>
+<div style="flex:1"><label style="font-size:11px;color:var(--text-2);margin-bottom:4px;display:block">Max Tokens</label><input type="number" id="maxTokenInput" min="100" max="8192" step="100" value="2048" /></div>
+</div>
+</div>
+<div class="field"><label>Provider & API Key</label><div class="provider-list" id="providerList"></div></div>
+<div class="field"><label>System Prompt</label><textarea id="systemPrompt" placeholder="Kamu adalah Syon, asisten AI yang ramah."></textarea></div>
+<button class="btn-primary" id="saveSettings">Simpan Pengaturan</button>
+</div>
+</div>
 </div>
 
 <div class="modal-backdrop" id="voiceModal">
-  <div class="modal">
-    <div class="modal-head"><h2>Suara AI (TTS)</h2><button class="close" id="closeVoice">×</button></div>
-    <div class="modal-body">
-      <div class="field"><label>Auto-Baca</label>
-        <label class="toggle-think" style="padding:0">
-          <input type="checkbox" id="autoSpeakToggle">
-          <span class="switch"></span>
-          <span style="font-size:13px">Otomatis bacakan balasan</span>
-        </label>
-      </div>
-      <div class="field"><label>Suara</label>
-        <div class="voice-selector">
-          <select id="voiceSelect"></select>
-          <button id="testVoiceBtn">▶</button>
-        </div>
-      </div>
-      <div class="field"><label>Kecepatan</label>
-        <div class="range-row"><input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1"><span class="range-val" id="rateVal">1.0x</span></div>
-      </div>
-      <div class="field"><label>Nada</label>
-        <div class="range-row"><input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1"><span class="range-val" id="pitchVal">1.0</span></div>
-      </div>
-      <div class="field"><label>Volume</label>
-        <div class="range-row"><input type="range" id="volumeRange" min="0" max="1" step="0.1" value="1"><span class="range-val" id="volumeVal">100%</span></div>
-      </div>
-      <button class="btn-primary" id="saveVoice">Simpan</button>
-    </div>
-  </div>
+<div class="modal">
+<div class="modal-head"><h2>Suara AI (TTS)</h2><button class="close" id="closeVoice">×</button></div>
+<div class="modal-body">
+<div class="field"><label>Auto-Baca</label>
+<label class="toggle-think" style="padding:0">
+<input type="checkbox" id="autoSpeakToggle">
+<span class="switch"></span>
+<span style="font-size:13px">Otomatis bacakan balasan</span>
+</label>
+</div>
+<div class="field"><label>Suara</label>
+<div class="voice-selector">
+<select id="voiceSelect"></select>
+<button id="testVoiceBtn">▶</button>
+</div>
+</div>
+<div class="field"><label>Kecepatan</label>
+<div class="range-row"><input type="range" id="rateRange" min="0.5" max="2" step="0.1" value="1"><span class="range-val" id="rateVal">1.0x</span></div>
+</div>
+<div class="field"><label>Nada</label>
+<div class="range-row"><input type="range" id="pitchRange" min="0.5" max="2" step="0.1" value="1"><span class="range-val" id="pitchVal">1.0</span></div>
+</div>
+<div class="field"><label>Volume</label>
+<div class="range-row"><input type="range" id="volumeRange" min="0" max="1" step="0.1" value="1"><span class="range-val" id="volumeVal">100%</span></div>
+</div>
+<button class="btn-primary" id="saveVoice">Simpan</button>
+</div>
+</div>
 </div>
 
 <div class="modal-backdrop" id="profileModal">
-  <div class="modal">
-    <div class="modal-head"><h2>Profil & Akun</h2><button class="close" id="closeProfile">×</button></div>
-    <div class="modal-body">
-      <div id="profileList"></div>
-      <button class="btn-ghost" id="addLocalProfileBtn" style="margin-top:6px">+ Profil Lokal Baru</button>
-      <div style="font-size:12px;color:var(--text-2);margin-top:12px;line-height:1.6">
-        <b style="color:var(--text-1)">Info:</b> API key disimpan per profil.
-      </div>
-    </div>
-  </div>
+<div class="modal">
+<div class="modal-head"><h2>Profil & Akun</h2><button class="close" id="closeProfile">×</button></div>
+<div class="modal-body">
+<div id="profileList"></div>
+<button class="btn-ghost" id="addLocalProfileBtn" style="margin-top:6px">+ Profil Lokal Baru</button>
+<div style="font-size:12px;color:var(--text-2);margin-top:12px;line-height:1.6">
+<b style="color:var(--text-1)">Info:</b> API key disimpan per profil.
+</div>
+</div>
+</div>
 </div>
 
 <div class="modal-backdrop" id="newProfileModal">
-  <div class="modal" style="max-width:400px">
-    <div class="modal-head"><h2>Profil Baru</h2><button class="close" id="closeNewProfile">×</button></div>
-    <div class="modal-body">
-      <div class="field"><label>Nama Profil</label><input type="text" id="newProfileName" placeholder="Nama profil" maxlength="30"></div>
-      <div class="field"><label>Warna Avatar</label><div class="color-grid" id="colorGrid"></div></div>
-      <button class="btn-primary" id="createProfileBtn">Buat Profil</button>
-    </div>
-  </div>
+<div class="modal" style="max-width:400px">
+<div class="modal-head"><h2>Profil Baru</h2><button class="close" id="closeNewProfile">×</button></div>
+<div class="modal-body">
+<div class="field"><label>Nama Profil</label><input type="text" id="newProfileName" placeholder="Nama profil" maxlength="30"></div>
+<div class="field"><label>Warna Avatar</label><div class="color-grid" id="colorGrid"></div></div>
+<button class="btn-primary" id="createProfileBtn">Buat Profil</button>
+</div>
+</div>
 </div>
 
 <div class="modal-backdrop" id="modelModal">
-  <div class="modal" style="max-width:400px">
-    <div class="modal-head"><h2>Ganti Model</h2><button class="close" id="closeModel">×</button></div>
-    <div class="modal-body">
-      <div class="field"><label>Provider</label><select id="quickProvider"></select></div>
-      <div class="field"><label>Model</label><select id="quickModel"></select></div>
-      <button class="btn-primary" id="applyModel">Terapkan</button>
-    </div>
-  </div>
+<div class="modal" style="max-width:400px">
+<div class="modal-head"><h2>Ganti Model</h2><button class="close" id="closeModel">×</button></div>
+<div class="modal-body">
+<div class="field"><label>Provider</label><select id="quickProvider"></select></div>
+<div class="field"><label>Model</label><select id="quickModel"></select></div>
+<button class="btn-primary" id="applyModel">Terapkan</button>
+</div>
+</div>
 </div>
 
 <div class="modal-backdrop" id="promptsModal">
-  <div class="modal">
-    <div class="modal-head"><h2>Prompt Library</h2><button class="close" id="closePrompts">×</button></div>
-    <div class="modal-body" id="promptsList"></div>
-  </div>
+<div class="modal">
+<div class="modal-head"><h2>Prompt Library</h2><button class="close" id="closePrompts">×</button></div>
+<div class="modal-body" id="promptsList"></div>
+</div>
 </div>
 
 <div class="modal-backdrop" id="shortcutsModal">
-  <div class="modal" style="max-width:400px">
-    <div class="modal-head"><h2>Keyboard Shortcuts</h2><button class="close" id="closeShortcuts">×</button></div>
-    <div class="modal-body" id="shortcutsList"></div>
-  </div>
+<div class="modal" style="max-width:400px">
+<div class="modal-head"><h2>Keyboard Shortcuts</h2><button class="close" id="closeShortcuts">×</button></div>
+<div class="modal-body" id="shortcutsList"></div>
+</div>
 </div>
 
 <div class="toast" id="toast"></div>
 
   <script>
 /* ============================================================
-   SYON AI v8 — Login + Multi-Profile + Voice + Theme
+   SYON AI v9 — Multi-profile + Voice + Theme + Typography Polish
    ============================================================ */
 
-const GOOGLE_CLIENT_ID = ''; // ← isi Client ID Google kalau mau OAuth asli
+const GOOGLE_CLIENT_ID = '';
 
 const KB = [
   {q:['halo','hai','hi','hey','hello'],a:'Halo! Aku Syon Bot. Coba hitung soal atau tanya hal dasar.'},
   {q:['siapa kamu','kamu siapa','nama kamu'],a:'Aku **Syon Bot**, chatbot lokal tanpa API key.'},
   {q:['apa kabar','kabar kamu'],a:'Aku baik! Kamu gimana?'},
-  {q:['terima kasih','makasih','thanks'],a:'Sama-sama!'},
-  {q:['apa itu ai','pengertian ai'],a:'**AI** program komputer yang bisa melakukan tugas yang biasanya butuh kecerdasan manusia.'},
-  {q:['apa itu coding','pengertian coding'],a:'**Coding** menulis instruksi ke komputer. Contoh: Python, JavaScript, Java.'},
-  {q:['apa itu python'],a:'**Python** bahasa pemrograman populer, sintaksnya mudah dibaca.'},
-  {q:['apa itu javascript'],a:'**JavaScript** bahasa pemrograman yang jalan di browser.'},
-  {q:['apa itu html'],a:'**HTML** bahasa struktur halaman web.'},
-  {q:['apa itu css'],a:'**CSS** mengatur tampilan halaman web.'},
-  {q:['ibu kota indonesia'],a:'Ibu kota Indonesia: **Jakarta**. IKN Nusantara sedang dibangun.'},
-  {q:['siapa presiden indonesia'],a:'Presiden Indonesia (2024–2029): **Prabowo Subianto**, wakil **Gibran Rakabuming Raka**.'},
-  {q:['apa itu pancasila'],a:'**Pancasila** dasar negara Indonesia, 5 sila:\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan\n5. Keadilan sosial'},
-  {q:['apa itu gravitasi'],a:'**Gravitasi** gaya tarik antar objek bermassa.'},
-  {q:['apa itu matahari'],a:'**Matahari** bintang di pusat Tata Surya, ~150 juta km dari Bumi.'},
+  {q:['terima kasih','makasih','thanks'],a:'Sama-sama! 😊'},
+  {q:['apa itu ai','pengertian ai'],a:'**AI** (Artificial Intelligence) atau kecerdasan buatan adalah program komputer yang bisa melakukan tugas yang biasanya butuh kecerdasan manusia — seperti mengenali gambar, memahami bahasa, atau mengambil keputusan.'},
+  {q:['apa itu coding','pengertian coding'],a:'**Coding** adalah proses menulis instruksi ke komputer supaya komputer melakukan sesuatu. Contoh bahasa: Python, JavaScript, Java, C++.'},
+  {q:['apa itu python'],a:'**Python** adalah bahasa pemrograman populer. Sintaksnya mudah dibaca, cocok untuk pemula, AI, data science, dan web.\n\n```python\nprint("Halo dunia")\n```'},
+  {q:['apa itu javascript'],a:'**JavaScript** adalah bahasa pemrograman yang jalan di browser. Dipakai untuk bikin halaman web interaktif. Sekarang juga dipakai di server (Node.js).'},
+  {q:['apa itu html'],a:'**HTML** (HyperText Markup Language) adalah bahasa standar untuk membuat struktur halaman web.\n\n```html\n<h1>Halo</h1>\n```'},
+  {q:['apa itu css'],a:'**CSS** (Cascading Style Sheets) mengatur tampilan halaman web — warna, ukuran, layout, font.'},
+  {q:['ibu kota indonesia','ibukota indonesia'],a:'Ibu kota Indonesia saat ini adalah **Jakarta**. Sedangkan **Nusantara (IKN)** di Kalimantan Timur sedang dalam proses pembangunan sebagai ibu kota baru.'},
+  {q:['siapa presiden indonesia'],a:'Presiden Indonesia (2024–2029) adalah **Prabowo Subianto**, wakilnya **Gibran Rakabuming Raka**.'},
+  {q:['apa itu pancasila'],a:'**Pancasila** adalah dasar negara Indonesia, terdiri dari 5 sila:\n\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan\n5. Keadilan sosial bagi seluruh rakyat Indonesia'},
+  {q:['apa itu gravitasi'],a:'**Gravitasi** adalah gaya tarik antar objek bermassa. Bumi menarik kita ke bawah dengan gravitasi.'},
+  {q:['apa itu matahari'],a:'**Matahari** adalah bintang di pusat Tata Surya. Jaraknya sekitar 150 juta km dari Bumi.'},
 ];
 
 const PROMPT_LIBRARY = [
   {t:'Jelaskan Simpel',d:'Analogi sederhana',p:'Jelaskan [TOPIK] dengan analogi sederhana seperti untuk anak SMA.'},
   {t:'Ringkas Artikel',d:'Ringkas 5 poin',p:'Ringkas teks berikut jadi 5 poin utama:\n\n[TEMPEL TEKS]'},
   {t:'Buat Kode',d:'Fungsi + komentar',p:'Buat fungsi JavaScript untuk [FUNGSI] dengan komentar penjelas.'},
-  {t:'Debug Kode',d:'Cari bug',p:'Cari bug di kode berikut:\n\n```\n[TEMPEL KODE]\n```'},
-  {t:'Terjemahkan',d:'Ke bahasa Inggris',p:'Terjemahkan teks berikut ke bahasa Inggris:\n\n[TEMPEL TEKS]'},
-  {t:'Buat Email',d:'Email profesional',p:'Buat email profesional untuk [TUJUAN] kepada [PENERIMA].'},
-  {t:'Ide Konten',d:'10 ide',p:'Kasih 10 ide konten [TOPIK] untuk media sosial.'},
-  {t:'Roadmap',d:'Belajar 30 hari',p:'Buat roadmap belajar [SKILL] untuk pemula selama 30 hari.'},
+  {t:'Debug Kode',d:'Cari bug',p:'Cari bug di kode berikut dan jelaskan penyebabnya:\n\n```\n[TEMPEL KODE]\n```'},
+  {t:'Terjemahkan',d:'Ke bahasa Inggris',p:'Terjemahkan teks berikut ke bahasa Inggris dengan gaya natural:\n\n[TEMPEL TEKS]'},
+  {t:'Buat Email',d:'Email profesional',p:'Buat email profesional untuk [TUJUAN] kepada [PENERIMA]. Nada: sopan dan ringkas.'},
+  {t:'Ide Konten',d:'10 ide konten',p:'Kasih 10 ide konten [TOPIK] untuk media sosial. Setiap ide 1 kalimat.'},
+  {t:'Roadmap',d:'Belajar 30 hari',p:'Buat roadmap belajar [SKILL] untuk pemula selama 30 hari. Per hari 1 jam.'},
 ];
 
 const SHORTCUTS = [
@@ -519,10 +546,16 @@ const state = {
   searchQuery:''
 };
 
-const LS = 'syon_v8';
+const LS = 'syon_v9';
 
 function defaultSettings(){
-  return {provider:'syonbot',model:'syon-bot-v1',keys:{},keyStatus:{},fetchedModels:{},systemPrompt:'',customUrl:'',customModels:'',thinking:false,temperature:0.7,maxTokens:2048};
+  return {
+    provider:'syonbot',model:'syon-bot-v1',
+    keys:{},keyStatus:{},fetchedModels:{},
+    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca: **bold** untuk penekanan, list untuk daftar, code block untuk kode. Jujur kalau tidak tahu — jangan mengarang. Jawab ringkas tapi lengkap, jangan bertele-tele. Kalau ada pertanyaan lanjutan, tawarkan bantuan.',
+    customUrl:'',customModels:'',
+    thinking:false,temperature:0.7,maxTokens:2048
+  };
 }
 
 function loadAll(){
@@ -603,9 +636,10 @@ function findInKB(query){
 function syonBotReply(t){
   if(!t.trim())return 'Ketik sesuatu dong.';
   const math=tryMath(t);
-  if(math)return `**${math.expr} = ${math.result}**\n\n_✓ Kalkulator deterministik._`;
-  const kb=findInKB(t);if(kb)return kb;
-  return `Maaf, aku belum punya jawaban untuk itu di database lokal.\n\n**Syon Bot cuma tau:**\n- Matematika (contoh: \`12*8+5\`, \`2^10\`)\n- ~15 pertanyaan dasar\n\nGanti ke **Groq** atau **Gemini** di Setelan untuk pertanyaan luas.`;
+  if(math)return `**${math.expr} = ${math.result}**\n\n_✓ Dihitung dengan kalkulator deterministik (100% akurat untuk ekspresi valid)._`;
+  const kb=findInKB(t);
+  if(kb)return kb;
+  return `Hmm, aku belum punya jawaban untuk itu di database lokal. 🤔\n\n**Yang aku kuasai:**\n- 🧮 **Matematika** — coba \`12*8+5\` atau \`2^10\`\n- 💡 **Pertanyaan dasar** — AI, coding, Indonesia, sains\n\n**Mau jawaban lebih luas?** Ganti ke **Groq** atau **Gemini** di ⚙ Setelan. Keduanya gratis dan bisa jawab hampir semua pertanyaan.`;
 }
 
 let voicesList=[];
@@ -667,7 +701,7 @@ async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,signa
   const headers={'Content-Type':'application/json'};
   if(apiKey&&apiKey!=='none')headers['Authorization']='Bearer '+apiKey;
   const res=await fetchWithRetry(provider.url,{method:'POST',signal,headers,body:JSON.stringify({model,messages,stream:true,temperature:s.temperature,max_tokens:s.maxTokens})},1);
-  if(!res.ok){const t=await res.text().catch(()=>'');let hint='';if(res.status===401)hint=' — API key salah';if(res.status===403)hint=' — akses ditolak';if(res.status===404)hint=' — model tidak ditemukan';if(res.status===429)hint=' — rate limit';throw new Error(`HTTP ${res.status}${hint}. ${t.slice(0,200)}`);}
+  if(!res.ok){const t=await res.text().catch(()=>'');let hint='';if(res.status===401)hint=' — API key salah/expired';if(res.status===403)hint=' — akses ditolak';if(res.status===404)hint=' — model tidak ditemukan';if(res.status===429)hint=' — rate limit';throw new Error(`HTTP ${res.status}${hint}. ${t.slice(0,200)}`);}
   const reader=res.body.getReader();const decoder=new TextDecoder();let buf='';
   while(true){const{value,done}=await reader.read();if(done)break;buf+=decoder.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){const st=line.trim();if(!st.startsWith('data:'))continue;const data=st.slice(5).trim();if(data==='[DONE]')return;try{const j=JSON.parse(data);const delta=j.choices?.[0]?.delta?.content||'';if(delta)onDelta(delta);}catch(e){}}}
 }
@@ -719,7 +753,7 @@ async function streamChat(onDelta,signal){
   const chat=getActiveChat();
   const messages=buildMessages(chat,cfg.vision);
   if(s.thinking){
-    if(messages[0]?.role==='system')messages[0].content+='\n\nSEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>.';
+    if(messages[0]?.role==='system')messages[0].content+='\n\nSEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>, lalu berikan jawaban final di luar tag.';
     else messages.unshift({role:'system',content:'SEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>.'});
   }
   if(cfg.type==='gemini')return callGemini(key,s.model,messages,onDelta,signal);
@@ -1305,7 +1339,6 @@ function toggleVoiceInput(){
 function applyTheme(){document.documentElement.setAttribute('data-theme',state.theme==='light'?'light':'dark');}
 function toggleTheme(){state.theme=state.theme==='light'?'dark':'light';applyTheme();saveAll();toast('Tema: '+(state.theme==='light'?'Terang':'Gelap'));}
 
-function showLogin(){const ls=$('#loginScreen');if(ls){ls.classList.remove('hidden');ls.classList.remove('hide');}$('#app')?.classList.remove('show');}
 function hideLogin(){
   const ls=$('#loginScreen');if(ls){ls.classList.add('hide');setTimeout(()=>ls.classList.add('hidden'),500);}
   $('#app')?.classList.add('show');
@@ -1532,4 +1565,4 @@ function init(){
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-</html>
+  </html>
