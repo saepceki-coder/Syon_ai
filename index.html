@@ -36,9 +36,7 @@ body{display:flex;height:100vh;height:100dvh}
 .auth-error{color:var(--danger);font-size:12.5px;margin-top:10px;min-height:16px;text-align:center}
 #googleBtnWrapper{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:12px;align-items:center}
 #googleBtnWrapper > div{width:100% !important}
-.google-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;background:var(--bg-0);color:var(--text-0);border:1px solid var(--border);border-radius:10px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:background .15s}
-.google-btn:hover{background:var(--bg-2)}
-.guest-btn{width:100%;padding:11px;background:var(--bg-2);color:var(--text-0);border:1px solid transparent;border-radius:10px;font-weight:500;font-size:13.5px;cursor:pointer;font-family:inherit}
+.guest-btn{width:100%;padding:11px;background:var(--bg-2);color:var(--text-0);border:1px solid transparent;border-radius:10px;font-weight:500;font-size:13.5px;cursor:pointer;font-family:inherit;margin-top:8px}
 .guest-btn:hover{background:var(--bg-3)}
 .divider{display:flex;align-items:center;gap:12px;margin:14px 0 0;color:var(--text-2);font-size:11.5px}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
@@ -68,7 +66,7 @@ body{display:flex;height:100vh;height:100dvh}
 .sidebar-footer button{padding:9px 12px;background:none;border:none;color:var(--text-1);border-radius:8px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:10px;font-family:inherit;text-align:left;transition:background .12s}
 .sidebar-footer button:hover{background:var(--bg-2);color:var(--text-0)}
 .main{flex:1;display:flex;flex-direction:column;min-width:0;position:relative}
-.topbar{padding:10px 14px;display:flex;align-items:center;gap:10px;position:relative;z-index:5}
+.topbar{padding:10px 14px;display:flex;align-items:center;gap:10px;position:relative;z-index:5;padding-top:calc(10px + env(safe-area-inset-top,0px))}
 .menu-btn{display:none;background:none;border:none;color:var(--text-1);cursor:pointer;padding:8px;border-radius:8px;align-items:center;justify-content:center}
 .menu-btn:hover{background:var(--bg-2)}
 .model-pill{display:flex;align-items:center;gap:8px;padding:7px 12px;background:transparent;border:1px solid transparent;border-radius:99px;font-size:13.5px;cursor:pointer;color:var(--text-1);max-width:100%;transition:background .12s}
@@ -94,15 +92,19 @@ body{display:flex;height:100vh;height:100dvh}
 .suggestion:hover{border-color:var(--accent);background:var(--bg-0);transform:translateY(-1px)}
 .suggestion b{color:var(--text-0);display:block;margin-bottom:3px;font-size:13.5px;font-weight:600}
 
-.msg{display:flex;gap:14px;margin-bottom:26px;position:relative;animation:fadeIn .18s ease}
+/* ============ MESSAGES — ChatGPT/DeepSeek style ============ */
+.msg{display:flex;margin-bottom:28px;animation:fadeIn .18s ease;width:100%}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
-.msg .avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:#fff}
-.msg.user .avatar{background:linear-gradient(135deg,#6366f1,#8b5cf6)}
-.msg.bot .avatar{background:var(--accent)}
-.msg.bot .avatar svg{width:16px;height:16px;color:#fff}
-.msg .body{flex:1;min-width:0;padding-top:1px}
-.msg .name{font-size:12.5px;font-weight:600;color:var(--text-2);margin-bottom:6px}
-.msg .content{line-height:1.72;color:var(--text-0);font-size:15px;word-wrap:break-word;overflow-wrap:anywhere}
+.msg.user{justify-content:flex-end}
+.msg.bot{justify-content:flex-start}
+.msg .body{max-width:100%;min-width:0;display:flex;flex-direction:column}
+.msg.user .body{max-width:82%;align-items:flex-end}
+.msg.bot .body{flex:1;align-items:stretch}
+.msg.user .content{background:var(--bg-2);padding:10px 16px;border-radius:20px 20px 4px 20px;display:inline-block;text-align:left;max-width:100%;line-height:1.55;word-wrap:break-word;overflow-wrap:anywhere}
+.msg.bot .content{display:block;line-height:1.75;font-size:15px;word-wrap:break-word;overflow-wrap:anywhere}
+.msg .avatar,.msg .name{display:none!important}
+.msg.user .msg-toolbar{justify-content:flex-end}
+
 .msg .content p{margin-bottom:14px}
 .msg .content p:last-child{margin-bottom:0}
 .msg .content strong{font-weight:650}
@@ -121,6 +123,8 @@ body{display:flex;height:100vh;height:100dvh}
 [data-theme="dark"] .msg .content code{color:#e9b1c9}
 .msg .content pre{background:var(--bg-1)!important;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:14px 0;overflow-x:auto;font-size:13px;line-height:1.6}
 .msg .content pre code{background:none;border:none;padding:0;color:var(--text-0);font-size:13px}
+.msg.user .content code{background:rgba(0,0,0,.06);border-color:transparent}
+[data-theme="dark"] .msg.user .content code{background:rgba(255,255,255,.08)}
 
 .code-head{display:flex;justify-content:space-between;align-items:center;background:var(--bg-2);border:1px solid var(--border);border-bottom:none;padding:7px 12px;border-radius:10px 10px 0 0;font-size:11.5px;color:var(--text-2);font-family:var(--font-mono);margin-top:14px}
 .code-head + pre{margin-top:0!important;border-radius:0 0 10px 10px!important}
@@ -162,7 +166,7 @@ body{display:flex;height:100vh;height:100dvh}
 .icon-btn:hover{background:var(--bg-2);color:var(--text-0)}
 .icon-btn.recording{color:var(--danger);background:rgba(239,68,68,.1);animation:pulse 1.2s infinite}
 @keyframes pulse{50%{opacity:.6}}
-textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:8px 4px;max-height:200px;line-height:1.5;min-height:34px}
+textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:8px 4px;max-height:200px;line-height:1.5;min-height:34px;scroll-margin-bottom:200px}
 textarea#input::placeholder{color:var(--text-2)}
 .send-btn{width:34px;height:34px;flex-shrink:0;background:var(--accent);border:none;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:opacity .15s,transform .1s}
 .send-btn:hover:not(:disabled){opacity:.9}
@@ -259,7 +263,7 @@ textarea#input::placeholder{color:var(--text-2)}
 .welcome h1{font-size:22px}
 .welcome{padding-top:40px}
 .model-pill .name{max-width:110px}
-.msg-toolbar{opacity:1}
+.msg.user .body{max-width:88%}
 }
 </style>
 </head>
@@ -426,13 +430,11 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <script>
 /* ============================================================
-   SYON AI v11.2 — Premium UI + Syon Bot v2 + HTML Artifacts
-   Google Client ID: pre-configured
+   SYON AI v12 — ChatGPT/DeepSeek Style + Syon Bot v2
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 
-/* ============ KNOWLEDGE BASE v2 ============ */
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
   {q:['siapa kamu','kamu siapa','nama kamu','kenalan'],a:'Aku **Syon AI** 🤖 — asisten pribadi kamu. Bisa ngobrol, hitung matematika, kasih contoh kode, dan jelasin konsep dasar.'},
@@ -505,7 +507,7 @@ const state = {
   attachments:[], generating:false, searchQuery:''
 };
 
-const LS='syon_v11_2';
+const LS='syon_v12';
 
 function defaultSettings(){
   return {
@@ -951,14 +953,12 @@ function renderChat(){
     const div=document.createElement('div');
     div.className='msg '+(m.role==='user'?'user':'bot');
     div.dataset.idx=idx;
-    const av=m.role==='user'?'<div class="avatar">U</div>':'<div class="avatar"><svg viewBox="0 0 100 100"><path d="M66 36 Q66 24 50 24 Q34 24 34 38 Q34 49 50 51 Q66 53 66 64 Q66 76 50 76 Q34 76 34 64" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/></svg></div>';
-    const nm=m.role==='user'?'Kamu':'Syon';
     let html='';
     if(m.role==='user'){
       html=esc(m.content).replace(/\n/g,'<br>');
       if(m.attachments?.length)m.attachments.forEach(a=>{if(a.type==='image')html+='<img class="media-thumb" src="'+a.dataUrl+'">';});
     } else html=renderMarkdown(m.content);
-    div.innerHTML=av+'<div class="body"><div class="name">'+nm+'</div><div class="content">'+html+'</div>'+messageToolbar(m.role,idx)+'</div>';
+    div.innerHTML='<div class="body"><div class="content">'+html+'</div>'+messageToolbar(m.role,idx)+'</div>';
     inner.appendChild(div);
     decorateContent(div.querySelector('.content'));
     div.querySelectorAll('.msg-toolbar button').forEach(b=>{
@@ -1029,7 +1029,7 @@ function updateStreamingBot(html){
   let last=inner.querySelector('.msg.bot:last-child');
   if(!last||last.dataset.streaming!=='1'){
     last=document.createElement('div');last.className='msg bot';last.dataset.streaming='1';
-    last.innerHTML='<div class="avatar"><svg viewBox="0 0 100 100"><path d="M66 36 Q66 24 50 24 Q34 24 34 38 Q34 49 50 51 Q66 53 66 64 Q66 76 50 76 Q34 76 34 64" fill="none" stroke="#fff" stroke-width="12" stroke-linecap="round"/></svg></div><div class="body"><div class="name">Syon</div><div class="content"></div></div>';
+    last.innerHTML='<div class="body"><div class="content"></div></div>';
     inner.appendChild(last);
   }
   last.querySelector('.content').innerHTML=html+'<span class="cursor-blink"></span>';
@@ -1475,11 +1475,7 @@ function initAuthScreen(){
             logo_alignment:'left',
             width:340
           });
-        }catch(e){
-          console.warn('GSI init failed:',e);
-          holder.innerHTML='<button class="google-btn" id="gFallback">Lanjutkan dengan Google</button>';
-          $('#gFallback')?.addEventListener('click',()=>toast('Google Sign-In gagal dimuat. Coba refresh.',true));
-        }
+        }catch(e){console.warn('GSI init failed:',e);}
       } else {
         setTimeout(initG,300);
       }
@@ -1624,7 +1620,11 @@ function init(){
       }
     });
 
-    console.log('✅ Syon AI v11.2 initialized');
+    window.addEventListener('resize',()=>{
+      setTimeout(()=>scrollToBottom(),150);
+    });
+
+    console.log('✅ Syon AI v12 (ChatGPT/DeepSeek style) initialized');
   }catch(err){
     console.error('❌ Init error:',err);
     const t=$('#toast');
