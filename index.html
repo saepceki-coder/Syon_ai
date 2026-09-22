@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>Syon AI</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%230b5cff'/%3E%3Cpath d='M65 35 Q65 25 50 25 Q35 25 35 37 Q35 48 50 50 Q65 52 65 63 Q65 75 50 75 Q35 75 35 65' fill='none' stroke='%23fff' stroke-width='8' stroke-linecap='round'/%3E%3C/svg%3E" />
+<link rel="icon" href="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" />
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/dompurify@3/dist/purify.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/common.min.js"></script>
@@ -20,27 +20,40 @@ body{display:flex;height:100vh;height:100dvh}
 #loginScreen{position:fixed;inset:0;z-index:1000;display:flex;align-items:center;justify-content:center;padding:20px;background:var(--bg-0);overflow-y:auto}
 #loginScreen.hide{opacity:0;pointer-events:none;transition:opacity .35s}
 #loginScreen.hidden{display:none}
-.login-card{position:relative;width:100%;max-width:400px;background:var(--bg-1);border:1px solid var(--border);border-radius:24px;padding:36px 28px 26px;text-align:center;margin:auto;box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06)}
-.login-logo{width:56px;height:56px;margin:0 auto 16px;display:block}
+.login-card{position:relative;width:100%;max-width:400px;background:var(--bg-1);border:1px solid var(--border);border-radius:24px;padding:32px 24px 24px;text-align:center;margin:auto;box-shadow:0 1px 3px rgba(0,0,0,.04),0 8px 24px rgba(0,0,0,.06)}
+.login-logo{width:64px;height:64px;margin:0 auto 14px;display:block;border-radius:18px}
 .login-title{font-size:24px;font-weight:700;letter-spacing:-.5px;margin-bottom:4px}
 .login-title span{color:var(--text-1);font-weight:400}
-.login-sub{font-size:13px;color:var(--text-2);margin-bottom:24px}
-.auth-tabs{display:flex;gap:4px;background:var(--bg-2);border-radius:10px;padding:4px;margin-bottom:18px}
+.login-sub{font-size:13px;color:var(--text-2);margin-bottom:20px}
+.auth-tabs{display:flex;gap:4px;background:var(--bg-2);border-radius:10px;padding:4px;margin-bottom:16px}
 .auth-tab{flex:1;padding:9px;background:none;border:none;color:var(--text-1);font-weight:600;font-size:13.5px;cursor:pointer;border-radius:7px;font-family:inherit;transition:background .15s,color .15s}
 .auth-tab.active{background:var(--bg-0);color:var(--text-0);box-shadow:0 1px 2px rgba(0,0,0,.06)}
-.auth-panel{display:flex;flex-direction:column;gap:10px;text-align:left}
+.auth-panel{display:none;flex-direction:column;gap:10px;text-align:left}
+.auth-panel.active{display:flex}
 .auth-panel input{width:100%;padding:12px 14px;background:var(--bg-0);border:1px solid var(--border);border-radius:10px;color:var(--text-0);font-size:14px;font-family:inherit;outline:none;transition:border-color .15s}
 .auth-panel input:focus{border-color:var(--accent)}
-.auth-submit{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;margin-top:4px}
+.auth-submit{width:100%;padding:12px;background:var(--accent);color:#fff;border:none;border-radius:10px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;margin-top:4px;transition:opacity .15s}
 .auth-submit:hover{opacity:.92}
+.auth-submit:disabled{opacity:.5;cursor:wait}
+.auth-link{background:none;border:none;color:var(--accent);font-size:12.5px;cursor:pointer;margin-top:6px;text-align:center;padding:6px;font-family:inherit;text-decoration:none;transition:opacity .15s}
+.auth-link:hover{opacity:.7}
+.auth-link.muted{color:var(--text-2);font-size:12px;margin-top:2px}
 .auth-error{color:var(--danger);font-size:12.5px;margin-top:10px;min-height:16px;text-align:center}
-#googleBtnWrapper{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:12px;align-items:center}
+#verifyCode,#resetCode{text-align:center;font-size:22px;letter-spacing:8px;font-weight:600;font-family:var(--font-mono)}
+#resetCode{font-size:20px;letter-spacing:6px}
+.auth-icon{text-align:center;font-size:36px;margin-bottom:8px}
+.auth-title{text-align:center;font-size:14px;font-weight:600;color:var(--text-0);margin-bottom:4px}
+.auth-desc{text-align:center;font-size:12.5px;color:var(--text-2);line-height:1.5;margin-bottom:6px}
+.auth-desc b{color:var(--accent)}
+#googleBtnWrapper{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:8px;align-items:center}
 #googleBtnWrapper > div{width:100% !important}
-.guest-btn{width:100%;padding:11px;background:var(--bg-2);color:var(--text-0);border:1px solid transparent;border-radius:10px;font-weight:500;font-size:13.5px;cursor:pointer;font-family:inherit;margin-top:8px}
+.oauth-btn{width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:11px;background:var(--bg-0);color:var(--text-0);border:1px solid var(--border);border-radius:10px;font-weight:600;font-size:13.5px;cursor:pointer;font-family:inherit;transition:background .15s}
+.oauth-btn:hover{background:var(--bg-2)}
+.guest-btn{width:100%;padding:11px;background:var(--bg-2);color:var(--text-0);border:1px solid transparent;border-radius:10px;font-weight:500;font-size:13.5px;cursor:pointer;font-family:inherit;margin-top:10px;transition:background .15s}
 .guest-btn:hover{background:var(--bg-3)}
 .divider{display:flex;align-items:center;gap:12px;margin:14px 0 0;color:var(--text-2);font-size:11.5px}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
-.login-note{margin-top:16px;font-size:11px;color:var(--text-2);line-height:1.5}
+.login-note{margin-top:14px;font-size:11px;color:var(--text-2);line-height:1.5}
 
 #app{display:none;height:100vh;height:100dvh;width:100%}
 #app.show{display:flex}
@@ -82,8 +95,8 @@ body{display:flex;height:100vh;height:100dvh}
 
 .chat-scroll{flex:1;overflow-y:auto;padding:8px 16px 140px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 .chat-inner{max-width:740px;margin:0 auto}
-.welcome{text-align:center;padding:60px 20px 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
-.welcome .big-logo{width:56px;height:56px}
+.welcome{text-align:center;padding:50px 20px 20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+.welcome .big-logo{width:60px;height:60px;border-radius:18px}
 .welcome h1{font-size:26px;font-weight:600;letter-spacing:-.5px}
 .welcome h1 span{color:var(--text-1);font-weight:400}
 .welcome p{color:var(--text-2);max-width:420px;line-height:1.6;font-size:14px}
@@ -92,7 +105,6 @@ body{display:flex;height:100vh;height:100dvh}
 .suggestion:hover{border-color:var(--accent);background:var(--bg-0);transform:translateY(-1px)}
 .suggestion b{color:var(--text-0);display:block;margin-bottom:3px;font-size:13.5px;font-weight:600}
 
-/* ============ MESSAGES — ChatGPT/DeepSeek style ============ */
 .msg{display:flex;margin-bottom:28px;animation:fadeIn .18s ease;width:100%}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 .msg.user{justify-content:flex-end}
@@ -104,7 +116,6 @@ body{display:flex;height:100vh;height:100dvh}
 .msg.bot .content{display:block;line-height:1.75;font-size:15px;word-wrap:break-word;overflow-wrap:anywhere}
 .msg .avatar,.msg .name{display:none!important}
 .msg.user .msg-toolbar{justify-content:flex-end}
-
 .msg .content p{margin-bottom:14px}
 .msg .content p:last-child{margin-bottom:0}
 .msg .content strong{font-weight:650}
@@ -125,7 +136,6 @@ body{display:flex;height:100vh;height:100dvh}
 .msg .content pre code{background:none;border:none;padding:0;color:var(--text-0);font-size:13px}
 .msg.user .content code{background:rgba(0,0,0,.06);border-color:transparent}
 [data-theme="dark"] .msg.user .content code{background:rgba(255,255,255,.08)}
-
 .code-head{display:flex;justify-content:space-between;align-items:center;background:var(--bg-2);border:1px solid var(--border);border-bottom:none;padding:7px 12px;border-radius:10px 10px 0 0;font-size:11.5px;color:var(--text-2);font-family:var(--font-mono);margin-top:14px}
 .code-head + pre{margin-top:0!important;border-radius:0 0 10px 10px!important}
 .code-actions{display:flex;gap:4px;align-items:center}
@@ -228,6 +238,9 @@ textarea#input::placeholder{color:var(--text-2)}
 .diag-step.warn{color:var(--warn)}
 .btn-primary{width:100%;padding:11px;background:var(--accent);border:none;border-radius:9px;color:#fff;font-weight:600;cursor:pointer;font-size:13.5px;font-family:inherit;transition:opacity .15s}
 .btn-primary:hover{opacity:.92}
+.btn-primary:disabled{opacity:.5;cursor:wait}
+.btn-secondary{width:100%;padding:11px;background:var(--bg-2);border:1px solid var(--border);border-radius:9px;color:var(--text-0);font-weight:600;cursor:pointer;font-size:13.5px;font-family:inherit;margin-top:8px;transition:background .15s}
+.btn-secondary:hover{background:var(--bg-3)}
 .prompt-item{padding:11px 13px;background:var(--bg-1);border:1px solid var(--border);border-radius:9px;cursor:pointer;margin-bottom:6px;font-size:13px;color:var(--text-1);transition:background .12s,border-color .12s}
 .prompt-item:hover{background:var(--bg-0);color:var(--text-0);border-color:var(--accent)}
 .prompt-item b{color:var(--text-0);display:block;margin-bottom:2px;font-size:13.5px;font-weight:600}
@@ -271,28 +284,63 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <div id="loginScreen">
 <div class="login-card">
-<svg class="login-logo" viewBox="0 0 100 100"><rect x="2" y="2" width="96" height="96" rx="24" fill="#0b5cff"/><path d="M66 36 Q66 24 50 24 Q34 24 34 38 Q34 49 50 51 Q66 53 66 64 Q66 76 50 76 Q34 76 34 64" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/></svg>
+<img class="login-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon AI">
 <div class="login-title">Syon <span>AI</span></div>
 <div class="login-sub">Masuk atau daftar untuk memulai</div>
+
 <div class="auth-tabs">
 <button class="auth-tab active" data-tab="login">Masuk</button>
 <button class="auth-tab" data-tab="register">Daftar</button>
 </div>
-<div class="auth-panel" id="panelLogin">
+
+<div class="auth-panel active" id="panelLogin">
 <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
 <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
 <button class="auth-submit" id="loginSubmit">Masuk</button>
+<button type="button" class="auth-link" id="forgotPasswordBtn">Lupa password?</button>
 </div>
-<div class="auth-panel" id="panelRegister" style="display:none">
+
+<div class="auth-panel" id="panelRegister">
 <input type="text" id="regName" placeholder="Nama lengkap" autocomplete="name" maxlength="40">
 <input type="email" id="regEmail" placeholder="Email" autocomplete="email">
 <input type="password" id="regPassword" placeholder="Password (min 6 karakter)" autocomplete="new-password">
 <button class="auth-submit" id="regSubmit">Daftar</button>
 </div>
+
+<div class="auth-panel" id="panelVerify">
+<div class="auth-icon">📧</div>
+<div class="auth-title">Cek Email Kamu</div>
+<div class="auth-desc">Kode 6 digit udah dikirim ke<br><b id="verifyEmailDisplay">email</b></div>
+<input type="text" id="verifyCode" placeholder="000000" maxlength="6" inputmode="numeric" autocomplete="one-time-code">
+<button class="auth-submit" id="verifySubmit">Verifikasi</button>
+<button type="button" class="auth-link" id="resendOtpBtn">Kirim ulang kode</button>
+<button type="button" class="auth-link muted" id="backToLoginBtn">← Kembali ke Masuk</button>
+</div>
+
+<div class="auth-panel" id="panelForgot">
+<div class="auth-icon">🔑</div>
+<div class="auth-title">Lupa Password?</div>
+<div class="auth-desc">Masukkan email, kami kirim kode reset.</div>
+<input type="email" id="forgotEmail" placeholder="Email kamu" autocomplete="email">
+<button class="auth-submit" id="forgotSubmit">Kirim Kode Reset</button>
+<button type="button" class="auth-link muted" id="backFromForgotBtn">← Kembali ke Masuk</button>
+</div>
+
+<div class="auth-panel" id="panelReset">
+<div class="auth-icon">🔐</div>
+<div class="auth-title">Reset Password</div>
+<div class="auth-desc">Kode dikirim ke <b id="resetEmailDisplay">email</b></div>
+<input type="text" id="resetCode" placeholder="000000" maxlength="6" inputmode="numeric">
+<input type="password" id="resetPassword" placeholder="Password baru (min 6)" autocomplete="new-password">
+<button class="auth-submit" id="resetSubmit">Reset Password</button>
+<button type="button" class="auth-link muted" id="backFromResetBtn">← Kembali ke Masuk</button>
+</div>
+
 <div class="auth-error" id="authError"></div>
 <div class="divider">atau</div>
 <div id="googleBtnWrapper"></div>
-<div class="login-note">Akun & API key disimpan lokal di browser kamu.</div>
+<button class="guest-btn" id="guestLoginBtn">Masuk sebagai Tamu</button>
+<div class="login-note">Akun & API key disimpan aman di server.</div>
 </div>
 </div>
 
@@ -346,10 +394,11 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <div class="modal-backdrop" id="settingsModal">
 <div class="modal">
-<div class="modal-head"><h2>Pengaturan</h2><button class="close" id="closeSettings"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="modal-head"><h2>Pengaturan</h2><button class="close" id="closeSettings">×</button></div>
 <div class="modal-body">
 <div class="field"><label>Provider Aktif</label><select id="activeProvider"></select></div>
 <div class="field"><label>Model</label><select id="modelSelect"></select></div>
+<div class="field"><button class="btn-secondary" id="autoDetectBtn" style="margin-top:0">⚡ Deteksi Semua Model Otomatis</button><div class="help">Panggil API dari semua provider yang punya API key, gabungkan model-nya.</div></div>
 <div class="field"><label>Parameter</label>
 <div style="display:flex;gap:12px">
 <div style="flex:1"><label style="font-size:11px;color:var(--text-2);margin-bottom:4px;display:block">Temperature</label><input type="number" id="tempInput" min="0" max="2" step="0.1" value="0.7" /></div>
@@ -357,7 +406,7 @@ textarea#input::placeholder{color:var(--text-2)}
 </div>
 </div>
 <div class="field"><label>Provider & API Key</label><div class="provider-list" id="providerList"></div></div>
-<div class="field"><label>System Prompt</label><textarea id="systemPrompt" placeholder="Kamu adalah Syon..."></textarea></div>
+<div class="field"><label>System Prompt</label><textarea id="systemPrompt"></textarea></div>
 <button class="btn-primary" id="saveSettings">Simpan</button>
 </div>
 </div>
@@ -365,7 +414,7 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <div class="modal-backdrop" id="voiceModal">
 <div class="modal">
-<div class="modal-head"><h2>Suara AI</h2><button class="close" id="closeVoice"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="modal-head"><h2>Suara AI</h2><button class="close" id="closeVoice">×</button></div>
 <div class="modal-body">
 <div class="field"><label>Auto-Baca balasan</label>
 <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
@@ -389,14 +438,14 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <div class="modal-backdrop" id="profileModal">
 <div class="modal">
-<div class="modal-head"><h2>Akun</h2><button class="close" id="closeProfile"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="modal-head"><h2>Akun</h2><button class="close" id="closeProfile">×</button></div>
 <div class="modal-body"><div id="profileList"></div></div>
 </div>
 </div>
 
 <div class="modal-backdrop" id="modelModal">
 <div class="modal" style="max-width:420px">
-<div class="modal-head"><h2>Ganti Model</h2><button class="close" id="closeModel"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="modal-head"><h2>Ganti Model</h2><button class="close" id="closeModel">×</button></div>
 <div class="modal-body">
 <div class="field"><label>Provider</label><select id="quickProvider"></select></div>
 <div class="field"><label>Model</label><select id="quickModel"></select></div>
@@ -407,21 +456,21 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <div class="modal-backdrop" id="promptsModal">
 <div class="modal">
-<div class="modal-head"><h2>Prompt Library</h2><button class="close" id="closePrompts"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="modal-head"><h2>Prompt Library</h2><button class="close" id="closePrompts">×</button></div>
 <div class="modal-body" id="promptsList"></div>
 </div>
 </div>
 
 <div class="modal-backdrop" id="shortcutsModal">
 <div class="modal" style="max-width:420px">
-<div class="modal-head"><h2>Keyboard Shortcuts</h2><button class="close" id="closeShortcuts"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="modal-head"><h2>Keyboard Shortcuts</h2><button class="close" id="closeShortcuts">×</button></div>
 <div class="modal-body" id="shortcutsList"></div>
 </div>
 </div>
 
 <div class="modal-backdrop" id="artifactModal">
 <div class="modal" style="max-width:900px;width:95%;height:90vh">
-<div class="modal-head"><h2>Preview HTML</h2><button class="close" id="closeArtifact"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="modal-head"><h2>Preview HTML</h2><button class="close" id="closeArtifact">×</button></div>
 <div style="flex:1;overflow:hidden;background:#fff"><iframe id="artifactFrame" style="width:100%;height:100%;border:none"></iframe></div>
 </div>
 </div>
@@ -430,50 +479,47 @@ textarea#input::placeholder{color:var(--text-2)}
 
 <script>
 /* ============================================================
-   SYON AI v12 — ChatGPT/DeepSeek Style + Syon Bot v2
+   SYON AI v13 — Backend Auth (Vercel) + OTP + Forgot + Auto-Detect
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
+const API_BASE = '/api/auth';
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
   {q:['siapa kamu','kamu siapa','nama kamu','kenalan'],a:'Aku **Syon AI** 🤖 — asisten pribadi kamu. Bisa ngobrol, hitung matematika, kasih contoh kode, dan jelasin konsep dasar.'},
-  {q:['apa kabar','kabar kamu','gimana kabar'],a:'Aku selalu siap bantu! 😄 Kamu gimana? Ada yang bisa aku bantu hari ini?'},
-  {q:['terima kasih','makasih','thanks','thank you','thx'],a:'Sama-sama! 🙌 Kalau ada yang mau ditanya lagi, bilang aja ya.'},
-  {q:['bye','dadah','sampai jumpa','selamat tinggal'],a:'Dadah! 👋 Semoga harimu menyenangkan!'},
-  {q:['apa itu ai','pengertian ai','apa itu artificial intelligence'],a:'**AI (Artificial Intelligence)** atau kecerdasan buatan adalah program komputer yang bisa melakukan tugas yang biasanya butuh kecerdasan manusia — kayak mengenali gambar, memahami bahasa, atau ambil keputusan. 🧠\n\nContoh yang pakai AI:\n- Chatbot (kayak aku 😄)\n- Rekomendasi YouTube/Netflix\n- Google Translate\n- Mobil otonom'},
-  {q:['apa itu coding','pengertian coding','apa itu programming'],a:'**Coding** = nulis instruksi ke komputer biar komputer ngelakuin sesuatu. 💻\n\nBahasa populer:\n- **Python** → pemula, AI, data\n- **JavaScript** → web\n- **Java** → Android, enterprise\n- **C++** → game, embedded\n\nMau aku kasih contoh kode pemula? Coba ketik: `contoh python` atau `contoh javascript`.'},
-  {q:['apa itu python','pengertian python'],a:'**Python** adalah bahasa pemrograman populer. Sintaksnya gampang dibaca, cocok untuk pemula, AI, dan data science. 🐍\n\n```python\nnama = "Dunia"\nprint(f"Halo, {nama}!")\n```'},
-  {q:['apa itu javascript','pengertian javascript'],a:'**JavaScript** = bahasa pemrograman yang jalan di browser. Dipakai buat bikin web interaktif. Sekarang juga jalan di server (Node.js). ⚡\n\n```javascript\nconst nama = "Dunia";\nconsole.log(`Halo, ${nama}!`);\n```'},
-  {q:['apa itu html','pengertian html'],a:'**HTML** = bahasa struktur halaman web. Ibaratnya kerangka rumah. 🏠\n\n```html\n<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Halo Dunia</h1>\n  </body>\n</html>\n```\n\nCoba tombol **Preview** di atas kode itu. 😉'},
-  {q:['apa itu css','pengertian css'],a:'**CSS** = bahasa buat ngatur tampilan web (warna, ukuran, layout). Kalau HTML itu kerangka, CSS itu cat & dekorasinya. 🎨'},
-  {q:['apa itu api'],a:'**API (Application Programming Interface)** = jembatan dua program biar bisa saling ngobrol. 🔌\n\nContoh: aplikasi cuaca manggil API buat ambil data suhu di kotamu.'},
-  {q:['apa itu database'],a:'**Database** = tempat nyimpen data terstruktur. 📦\n\nPopuler:\n- **MySQL / PostgreSQL** → relasional (SQL)\n- **MongoDB** → dokumen (NoSQL)\n- **Redis** → cache cepat'},
-  {q:['ibu kota indonesia','ibukota indonesia'],a:'Ibu kota Indonesia saat ini **Jakarta**. 🏙️ Sedangkan **Nusantara (IKN)** di Kalimantan Timur sedang dibangun jadi ibu kota baru.'},
-  {q:['siapa presiden indonesia','presiden indonesia'],a:'Presiden Indonesia (2024–2029): **Prabowo Subianto**, wakil **Gibran Rakabuming Raka**. 🇮🇩'},
-  {q:['apa itu pancasila'],a:'**Pancasila** = dasar negara Indonesia, 5 sila:\n\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan dalam permusyawaratan/perwakilan\n5. Keadilan sosial bagi seluruh rakyat Indonesia'},
-  {q:['berapa jumlah pulau indonesia'],a:'Indonesia punya sekitar **17.000 pulau** 🏝️, dengan ~6.000 yang berpenghuni.'},
-  {q:['apa itu gravitasi'],a:'**Gravitasi** = gaya tarik antar objek bermassa. Bumi narik kita ke bawah dengan gaya gravitasi. 🌍'},
+  {q:['apa kabar','kabar kamu','gimana kabar'],a:'Aku selalu siap bantu! 😄 Kamu gimana?'},
+  {q:['terima kasih','makasih','thanks','thank you','thx'],a:'Sama-sama! 🙌'},
+  {q:['bye','dadah','sampai jumpa'],a:'Dadah! 👋 Semoga harimu menyenangkan!'},
+  {q:['apa itu ai','pengertian ai'],a:'**AI (Artificial Intelligence)** atau kecerdasan buatan adalah program komputer yang bisa melakukan tugas yang biasanya butuh kecerdasan manusia. 🧠\n\nContoh:\n- Chatbot (kayak aku 😄)\n- Rekomendasi YouTube/Netflix\n- Google Translate'},
+  {q:['apa itu coding','pengertian coding'],a:'**Coding** = nulis instruksi ke komputer biar komputer ngelakuin sesuatu. 💻\n\nBahasa populer:\n- **Python** → pemula, AI, data\n- **JavaScript** → web\n- **Java** → Android\n- **C++** → game'},
+  {q:['apa itu python'],a:'**Python** adalah bahasa pemrograman populer. Sintaksnya gampang dibaca. 🐍\n\n```python\nnama = "Dunia"\nprint(f"Halo, {nama}!")\n```'},
+  {q:['apa itu javascript'],a:'**JavaScript** = bahasa pemrograman yang jalan di browser. ⚡\n\n```javascript\nconst nama = "Dunia";\nconsole.log(`Halo, ${nama}!`);\n```'},
+  {q:['apa itu html'],a:'**HTML** = bahasa struktur halaman web. 🏠\n\n```html\n<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Halo Dunia</h1>\n  </body>\n</html>\n```\n\nCoba tombol **Preview** di atas kode itu. 😉'},
+  {q:['apa itu css'],a:'**CSS** = bahasa buat ngatur tampilan web. Kalau HTML itu kerangka, CSS itu cat & dekorasinya. 🎨'},
+  {q:['apa itu api'],a:'**API** = jembatan dua program biar bisa saling ngobrol. 🔌'},
+  {q:['ibu kota indonesia'],a:'Ibu kota Indonesia saat ini **Jakarta**. 🏙️ Sedangkan **Nusantara (IKN)** di Kalimantan Timur sedang dibangun.'},
+  {q:['siapa presiden indonesia'],a:'Presiden Indonesia (2024–2029): **Prabowo Subianto**, wakil **Gibran Rakabuming Raka**. 🇮🇩'},
+  {q:['apa itu pancasila'],a:'**Pancasila** = dasar negara Indonesia:\n\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan\n5. Keadilan sosial'},
+  {q:['apa itu gravitasi'],a:'**Gravitasi** = gaya tarik antar objek bermassa. 🌍'},
   {q:['apa itu matahari'],a:'**Matahari** = bintang di pusat Tata Surya. Jaraknya ~150 juta km dari Bumi. ☀️'},
-  {q:['apa itu bulan'],a:'**Bulan** = satelit alami Bumi. Ngitari Bumi setiap ~27 hari. 🌙'},
-  {q:['apa itu bumi'],a:'**Bumi** = planet ketiga dari Matahari. Satu-satunya planet yang diketahui punya kehidupan. 🌎'},
-  {q:['cara belajar coding','tips belajar coding','gimana belajar coding'],a:'Tips belajar coding untuk pemula 🚀\n\n1. **Pilih 1 bahasa dulu** — Python atau JavaScript\n2. **Latihan tiap hari** — 30 menit aja, yang penting konsisten\n3. **Bikin project kecil** — kalkulator, todo list, dll\n4. **Baca kode orang lain** — GitHub, Stack Overflow\n5. **Jangan takut error** — error itu guru terbaik\n\nMau aku kasih contoh kode pemula? Ketik: `contoh python`'},
-  {q:['contoh python','contoh coding python'],a:'Contoh Python dasar 🐍\n\n```python\n# Menyapa user\nnama = input("Siapa nama kamu? ")\nprint(f"Halo, {nama}!")\n\n# Loop angka 1-5\nfor i in range(1, 6):\n    print(f"Angka ke-{i}")\n```'},
-  {q:['contoh javascript','contoh coding javascript'],a:'Contoh JavaScript dasar ⚡\n\n```javascript\n// Variabel\nconst nama = "Budi";\nlet umur = 25;\n\n// Fungsi\nfunction sapa(nama) {\n  return `Halo, ${nama}!`;\n}\n\nconsole.log(sapa("Dunia"));\n```'},
-  {q:['contoh html','contoh web html'],a:'Contoh HTML + CSS simpel 👇\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: sans-serif; padding: 40px; text-align: center; background: #f0f0f0; }\n    h1 { color: #0b5cff; }\n    button { padding: 10px 20px; border: none; background: #0b5cff; color: white; border-radius: 8px; cursor: pointer; }\n  </style>\n</head>\n<body>\n  <h1>Halo Dunia! 👋</h1>\n  <button onclick="alert(\'Hai!\')">Klik Aku</button>\n</body>\n</html>\n```\n\nTekan **Preview** di atas kode buat lihat hasilnya! ✨'},
-  {q:['apa itu loop','apa itu perulangan'],a:'**Loop / perulangan** = cara ngejalanin kode berkali-kali tanpa nulis ulang. 🔁\n\nContoh Python:\n```python\nfor i in range(5):\n    print(i)  # 0,1,2,3,4\n```'},
-  {q:['apa itu function','apa itu fungsi'],a:'**Function / fungsi** = blok kode yang bisa dipanggil berulang. 📦\n\n```javascript\nfunction tambah(a, b) {\n  return a + b;\n}\nconsole.log(tambah(3, 5)); // 8\n```'},
+  {q:['cara belajar coding','tips belajar coding'],a:'Tips belajar coding 🚀\n\n1. **Pilih 1 bahasa dulu** — Python atau JavaScript\n2. **Latihan tiap hari** — 30 menit aja\n3. **Bikin project kecil**\n4. **Baca kode orang lain**\n5. **Jangan takut error**'},
+  {q:['contoh python'],a:'Contoh Python 🐍\n\n```python\nnama = input("Nama kamu? ")\nprint(f"Halo, {nama}!")\n\nfor i in range(1, 6):\n    print(f"Angka ke-{i}")\n```'},
+  {q:['contoh javascript'],a:'Contoh JavaScript ⚡\n\n```javascript\nconst nama = "Budi";\nfunction sapa(nama) {\n  return `Halo, ${nama}!`;\n}\nconsole.log(sapa("Dunia"));\n```'},
+  {q:['contoh html'],a:'Contoh HTML + CSS 👇\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: sans-serif; padding: 40px; text-align: center; background: #f0f0f0; }\n    h1 { color: #0b5cff; }\n    button { padding: 10px 20px; border: none; background: #0b5cff; color: white; border-radius: 8px; cursor: pointer; }\n  </style>\n</head>\n<body>\n  <h1>Halo Dunia! 👋</h1>\n  <button onclick="alert(\'Hai!\')">Klik Aku</button>\n</body>\n</html>\n```\n\nTekan **Preview**! ✨'},
+  {q:['apa itu loop'],a:'**Loop** = cara ngejalanin kode berkali-kali. 🔁\n\n```python\nfor i in range(5):\n    print(i)\n```'},
+  {q:['apa itu function'],a:'**Function** = blok kode yang bisa dipanggil berulang. 📦\n\n```javascript\nfunction tambah(a, b) { return a + b; }\nconsole.log(tambah(3, 5)); // 8\n```'},
 ];
 
 const PROMPT_LIBRARY = [
   {t:'Jelaskan Simpel',d:'Analogi sederhana',p:'Jelaskan [TOPIK] dengan analogi sederhana seperti untuk anak SMA.'},
   {t:'Ringkas Artikel',d:'Ringkas 5 poin',p:'Ringkas teks berikut jadi 5 poin utama:\n\n[TEMPEL TEKS]'},
   {t:'Buat Kode',d:'Fungsi + komentar',p:'Buat fungsi JavaScript untuk [FUNGSI] dengan komentar penjelas.'},
-  {t:'Debug Kode',d:'Cari bug',p:'Cari bug di kode berikut dan jelaskan penyebabnya:\n\n```\n[TEMPEL KODE]\n```'},
+  {t:'Debug Kode',d:'Cari bug',p:'Cari bug di kode berikut:\n\n```\n[TEMPEL KODE]\n```'},
   {t:'Buat HTML',d:'Halaman web',p:'Buat halaman HTML dengan CSS untuk [DESKRIPSI]. Output hanya kode dalam 1 blok ```html.'},
-  {t:'Terjemahkan',d:'Ke bahasa Inggris',p:'Terjemahkan teks berikut ke bahasa Inggris dengan gaya natural:\n\n[TEMPEL TEKS]'},
-  {t:'Ide Konten',d:'10 ide konten',p:'Kasih 10 ide konten [TOPIK] untuk media sosial. Setiap ide 1 kalimat.'},
-  {t:'Roadmap',d:'Belajar 30 hari',p:'Buat roadmap belajar [SKILL] untuk pemula selama 30 hari. Per hari 1 jam.'},
+  {t:'Terjemahkan',d:'Ke bahasa Inggris',p:'Terjemahkan teks berikut ke bahasa Inggris:\n\n[TEMPEL TEKS]'},
+  {t:'Ide Konten',d:'10 ide konten',p:'Kasih 10 ide konten [TOPIK] untuk media sosial.'},
+  {t:'Roadmap',d:'Belajar 30 hari',p:'Buat roadmap belajar [SKILL] untuk pemula selama 30 hari.'},
 ];
 
 const SHORTCUTS = [
@@ -490,69 +536,71 @@ const SHORTCUTS = [
 const COLORS = ['#ef4444','#f59e0b','#10a37f','#0b5cff','#8b5cf6','#ec4899','#14b8a6','#f97316','#06b6d4','#84cc16','#a855f7','#6366f1'];
 
 const PROVIDERS = {
-  syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2']},
-  groq:{name:'Groq',type:'openai',url:'https://api.groq.com/openai/v1/chat/completions',keyUrl:'https://console.groq.com/keys',free:true,vision:false,models:['llama-3.3-70b-versatile','llama-3.1-8b-instant','gemma2-9b-it']},
-  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-pro','gemini-1.5-flash-8b']},
-  openrouter:{name:'OpenRouter',type:'openai',url:'https://openrouter.ai/api/v1/chat/completions',keyUrl:'https://openrouter.ai/keys',free:true,vision:true,models:['meta-llama/llama-3.1-8b-instruct:free','qwen/qwen-2.5-72b-instruct:free']},
-  openai:{name:'OpenAI',type:'openai',url:'https://api.openai.com/v1/chat/completions',keyUrl:'https://platform.openai.com/api-keys',free:false,vision:true,models:['gpt-4o-mini','gpt-4o','gpt-3.5-turbo']},
-  anthropic:{name:'Anthropic Claude',type:'anthropic',url:'https://api.anthropic.com/v1/messages',keyUrl:'https://console.anthropic.com/settings/keys',free:false,vision:true,models:['claude-3-5-sonnet-20241022','claude-3-5-haiku-20241022']},
-  custom:{name:'Custom (OpenAI-compatible)',type:'openai',url:'',keyUrl:'',free:null,vision:false,models:[]}
+  syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2'],modelsEndpoint:null},
+  groq:{name:'Groq',type:'openai',url:'https://api.groq.com/openai/v1/chat/completions',keyUrl:'https://console.groq.com/keys',free:true,vision:false,models:['llama-3.3-70b-versatile','llama-3.1-8b-instant','gemma2-9b-it'],modelsEndpoint:'https://api.groq.com/openai/v1/models',modelsParser:'openai'},
+  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-pro','gemini-1.5-flash-8b'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini'},
+  openrouter:{name:'OpenRouter',type:'openai',url:'https://openrouter.ai/api/v1/chat/completions',keyUrl:'https://openrouter.ai/keys',free:true,vision:true,models:['meta-llama/llama-3.1-8b-instruct:free','qwen/qwen-2.5-72b-instruct:free'],modelsEndpoint:'https://openrouter.ai/api/v1/models',modelsParser:'openrouter'},
+  openai:{name:'OpenAI',type:'openai',url:'https://api.openai.com/v1/chat/completions',keyUrl:'https://platform.openai.com/api-keys',free:false,vision:true,models:['gpt-4o-mini','gpt-4o','gpt-3.5-turbo'],modelsEndpoint:'https://api.openai.com/v1/models',modelsParser:'openai'},
+  anthropic:{name:'Anthropic Claude',type:'anthropic',url:'https://api.anthropic.com/v1/messages',keyUrl:'https://console.anthropic.com/settings/keys',free:false,vision:true,models:['claude-3-5-sonnet-20241022','claude-3-5-haiku-20241022'],modelsEndpoint:null,modelsParser:null},
+  custom:{name:'Custom (OpenAI-compatible)',type:'openai',url:'',keyUrl:'',free:null,vision:false,models:[],modelsEndpoint:null,modelsParser:null}
 };
 
 const state = {
-  session:null, profiles:[], activeProfileId:null,
+  token:null,
+  user:null,
+  isGuest:false,
+  activeProfileId:null,
   theme:'dark',
   voice:{enabled:false,voiceURI:'',rate:1,pitch:1,volume:1},
-  chatsByProfile:{}, activeChatByProfile:{}, settingsByProfile:{},
-  attachments:[], generating:false, searchQuery:''
+  chatsByUser:{},
+  activeChatByUser:{},
+  settingsByUser:{},
+  attachments:[], generating:false, searchQuery:'',
+  pendingEmail:null,
+  pendingResetEmail:null
 };
 
-const LS='syon_v12';
+const LS='syon_v13';
 
 function defaultSettings(){
   return {
     provider:'syonbot',model:'syon-v2',
     keys:{},keyStatus:{},fetchedModels:{},
-    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca: **bold** untuk penekanan, list untuk daftar, code block untuk kode (pakai ```html kalau bikin halaman web). Boleh pakai emoji secukupnya biar lebih hidup tapi jangan berlebihan. Jujur kalau tidak tahu — jangan mengarang. Jawab ringkas tapi lengkap.',
+    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca: **bold** untuk penekanan, list untuk daftar, code block untuk kode (pakai ```html kalau bikin halaman web). Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap.',
     customUrl:'',customModels:'',
     thinking:false,temperature:0.7,maxTokens:2048
   };
 }
 
 function loadAll(){
-  try{const d=localStorage.getItem(LS);if(d)Object.assign(state,JSON.parse(d));}catch(e){}
-  if(!state.profiles)state.profiles=[];
-  if(!state.chatsByProfile)state.chatsByProfile={};
-  if(!state.settingsByProfile)state.settingsByProfile={};
-  if(!state.activeChatByProfile)state.activeChatByProfile={};
-  if(state.session&&state.session.userId){
-    const u=state.profiles.find(p=>p.id===state.session.userId);
-    if(u)state.activeProfileId=u.id;
-    else{state.session=null;state.activeProfileId=null;}
-  }
+  try{
+    const raw=localStorage.getItem(LS);
+    if(raw){
+      const d=JSON.parse(raw);
+      if(d.token)state.token=d.token;
+      if(d.user)state.user=d.user;
+      if(d.isGuest)state.isGuest=d.isGuest;
+      if(d.activeProfileId)state.activeProfileId=d.activeProfileId;
+      if(d.theme)state.theme=d.theme;
+      if(d.voice)state.voice=d.voice;
+      if(d.chatsByUser)state.chatsByUser=d.chatsByUser;
+      if(d.activeChatByUser)state.activeChatByUser=d.activeChatByUser;
+      if(d.settingsByUser)state.settingsByUser=d.settingsByUser;
+    }
+  }catch(e){}
+  if(!state.chatsByUser)state.chatsByUser={};
+  if(!state.activeChatByUser)state.activeChatByUser={};
+  if(!state.settingsByUser)state.settingsByUser={};
 }
-function saveAll(){try{localStorage.setItem(LS,JSON.stringify(state));}catch(e){}}
-
-async function hashPassword(password,salt){
-  const enc=new TextEncoder();
-  const buf=await crypto.subtle.digest('SHA-256',enc.encode(salt+':'+password));
-  return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-function makeSalt(){
-  const arr=new Uint8Array(16);crypto.getRandomValues(arr);
-  return Array.from(arr).map(b=>b.toString(16).padStart(2,'0')).join('');
-}
-function logout(){
-  if(!confirm('Keluar dari akun ini?'))return;
-  if(state.session&&state.session.isGuest){
-    const id=state.session.userId;
-    state.profiles=state.profiles.filter(p=>p.id!==id);
-    delete state.settingsByProfile[id];
-    delete state.chatsByProfile[id];
-    delete state.activeChatByProfile[id];
-  }
-  state.session=null;state.activeProfileId=null;
-  saveAll();location.reload();
+function saveAll(){
+  try{
+    localStorage.setItem(LS,JSON.stringify({
+      token:state.token,user:state.user,isGuest:state.isGuest,
+      activeProfileId:state.activeProfileId,theme:state.theme,voice:state.voice,
+      chatsByUser:state.chatsByUser,activeChatByUser:state.activeChatByUser,
+      settingsByUser:state.settingsByUser
+    }));
+  }catch(e){}
 }
 
 const $=s=>document.querySelector(s);
@@ -560,11 +608,19 @@ const $$=s=>document.querySelectorAll(s);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 
-function currentProfile(){return state.profiles.find(p=>p.id===state.activeProfileId)||null;}
-function currentSettings(){return state.settingsByProfile[state.activeProfileId]||(state.settingsByProfile[state.activeProfileId]=defaultSettings());}
-function currentChats(){return state.chatsByProfile[state.activeProfileId]||(state.chatsByProfile[state.activeProfileId]=[]);}
-function currentChatId(){return state.activeChatByProfile[state.activeProfileId];}
-function setCurrentChatId(id){state.activeChatByProfile[state.activeProfileId]=id;}
+function getUserId(){
+  if(state.isGuest)return state.activeProfileId||'guest';
+  if(state.user&&state.user.id)return 'u'+state.user.id;
+  return 'anon';
+}
+function currentProfile(){
+  if(state.isGuest)return{id:state.activeProfileId,name:state.user?.name||'Tamu',email:null,type:'guest'};
+  return state.user||null;
+}
+function currentSettings(){const id=getUserId();return state.settingsByUser[id]||(state.settingsByUser[id]=defaultSettings());}
+function currentChats(){const id=getUserId();return state.chatsByUser[id]||(state.chatsByUser[id]=[]);}
+function currentChatId(){return state.activeChatByUser[getUserId()];}
+function setCurrentChatId(id){state.activeChatByUser[getUserId()]=id;}
 function getActiveChat(){return currentChats().find(c=>c.id===currentChatId());}
 
 function toast(msg,isErr){
@@ -574,8 +630,29 @@ function toast(msg,isErr){
 }
 function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,200)+'px';}
 
-marked.setOptions({breaks:true,gfm:true});
+/* ============ BACKEND API ============ */
+async function apiCall(action,body={},useAuth=false){
+  const headers={'Content-Type':'application/json'};
+  if(useAuth&&state.token)headers['Authorization']='Bearer '+state.token;
+  const url=API_BASE+'?action='+encodeURIComponent(action);
+  const res=await fetch(url,{method:'POST',headers,body:JSON.stringify(body)});
+  let data={};
+  try{data=await res.json();}catch(e){}
+  if(!res.ok)throw new Error(data.error||('HTTP '+res.status));
+  return data;
+}
+async function apiMe(){
+  if(!state.token)return null;
+  try{
+    const res=await fetch(API_BASE+'?action=me',{headers:{'Authorization':'Bearer '+state.token}});
+    if(!res.ok)return null;
+    const data=await res.json();
+    return data.user||null;
+  }catch(e){return null;}
+}
 
+/* ============ MARKDOWN ============ */
+marked.setOptions({breaks:true,gfm:true});
 function renderMarkdown(text){
   let thinking=null,main=text;
   const m=text.match(/<thinking>([\s\S]*?)<\/thinking>/i);
@@ -585,13 +662,11 @@ function renderMarkdown(text){
   html+=DOMPurify.sanitize(marked.parse(main||''));
   return html;
 }
-
 function openArtifact(htmlCode){
   const frame=$('#artifactFrame');
   if(frame)frame.srcdoc=htmlCode;
   $('#artifactModal')?.classList.add('show');
 }
-
 function decorateContent(el){
   el.querySelectorAll('pre').forEach(pre=>{
     if(pre.previousElementSibling&&pre.previousElementSibling.classList.contains('code-head'))return;
@@ -599,10 +674,9 @@ function decorateContent(el){
     const lang=(codeEl?.className||'').replace('language-','').replace('hljs','').trim()||'code';
     const codeText=codeEl?.textContent||'';
     const lines=codeText.split('\n').length;
-    const isHtml = lang==='html' || /<!DOCTYPE html|<html|<body|<div class=/i.test(codeText.slice(0,300));
+    const isHtml=lang==='html'||/<!DOCTYPE html|<html|<body|<div class=/i.test(codeText.slice(0,300));
     const head=document.createElement('div');head.className='code-head';
-    const langLabel=document.createElement('span');langLabel.textContent=lang;
-    head.appendChild(langLabel);
+    head.innerHTML='<span>'+esc(lang)+'</span>';
     const actions=document.createElement('div');actions.className='code-actions';
     if(isHtml){
       const pv=document.createElement('button');pv.className='code-btn primary';
@@ -618,14 +692,12 @@ function decorateContent(el){
     if(lines>18){
       const wrapper=document.createElement('div');
       wrapper.style.cssText='position:relative;margin-bottom:14px';
-      pre.parentNode.insertBefore(wrapper,pre);
-      wrapper.appendChild(pre);
+      pre.parentNode.insertBefore(wrapper,pre);wrapper.appendChild(pre);
       pre.style.maxHeight='380px';pre.style.overflow='hidden';pre.style.position='relative';
       const gradient=document.createElement('div');
       gradient.style.cssText='position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(to top,var(--bg-1),transparent);pointer-events:none;border-radius:0 0 10px 10px';
       wrapper.appendChild(gradient);
-      const ex=document.createElement('button');
-      ex.className='code-btn';
+      const ex=document.createElement('button');ex.className='code-btn';
       ex.style.cssText='position:absolute;bottom:10px;left:50%;transform:translateX(-50%);background:var(--bg-2);border:1px solid var(--border);padding:6px 14px;border-radius:99px;z-index:2;font-size:11.5px';
       ex.textContent='Tampilkan semua ('+lines+' baris)';
       ex.addEventListener('click',()=>{pre.style.maxHeight='none';pre.style.overflow='visible';gradient.remove();ex.remove();});
@@ -633,13 +705,12 @@ function decorateContent(el){
     }
   });
 }
-
 function stripMarkdown(s){
   return s.replace(/<thinking>[\s\S]*?<\/thinking>/gi,'').replace(/```[\s\S]*?```/g,' ').replace(/`([^`]+)`/g,'$1').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/__([^_]+)__/g,'$1').replace(/_([^_]+)_/g,'$1').replace(/^\s*[-*+]\s+/gm,'').replace(/^\s*\d+\.\s+/gm,'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/^#+\s+/gm,'').replace(/\n{2,}/g,'\n').trim();
 }
 
+/* ============ SYON BOT ============ */
 function normalize(s){return String(s).toLowerCase().replace(/[^\w\s+*\-/^%().=]/g,' ').replace(/\s+/g,' ').trim();}
-
 function tryMath(input){
   let s=input.toLowerCase().replace(/^(berapa|hitung|hasil dari|hasil|tolong hitung|what is|calculate)\s*/i,'').replace(/[?]/g,'').replace(/[x×]/g,'*').replace(/[:÷]/g,'/').replace(/,/g,'.').trim();
   if(!/\d/.test(s))return null;
@@ -649,30 +720,23 @@ function tryMath(input){
   try{const r=Function('"use strict"; return ('+expr+')')();if(typeof r==='number'&&isFinite(r)){const f=Number.isInteger(r)?r.toString():parseFloat(r.toFixed(10)).toString();return{expr:s,result:f};}}catch(e){return null;}
   return null;
 }
-
 function findInKB(query){
   const nq=normalize(query);if(!nq)return null;
   for(const item of KB)for(const q of item.q)if(normalize(q)===nq)return item.a;
   let best=null,bestLen=0;
-  for(const item of KB)for(const q of item.q){
-    const nk=normalize(q);
-    if(nk.length<3)continue;
-    if(nq.includes(nk)||nk.includes(nq)){
-      if(nk.length>bestLen){best=item.a;bestLen=nk.length;}
-    }
-  }
+  for(const item of KB)for(const q of item.q){const nk=normalize(q);if(nk.length<3)continue;if(nq.includes(nk)||nk.includes(nq)){if(nk.length>bestLen){best=item.a;bestLen=nk.length;}}}
   return best;
 }
-
 function syonBotReply(t){
   if(!t.trim())return 'Ketik sesuatu dong. 😊';
   const math=tryMath(t);
   if(math)return '**'+math.expr+' = '+math.result+'**\n\n_✓ Kalkulator deterministik — dijamin akurat_ ✅';
   const kb=findInKB(t);
   if(kb)return kb;
-  return 'Hmm, aku belum punya jawaban itu di database lokal. 🤔\n\n**Yang aku kuasai:**\n\n- 🧮 **Matematika** — coba `12*8+5` atau `2^10`\n- 💻 **Coding dasar** — coba `contoh python`, `contoh html`\n- 💡 **Pengetahuan umum** — coba `apa itu ai`, `ibu kota indonesia`\n\n**Mau jawaban lebih luas?** Buka ⚙️ **Setelan** → ganti ke **Groq** atau **Gemini**. Keduanya gratis dan bisa jawab hampir semua pertanyaan! ✨';
+  return 'Hmm, aku belum punya jawaban itu di database lokal. 🤔\n\n**Yang aku kuasai:**\n\n- 🧮 **Matematika** — coba `12*8+5` atau `2^10`\n- 💻 **Coding dasar** — coba `contoh python`, `contoh html`\n- 💡 **Pengetahuan umum** — coba `apa itu ai`\n\n**Mau jawaban lebih luas?** Buka ⚙️ **Setelan** → tambah API key **Groq** atau **Gemini**.';
 }
 
+/* ============ VOICE ============ */
 let voicesList=[];
 function loadVoices(){try{voicesList=speechSynthesis.getVoices()||[];}catch(e){voicesList=[];}}
 function populateVoiceSelect(){
@@ -703,6 +767,7 @@ function speak(text,opts={}){
 }
 function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();}
 
+/* ============ API CHAT ============ */
 function buildMessages(chat,forVision){
   const s=currentSettings();const msgs=[];
   if(s.systemPrompt)msgs.push({role:'system',content:s.systemPrompt});
@@ -778,14 +843,14 @@ async function streamChat(onDelta,signal){
     for(let i=0;i<reply.length;i++){if(signal&&signal.aborted)break;onDelta(reply[i]);if(i%3===0)await new Promise(r=>setTimeout(r,6));}
     return;
   }
-  if(state.session?.isGuest)throw new Error('Mode Tamu hanya bisa pakai Syon Bot. Daftar akun untuk buka provider lain.');
+  if(state.isGuest)throw new Error('Mode Tamu hanya bisa pakai Syon Bot. Daftar akun untuk buka provider lain.');
   const key=s.keys[p];
   if(!key&&p!=='custom')throw new Error('API key belum diisi untuk '+cfg.name);
   if(p==='custom'&&!s.customUrl)throw new Error('URL endpoint custom belum diisi');
   const chat=getActiveChat();
   const messages=buildMessages(chat,cfg.vision);
   if(s.thinking){
-    if(messages[0]?.role==='system')messages[0].content+='\n\nSEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>, lalu jawaban final di luar tag.';
+    if(messages[0]?.role==='system')messages[0].content+='\n\nSEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>.';
     else messages.unshift({role:'system',content:'SEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>.'});
   }
   if(cfg.type==='gemini')return callGemini(key,s.model,messages,onDelta,signal);
@@ -794,97 +859,57 @@ async function streamChat(onDelta,signal){
   return callOpenAICompatible(providerCfg,key||'none',s.model,messages,onDelta,signal);
 }
 
-function diagStep(c,status,text){
-  const div=document.createElement('div');div.className='diag-step '+status;
-  const icons={ok:'✓',bad:'✗',info:'→',warn:'!'};
-  div.innerHTML='<span class="icon">'+(icons[status]||'·')+'</span><span>'+esc(text)+'</span>';
-  c.appendChild(div);c.scrollTop=c.scrollHeight;
-}
-async function fetchGeminiModels(apiKey){
-  const r=await fetch('https://generativelanguage.googleapis.com/v1beta/models',{headers:{'x-goog-api-key':apiKey}});
-  if(!r.ok){const t=await r.text();throw new Error('ListModels gagal: HTTP '+r.status+' — '+t.slice(0,200));}
-  const j=await r.json();
-  return (j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/',''));
-}
-async function fetchGroqModels(apiKey){
-  const r=await fetch('https://api.groq.com/openai/v1/models',{headers:{'Authorization':'Bearer '+apiKey}});
-  if(!r.ok){const t=await r.text();throw new Error('ListModels gagal: HTTP '+r.status+' — '+t.slice(0,200));}
-  const j=await r.json();
-  return (j.data||[]).map(m=>m.id).sort();
-}
-async function diagnostic(providerId,key,container){
+/* ============ AUTO-DETECT SEMUA MODEL ============ */
+async function detectAllModels(){
   const s=currentSettings();
-  container.innerHTML='';container.classList.add('show');
-  diagStep(container,'info','Diagnostik: '+PROVIDERS[providerId].name);
-  diagStep(container,'info','Panjang key: '+key.length);
-  diagStep(container,'info','Prefix: '+key.slice(0,8)+'...');
-  if(providerId==='gemini'){
-    if(key.startsWith('AIza'))diagStep(container,'ok','Format: AIza... (resmi)');
-    else if(key.startsWith('AQ.'))diagStep(container,'warn','Format: AQ... (tidak biasa)');
-    else diagStep(container,'warn','Format tidak dikenali');
-    diagStep(container,'info','Ambil daftar model...');
+  const btn=$('#autoDetectBtn');
+  if(btn){btn.disabled=true;btn.textContent='⏳ Mendeteksi...';}
+  let totalFound=0;
+  const results=[];
+  const providersToTry=['groq','gemini','openrouter','openai'];
+  for(const pid of providersToTry){
+    const key=s.keys[pid];
+    if(!key)continue;
+    const cfg=PROVIDERS[pid];
+    if(!cfg.modelsEndpoint){results.push({provider:pid,status:'skip',msg:'Tidak ada endpoint'});continue;}
     try{
-      const models=await fetchGeminiModels(key);
-      if(!models.length){diagStep(container,'bad','Tidak ada model');return{ok:false,models:[]};}
-      diagStep(container,'ok',models.length+' model:');
-      models.slice(0,15).forEach(m=>diagStep(container,'info','  • '+m));
-      if(models.length>15)diagStep(container,'info','  +'+(models.length-15)+' lagi');
-      s.fetchedModels[providerId]=models;
-      return{ok:true,models};
-    }catch(e){diagStep(container,'bad',e.message);return{ok:false,models:[]};}
-  }
-  if(providerId==='groq'){
-    if(!key.startsWith('gsk_'))diagStep(container,'warn','Format Groq biasanya gsk_');
-    else diagStep(container,'ok','Format: gsk_... (benar)');
-    diagStep(container,'info','Ambil daftar model...');
-    try{
-      const models=await fetchGroqModels(key);
-      if(!models.length){diagStep(container,'bad','Tidak ada model');return{ok:false,models:[]};}
-      diagStep(container,'ok',models.length+' model:');
-      models.slice(0,20).forEach(m=>diagStep(container,'info','  • '+m));
-      s.fetchedModels[providerId]=models;
-      return{ok:true,models};
-    }catch(e){diagStep(container,'bad',e.message);return{ok:false,models:[]};}
-  }
-  diagStep(container,'info','Testing generate...');
-  try{const msg=await testKey(providerId,key);diagStep(container,'ok',msg);return{ok:true,models:PROVIDERS[providerId].models};}
-  catch(e){diagStep(container,'bad',e.message);return{ok:false,models:[]};}
-}
-async function testKey(providerId,apiKey){
-  const s=currentSettings();const cfg=PROVIDERS[providerId];
-  if(!apiKey)throw new Error('API key kosong');
-  const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),25000);
-  try{
-    if(cfg.type==='gemini'){
-      const fetched=s.fetchedModels.gemini||[];
-      const candidates=[...fetched,'gemini-2.0-flash','gemini-1.5-flash','gemini-1.5-pro'];
-      let lastErr='';
-      for(const m of candidates){
-        try{
-          const r=await fetch(cfg.url+'/models/'+m+':generateContent',{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},body:JSON.stringify({contents:[{role:'user',parts:[{text:'hi'}]}],generationConfig:{maxOutputTokens:5}})});
-          if(r.ok)return '✓ Key valid. Model "'+m+'" merespon.';
-          lastErr='"'+m+'": HTTP '+r.status;
-        }catch(e){lastErr='"'+m+'": '+e.message;}
+      let url=cfg.modelsEndpoint;
+      const headers={};
+      if(pid==='gemini')headers['x-goog-api-key']=key;
+      else headers['Authorization']='Bearer '+key;
+      const r=await fetch(url,{headers});
+      if(!r.ok){results.push({provider:pid,status:'error',msg:'HTTP '+r.status});continue;}
+      const j=await r.json();
+      let models=[];
+      if(cfg.modelsParser==='gemini'){
+        models=(j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/',''));
+      } else if(cfg.modelsParser==='openrouter'){
+        models=(j.data||[]).map(m=>m.id).sort();
+      } else {
+        models=(j.data||[]).map(m=>m.id).sort();
       }
-      throw new Error('Semua model gagal. Terakhir: '+lastErr);
+      s.fetchedModels[pid]=models;
+      totalFound+=models.length;
+      results.push({provider:pid,status:'ok',count:models.length});
+    }catch(e){
+      results.push({provider:pid,status:'error',msg:e.message});
     }
-    if(cfg.type==='anthropic'){
-      const r=await fetch(cfg.url,{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-3-5-haiku-20241022',max_tokens:5,messages:[{role:'user',content:'hi'}]})});
-      if(!r.ok){const txt=await r.text();throw new Error('HTTP '+r.status+' — '+txt.slice(0,200));}
-      return '✓ Key valid';
-    }
-    let url=cfg.url,model=cfg.models[0]||'gpt-3.5-turbo';
-    if(providerId==='custom'){url=s.customUrl;model=(s.customModels||'').split(/[,\n]/)[0].trim()||'gpt-3.5-turbo';}
-    const r=await fetch(url,{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({model,messages:[{role:'user',content:'hi'}],max_tokens:5})});
-    if(!r.ok){const txt=await r.text();throw new Error('HTTP '+r.status+' — '+txt.slice(0,200));}
-    return '✓ Key valid. Model "'+model+'" merespon.';
-  }finally{clearTimeout(t);}
+  }
+  saveAll();
+  if(btn){btn.disabled=false;btn.textContent='⚡ Deteksi Semua Model Otomatis';}
+  if(totalFound===0){
+    toast('Tidak ada model yang terdeteksi. Isi API key dulu.',true);
+  } else {
+    toast('✅ '+totalFound+' model terdeteksi dari '+results.filter(r=>r.status==='ok').length+' provider');
+  }
+  renderProviderList();
+  renderSettingsModal();
 }
 
+/* ============ CHAT LOGIC ============ */
 function createChat(){
   const chat={id:uid(),title:'Obrolan Baru',messages:[],createdAt:Date.now()};
-  currentChats().unshift(chat);
-  setCurrentChatId(chat.id);
+  currentChats().unshift(chat);setCurrentChatId(chat.id);
   saveAll();renderChatList();renderChat();
   return chat;
 }
@@ -908,10 +933,7 @@ function renderChatList(){
     const el=document.createElement('div');
     el.className='chat-item'+(c.id===currentChatId()?' active':'');
     el.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="title">'+esc(c.title)+'</span><button class="del"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
-    el.addEventListener('click',e=>{
-      if(e.target.closest('.del'))return;
-      setCurrentChatId(c.id);renderChatList();renderChat();closeSidebarMobile();
-    });
+    el.addEventListener('click',e=>{if(e.target.closest('.del'))return;setCurrentChatId(c.id);renderChatList();renderChat();closeSidebarMobile();});
     el.querySelector('.del').addEventListener('click',e=>{e.stopPropagation();deleteChat(c.id);});
     list.appendChild(el);
   });
@@ -929,24 +951,21 @@ function messageToolbar(role,idx){
 
 function renderChat(){
   const inner=$('#chatInner');if(!inner)return;
-  const chat=getActiveChat();
-  inner.innerHTML='';
+  const chat=getActiveChat();inner.innerHTML='';
   if(!chat||!chat.messages.length){
     const prof=currentProfile();
-    const pname=prof?prof.name:'Kamu';
+    const pname=prof?(prof.name||'Kamu'):'Kamu';
     inner.innerHTML='<div class="welcome">'+
-      '<svg class="big-logo" viewBox="0 0 100 100"><rect x="2" y="2" width="96" height="96" rx="24" fill="var(--accent)"/><path d="M66 36 Q66 24 50 24 Q34 24 34 38 Q34 49 50 51 Q66 53 66 64 Q66 76 50 76 Q34 76 34 64" fill="none" stroke="#fff" stroke-width="9" stroke-linecap="round"/></svg>'+
+      '<img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon">'+
       '<h1>Halo, <span>'+esc(pname)+'</span></h1>'+
-      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode. Bisa juga analisis gambar.</p>'+
+      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode.</p>'+
       '<div class="suggestions">'+
       '<div class="suggestion" data-p="2+3*5"><b>🧮 Hitung</b>2 + 3 × 5 = ?</div>'+
       '<div class="suggestion" data-p="contoh html"><b>💻 Buat web</b>Contoh halaman HTML</div>'+
       '<div class="suggestion" data-p="apa itu ai"><b>💡 Tanya</b>Apa itu AI?</div>'+
       '<div class="suggestion" data-p="contoh python"><b>🐍 Coding</b>Contoh Python dasar</div>'+
       '</div></div>';
-    inner.querySelectorAll('.suggestion').forEach(s=>{
-      s.addEventListener('click',()=>{$('#input').value=s.dataset.p;autoGrow($('#input'));sendMessage();});
-    });
+    inner.querySelectorAll('.suggestion').forEach(s=>{s.addEventListener('click',()=>{$('#input').value=s.dataset.p;autoGrow($('#input'));sendMessage();});});
     return;
   }
   chat.messages.forEach((m,idx)=>{
@@ -961,9 +980,7 @@ function renderChat(){
     div.innerHTML='<div class="body"><div class="content">'+html+'</div>'+messageToolbar(m.role,idx)+'</div>';
     inner.appendChild(div);
     decorateContent(div.querySelector('.content'));
-    div.querySelectorAll('.msg-toolbar button').forEach(b=>{
-      b.addEventListener('click',()=>handleMessageAction(b.dataset.act,parseInt(b.dataset.idx),b));
-    });
+    div.querySelectorAll('.msg-toolbar button').forEach(b=>{b.addEventListener('click',()=>handleMessageAction(b.dataset.act,parseInt(b.dataset.idx),b));});
   });
   scrollToBottom();
 }
@@ -985,10 +1002,8 @@ function handleMessageAction(act,idx,btnEl){
     const saveBtn=document.createElement('button');saveBtn.className='btn-primary';saveBtn.style.marginTop='8px';saveBtn.textContent='Simpan & Kirim Ulang';
     saveBtn.addEventListener('click',()=>{
       const nv=ta.value.trim();if(!nv)return;
-      chat.messages[idx].content=nv;
-      chat.messages=chat.messages.slice(0,idx+1);
-      saveAll();renderChat();
-      regenerateFrom(idx);
+      chat.messages[idx].content=nv;chat.messages=chat.messages.slice(0,idx+1);
+      saveAll();renderChat();regenerateFrom(idx);
     });
     msgEl.appendChild(saveBtn);
   }
@@ -997,9 +1012,7 @@ function handleMessageAction(act,idx,btnEl){
     let userIdx=idx-1;
     while(userIdx>=0&&chat.messages[userIdx].role!=='user')userIdx--;
     if(userIdx<0){toast('Tidak ada pesan user',true);return;}
-    chat.messages=chat.messages.slice(0,idx);
-    saveAll();renderChat();
-    regenerateFrom(userIdx);
+    chat.messages=chat.messages.slice(0,idx);saveAll();renderChat();regenerateFrom(userIdx);
   }
 }
 
@@ -1010,8 +1023,7 @@ async function regenerateFrom(userIdx){
   const botIdx=chat.messages.length-1;
   state.generating=true;updateSendBtn();
   const controller=new AbortController();currentAbort=controller;let acc='';
-  renderChat();
-  updateStreamingBot('');
+  renderChat();updateStreamingBot('');
   try{
     await streamChat(delta=>{acc+=delta;chat.messages[botIdx].content=acc;updateStreamingBot(renderMarkdown(acc));},controller.signal);
     chat.messages[botIdx].content=acc;saveAll();renderChat();
@@ -1059,14 +1071,10 @@ async function sendMessage(){
       if(state.voice.enabled)speak(acc);
     }catch(err){
       if(err.name==='AbortError')chat.messages[botIdx].content=acc+'\n\n_[Dihentikan]_';
-      else{console.error(err);chat.messages[botIdx].content=acc+'\n\n**⚠️ Error:** '+esc(err.message||'Gagal')+'\n\n_Coba buka Setelan → Diagnostik provider._';toast('Gagal: '+(err.message||'').slice(0,60),true);}
+      else{chat.messages[botIdx].content=acc+'\n\n**⚠️ Error:** '+esc(err.message||'Gagal');toast('Gagal: '+(err.message||'').slice(0,60),true);}
       saveAll();renderChat();
     }finally{state.generating=false;currentAbort=null;updateSendBtn();}
-  }catch(err){
-    console.error('Fatal error sendMessage:',err);
-    toast('Error fatal: '+err.message,true);
-    state.generating=false;updateSendBtn();
-  }
+  }catch(err){console.error(err);toast('Error: '+err.message,true);state.generating=false;updateSendBtn();}
 }
 
 function updateSendBtn(){
@@ -1105,23 +1113,13 @@ function handleFiles(files){
 function renderProfileHeader(){
   const p=currentProfile();if(!p)return;
   const av=$('#headerAvatar');const nm=$('#headerName');
-  if(av){
-    if(p.picture){av.style.backgroundImage='url('+p.picture+')';av.style.backgroundSize='cover';av.textContent='';}
-    else{av.style.background=p.color||'var(--accent)';av.style.backgroundImage='';av.textContent=(p.name[0]||'S').toUpperCase();}
-  }
-  const isGuest=state.session?.isGuest;
-  if(nm)nm.textContent=p.name+(isGuest?' · Tamu':'');
+  if(av){av.style.background=p.color||'var(--accent)';av.textContent=(p.name[0]||'S').toUpperCase();}
+  if(nm)nm.textContent=p.name||'Syon AI';
 }
 function renderProfileList(){
   const list=$('#profileList');if(!list)return;
-  list.innerHTML='';
-  if(!state.session)return;
   const u=currentProfile();if(!u)return;
-  const el=document.createElement('div');
-  el.className='profile-row active';
-  const avatarHtml=u.picture?'<div class="profile-avatar lg" style="background-image:url('+u.picture+')"></div>':'<div class="profile-avatar lg" style="background:'+(u.color||'var(--accent)')+'">'+((u.name[0]||'S').toUpperCase())+'</div>';
-  el.innerHTML=avatarHtml+'<div class="profile-info"><div class="pname">'+esc(u.name)+'</div><div class="pmeta">'+esc(u.email||(u.type==='guest'?'Mode Tamu':'Lokal'))+'</div></div>';
-  list.appendChild(el);
+  list.innerHTML='<div class="profile-row active"><div class="profile-avatar lg" style="background:var(--accent)">'+((u.name[0]||'S').toUpperCase())+'</div><div class="profile-info"><div class="pname">'+esc(u.name||'User')+'</div><div class="pmeta">'+esc(u.email||'Mode Tamu')+'</div></div></div>';
 }
 
 function captureCurrentInputs(){
@@ -1139,9 +1137,8 @@ function renderSettingsModal(){
   const s=currentSettings();
   const sel=$('#activeProvider');if(!sel)return;
   sel.innerHTML='';
-  const isGuest=state.session?.isGuest;
   Object.entries(PROVIDERS).forEach(([id,p])=>{
-    if(isGuest&&id!=='syonbot')return;
+    if(state.isGuest&&id!=='syonbot')return;
     const o=document.createElement('option');o.value=id;o.textContent=p.name;
     if(s.provider===id)o.selected=true;sel.appendChild(o);
   });
@@ -1168,10 +1165,9 @@ function renderProviderList(){
   const s=currentSettings();
   const list=$('#providerList');if(!list)return;
   list.innerHTML='';
-  const isGuest=state.session?.isGuest;
   Object.entries(PROVIDERS).forEach(([id,p])=>{
     const status=s.keyStatus[id];
-    const lockedForGuest=isGuest&&id!=='syonbot';
+    const lockedForGuest=state.isGuest&&id!=='syonbot';
     const cls='provider-card'+(s.provider===id?' active':'')+(status==='ok'?' valid':'')+(status==='bad'?' invalid':'')+(lockedForGuest?' invalid':'');
     const div=document.createElement('div');div.className=cls;div.dataset.pid=id;
     const badge=p.free===true?'<span class="badge">Gratis</span>':p.free===false?'<span class="badge paid">Berbayar</span>':p.type==='syonbot'?'<span class="badge local">Lokal</span>':'';
@@ -1182,98 +1178,64 @@ function renderProviderList(){
     else if(status==='bad')statusTag='<span class="status-tag bad">✗ Gagal</span>';
     else if(id!=='custom')statusTag='<span class="status-tag pending">Belum dites</span>';
     let body='';
-    if(lockedForGuest){body='<div class="help" style="margin-bottom:8px">Daftar akun untuk membuka provider ini.</div>';}
-    else if(id==='syonbot'){body='<div class="help" style="margin-bottom:8px">Chatbot lokal: kalkulator + database pengetahuan + contoh kode. Jalan tanpa internet.</div>';}
-    else if(id==='custom'){body='<input type="text" class="customUrlInput" placeholder="https://.../v1/chat/completions" value="'+esc(s.customUrl||'')+'" style="margin-bottom:6px"><input type="text" class="customModelsInput" placeholder="model1, model2" value="'+esc(s.customModels||'')+'"><div class="help" style="margin-top:6px">Endpoint OpenAI-compatible.</div><div class="actions"><button class="test" data-test="custom">Test</button></div>';}
-    else{body='<div class="key-row"><input type="password" data-provider="'+id+'" class="key-input" placeholder="API key" value="'+esc(s.keys[id]||'')+'"><button data-toggle="'+id+'"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button></div><div class="actions"><button class="test" data-test="'+id+'">Test</button><button data-diag="'+id+'">Diagnostik</button></div>';}
-    div.innerHTML='<div class="top"><div class="pname">'+esc(p.name)+' '+badge+'</div>'+statusTag+'</div>'+body+'<div class="diag-box" data-result="'+id+'"></div>'+(p.keyUrl?'<a class="plink" href="'+p.keyUrl+'" target="_blank" rel="noopener">Dapatkan API key →</a>':'');
+    if(lockedForGuest){body='<div class="help" style="margin-bottom:8px">Daftar akun untuk membuka.</div>';}
+    else if(id==='syonbot'){body='<div class="help" style="margin-bottom:8px">Chatbot lokal: kalkulator + database + contoh kode.</div>';}
+    else if(id==='custom'){body='<input type="text" class="customUrlInput" placeholder="https://.../v1/chat/completions" value="'+esc(s.customUrl||'')+'" style="margin-bottom:6px"><input type="text" class="customModelsInput" placeholder="model1, model2" value="'+esc(s.customModels||'')+'"><div class="actions"><button class="test" data-test="custom">Test</button></div>';}
+    else{body='<div class="key-row"><input type="password" data-provider="'+id+'" class="key-input" placeholder="API key" value="'+esc(s.keys[id]||'')+'"><button data-toggle="'+id+'">👁</button></div><div class="actions"><button class="test" data-test="'+id+'">Test</button></div>';}
+    div.innerHTML='<div class="top"><div class="pname">'+esc(p.name)+' '+badge+'</div>'+statusTag+'</div>'+body+(p.keyUrl?'<a class="plink" href="'+p.keyUrl+'" target="_blank" rel="noopener">Dapatkan API key →</a>':'');
     list.appendChild(div);
   });
-  list.querySelectorAll('[data-toggle]').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-      const inp=list.querySelector('.key-input[data-provider="'+btn.dataset.toggle+'"]');
-      if(inp)inp.type=inp.type==='password'?'text':'password';
-    });
-  });
+  list.querySelectorAll('[data-toggle]').forEach(btn=>{btn.addEventListener('click',()=>{const inp=list.querySelector('.key-input[data-provider="'+btn.dataset.toggle+'"]');if(inp)inp.type=inp.type==='password'?'text':'password';});});
   list.querySelectorAll('.key-input').forEach(inp=>{
     inp.addEventListener('input',()=>{
       const s=currentSettings();const pid=inp.dataset.provider;
       s.keys[pid]=inp.value.trim();
-      if(s.keyStatus[pid]){
-        delete s.keyStatus[pid];
-        const card=list.querySelector('.provider-card[data-pid="'+pid+'"]');
-        if(card){card.classList.remove('valid','invalid');const tag=card.querySelector('.status-tag');if(tag){tag.className='status-tag pending';tag.textContent='Belum dites';}}
-      }
+      if(s.keyStatus[pid])delete s.keyStatus[pid];
       saveAll();updateTopbar();
     });
   });
-  list.querySelectorAll('.customUrlInput').forEach(inp=>{inp.addEventListener('input',()=>{currentSettings().customUrl=inp.value.trim();saveAll();updateTopbar();});});
+  list.querySelectorAll('.customUrlInput').forEach(inp=>{inp.addEventListener('input',()=>{currentSettings().customUrl=inp.value.trim();saveAll();});});
   list.querySelectorAll('.customModelsInput').forEach(inp=>{inp.addEventListener('input',()=>{currentSettings().customModels=inp.value;saveAll();});});
   list.querySelectorAll('[data-test]').forEach(btn=>{
     btn.addEventListener('click',async()=>{
       const s=currentSettings();const id=btn.dataset.test;
-      const card=list.querySelector('.provider-card[data-pid="'+id+'"]');
-      const box=list.querySelector('.diag-box[data-result="'+id+'"]');
-      const tag=card?.querySelector('.status-tag');
-      let key='';
-      if(id==='custom')key=s.keys.custom||'dummy';
-      else key=list.querySelector('.key-input[data-provider="'+id+'"]')?.value.trim()||s.keys[id];
-      if(!key&&id!=='custom'){toast('Isi API key dulu',true);return;}
-      const oldText=btn.textContent;btn.textContent='Menguji...';btn.disabled=true;
-      if(tag){tag.className='status-tag loading';tag.textContent='Menguji...';}
-      box.classList.add('show');box.innerHTML='';
-      diagStep(box,'info','Test cepat...');
-      try{
-        const msg=await testKey(id,key);
-        s.keyStatus[id]='ok';
-        if(card){card.classList.remove('invalid');card.classList.add('valid');}
-        if(tag){tag.className='status-tag ok';tag.textContent='✓ Valid';}
-        diagStep(box,'ok',msg);toast('✓ Key valid');
-      }catch(e){
-        s.keyStatus[id]='bad';
-        if(card){card.classList.remove('valid');card.classList.add('invalid');}
-        if(tag){tag.className='status-tag bad';tag.textContent='✗ Gagal';}
-        diagStep(box,'bad',e.message||'Gagal');
-        toast('✗ '+(e.message||'').slice(0,50),true);
-      }finally{btn.textContent=oldText;btn.disabled=false;saveAll();updateTopbar();}
-    });
-  });
-  list.querySelectorAll('[data-diag]').forEach(btn=>{
-    btn.addEventListener('click',async()=>{
-      const s=currentSettings();const id=btn.dataset.diag;
-      const card=list.querySelector('.provider-card[data-pid="'+id+'"]');
-      const box=list.querySelector('.diag-box[data-result="'+id+'"]');
-      const tag=card?.querySelector('.status-tag');
-      const key=list.querySelector('.key-input[data-provider="'+id+'"]')?.value.trim()||s.keys[id];
+      let key=s.keys[id];
       if(!key){toast('Isi API key dulu',true);return;}
       const oldText=btn.textContent;btn.textContent='...';btn.disabled=true;
-      if(tag){tag.className='status-tag loading';tag.textContent='Menguji...';}
-      const result=await diagnostic(id,key,box);
-      if(result.ok){
-        s.keyStatus[id]='ok';
-        if(card){card.classList.remove('invalid');card.classList.add('valid');}
-        if(tag){tag.className='status-tag ok';tag.textContent='✓ Valid';}
-        toast('✓ Key OK');
-        if($('#activeProvider').value===id&&s.fetchedModels[id]?.length)renderModelSelect('#modelSelect',id,s.model);
-      } else {
-        s.keyStatus[id]='bad';
-        if(card){card.classList.remove('valid');card.classList.add('invalid');}
-        if(tag){tag.className='status-tag bad';tag.textContent='✗ Gagal';}
-        toast('✗ Ada masalah',true);
-      }
-      btn.textContent=oldText;btn.disabled=false;
-      saveAll();updateTopbar();
+      try{await testKeyQuick(id,key);s.keyStatus[id]='ok';toast('✓ Key valid');}
+      catch(e){s.keyStatus[id]='bad';toast('✗ '+(e.message||'').slice(0,50),true);}
+      finally{btn.textContent=oldText;btn.disabled=false;saveAll();renderProviderList();updateTopbar();}
     });
   });
+}
+async function testKeyQuick(providerId,apiKey){
+  const cfg=PROVIDERS[providerId];
+  const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),20000);
+  try{
+    if(cfg.type==='gemini'){
+      const r=await fetch(cfg.url+'/models/gemini-1.5-flash:generateContent',{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},body:JSON.stringify({contents:[{role:'user',parts:[{text:'hi'}]}],generationConfig:{maxOutputTokens:5}})});
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return true;
+    }
+    if(cfg.type==='anthropic'){
+      const r=await fetch(cfg.url,{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-3-5-haiku-20241022',max_tokens:5,messages:[{role:'user',content:'hi'}]})});
+      if(!r.ok)throw new Error('HTTP '+r.status);
+      return true;
+    }
+    let url=cfg.url,model=cfg.models[0]||'gpt-3.5-turbo';
+    if(providerId==='custom'){url=currentSettings().customUrl;model=(currentSettings().customModels||'').split(/[,\n]/)[0].trim()||'gpt-3.5-turbo';}
+    const r=await fetch(url,{method:'POST',signal:ctrl.signal,headers:{'Content-Type':'application/json','Authorization':'Bearer '+apiKey},body:JSON.stringify({model,messages:[{role:'user',content:'hi'}],max_tokens:5})});
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    return true;
+  }finally{clearTimeout(t);}
 }
 
 function openModelModal(){
   const s=currentSettings();
   const p=$('#quickProvider');if(!p)return;
   p.innerHTML='';
-  const isGuest=state.session?.isGuest;
   Object.entries(PROVIDERS).forEach(([id,cfg])=>{
-    if(isGuest&&id!=='syonbot')return;
+    if(state.isGuest&&id!=='syonbot')return;
     const o=document.createElement('option');o.value=id;o.textContent=cfg.name;
     if(s.provider===id)o.selected=true;p.appendChild(o);
   });
@@ -1300,24 +1262,20 @@ function updateTopbar(){
 function exportChat(){
   const chat=getActiveChat();if(!chat){toast('Tidak ada chat',true);return;}
   const md=chat.messages.map(m=>{const who=m.role==='user'?'## Kamu':'## Syon';return who+'\n\n'+m.content;}).join('\n\n---\n\n');
-  const header='# '+chat.title+'\n\n_Profil: '+(currentProfile()?.name||'Tamu')+'_\n\n_Exported: '+new Date().toLocaleString('id-ID')+'_\n\n---\n\n';
+  const header='# '+chat.title+'\n\n_Exported: '+new Date().toLocaleString('id-ID')+'_\n\n---\n\n';
   const blob=new Blob([header+md],{type:'text/markdown'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');a.href=url;a.download=chat.title.replace(/[^\w]+/g,'_')+'.md';
   a.click();URL.revokeObjectURL(url);
   toast('Chat diexport');
 }
-
 function renderPrompts(){
   const list=$('#promptsList');if(!list)return;
   list.innerHTML='';
   PROMPT_LIBRARY.forEach(p=>{
     const el=document.createElement('div');el.className='prompt-item';
     el.innerHTML='<b>'+esc(p.t)+'</b><span>'+esc(p.d)+'</span>';
-    el.addEventListener('click',()=>{
-      $('#input').value=p.p;autoGrow($('#input'));
-      $('#promptsModal').classList.remove('show');$('#input').focus();
-    });
+    el.addEventListener('click',()=>{$('#input').value=p.p;autoGrow($('#input'));$('#promptsModal').classList.remove('show');$('#input').focus();});
     list.appendChild(el);
   });
 }
@@ -1349,12 +1307,7 @@ function toggleVoiceInput(){
   const btn=$('#micBtn');
   if(btn.classList.contains('recording')){recognition.stop();return;}
   let baseVal=$('#input').value;
-  recognition.onresult=(e)=>{
-    let txt='';
-    for(let i=e.resultIndex;i<e.results.length;i++)txt+=e.results[i][0].transcript;
-    $('#input').value=baseVal+(baseVal?' ':'')+txt;
-    autoGrow($('#input'));
-  };
+  recognition.onresult=(e)=>{let txt='';for(let i=e.resultIndex;i<e.results.length;i++)txt+=e.results[i][0].transcript;$('#input').value=baseVal+(baseVal?' ':'')+txt;autoGrow($('#input'));};
   recognition.onend=()=>{btn.classList.remove('recording');};
   recognition.onerror=(e)=>{btn.classList.remove('recording');toast('Voice: '+e.error,true);};
   try{recognition.start();btn.classList.add('recording');toast('🎤 Merekam...');}
@@ -1364,121 +1317,189 @@ function toggleVoiceInput(){
 function applyTheme(){
   document.documentElement.setAttribute('data-theme',state.theme==='dark'?'dark':'');
   const hl=$('#hljs-theme');
-  if(hl)hl.href=state.theme==='dark'
-    ?'https://cdn.jsdelivr.net/npm/highlight.js@11/styles/atom-one-dark.min.css'
-    :'https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css';
+  if(hl)hl.href=state.theme==='dark'?'https://cdn.jsdelivr.net/npm/highlight.js@11/styles/atom-one-dark.min.css':'https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css';
 }
-function toggleTheme(){
-  state.theme=state.theme==='dark'?'light':'dark';
-  applyTheme();saveAll();
-  toast(state.theme==='dark'?'🌙 Mode gelap':'☀️ Mode terang');
-}
+function toggleTheme(){state.theme=state.theme==='dark'?'light':'dark';applyTheme();saveAll();toast(state.theme==='dark'?'🌙 Mode gelap':'☀️ Mode terang');}
 
+/* ============ AUTH ============ */
+function showPanel(id){
+  $$('.auth-panel').forEach(p=>p.classList.remove('active'));
+  const el=$('#'+id);if(el)el.classList.add('active');
+  const tabs=$('.auth-tabs');if(tabs)tabs.style.display=(id==='panelLogin'||id==='panelRegister')?'flex':'none';
+  const err=$('#authError');if(err)err.textContent='';
+}
 function hideLogin(){
   const ls=$('#loginScreen');if(ls){ls.classList.add('hide');setTimeout(()=>ls.classList.add('hidden'),400);}
   const app=$('#app');if(app)app.classList.add('show');
 }
-function completeLogin(userId,isGuest){
-  state.session={userId,isGuest:!!isGuest};
-  state.activeProfileId=userId;
-  if(!state.settingsByProfile[userId])state.settingsByProfile[userId]=defaultSettings();
-  if(!state.chatsByProfile[userId])state.chatsByProfile[userId]=[];
-  if(isGuest)state.settingsByProfile[userId].provider='syonbot';
-  saveAll();
+function showLogin(){
+  const ls=$('#loginScreen');if(ls){ls.classList.remove('hidden');ls.classList.remove('hide');}
+  const app=$('#app');if(app)app.classList.remove('show');
+}
+
+function enterApp(){
   hideLogin();
   setTimeout(()=>{
-    try{
-      renderProfileHeader();
-      if(!currentChats().length)createChat();
-      else{
-        if(!currentChatId()||!currentChats().find(c=>c.id===currentChatId()))setCurrentChatId(currentChats()[0].id);
-        renderChatList();renderChat();
-      }
-      updateTopbar();
-    }catch(e){console.error('completeLogin after-render error:',e);}
+    renderProfileHeader();
+    if(!currentChats().length)createChat();
+    else{
+      if(!currentChatId()||!currentChats().find(c=>c.id===currentChatId()))setCurrentChatId(currentChats()[0].id);
+      renderChatList();renderChat();
+    }
+    updateTopbar();
   },50);
 }
+
+async function afterLogin(user,token,isGuest){
+  state.user=user;
+  state.token=token||null;
+  state.isGuest=!!isGuest;
+  if(isGuest)state.activeProfileId='guest-'+Date.now().toString(36);
+  saveAll();
+  enterApp();
+}
+
+function setAuthError(msg){const e=$('#authError');if(e)e.textContent=msg||'';}
 
 function initAuthScreen(){
   const wrapper=$('#googleBtnWrapper');if(!wrapper)return;
   wrapper.innerHTML='';
-  const errEl=$('#authError');
-  const showErr=msg=>{if(errEl)errEl.textContent=msg||'';};
+
   $$('.auth-tab').forEach(tab=>{
     tab.addEventListener('click',()=>{
       $$('.auth-tab').forEach(t=>t.classList.remove('active'));
       tab.classList.add('active');
-      const target=tab.dataset.tab;
-      const pL=$('#panelLogin'),pR=$('#panelRegister');
-      if(pL)pL.style.display=target==='login'?'flex':'none';
-      if(pR)pR.style.display=target==='register'?'flex':'none';
-      showErr('');
+      showPanel(tab.dataset.tab==='login'?'panelLogin':'panelRegister');
     });
   });
+
   $('#loginSubmit')?.addEventListener('click',async()=>{
     const email=$('#loginEmail').value.trim().toLowerCase();
     const password=$('#loginPassword').value;
-    showErr('');
-    if(!email||!password){showErr('Isi email & password');return;}
-    const user=state.profiles.find(p=>p.email&&p.email.toLowerCase()===email&&p.passwordHash);
-    if(!user){showErr('Akun tidak ditemukan. Daftar dulu?');return;}
-    const hash=await hashPassword(password,user.salt);
-    if(hash!==user.passwordHash){showErr('Password salah');return;}
-    completeLogin(user.id,false);
+    setAuthError('');
+    if(!email||!password){setAuthError('Isi email & password');return;}
+    const btn=$('#loginSubmit');const old=btn.textContent;btn.disabled=true;btn.textContent='Memuat...';
+    try{
+      const data=await apiCall('login',{email,password});
+      await afterLogin(data.user,data.token,false);
+      toast('👋 Selamat datang, '+data.user.name+'!');
+    }catch(e){
+      if(e.message&&e.message.includes('belum diverifikasi')){
+        state.pendingEmail=email;
+        $('#verifyEmailDisplay').textContent=email;
+        showPanel('panelVerify');
+        toast('Verifikasi email dulu');
+      } else {
+        setAuthError(e.message||'Login gagal');
+      }
+    }finally{btn.disabled=false;btn.textContent=old;}
   });
+
   $('#regSubmit')?.addEventListener('click',async()=>{
     const name=$('#regName').value.trim();
     const email=$('#regEmail').value.trim().toLowerCase();
     const password=$('#regPassword').value;
-    showErr('');
-    if(!name||!email||!password){showErr('Semua kolom wajib diisi');return;}
-    if(!email.includes('@')){showErr('Email tidak valid');return;}
-    if(password.length<6){showErr('Password minimal 6 karakter');return;}
-    if(state.profiles.find(p=>p.email&&p.email.toLowerCase()===email)){showErr('Email sudah terdaftar');return;}
-    const salt=makeSalt();
-    const hash=await hashPassword(password,salt);
-    const id='local-'+uid();
-    const color=COLORS[name.charCodeAt(0)%COLORS.length];
-    state.profiles.push({id,type:'local',name,email,salt,passwordHash:hash,color,createdAt:Date.now()});
-    completeLogin(id,false);
-    toast('🎉 Selamat datang, '+name+'!');
+    setAuthError('');
+    if(!name||!email||!password){setAuthError('Semua kolom wajib diisi');return;}
+    if(password.length<6){setAuthError('Password minimal 6 karakter');return;}
+    const btn=$('#regSubmit');const old=btn.textContent;btn.disabled=true;btn.textContent='Mendaftar...';
+    try{
+      await apiCall('register',{name,email,password});
+      state.pendingEmail=email;
+      $('#verifyEmailDisplay').textContent=email;
+      showPanel('panelVerify');
+      toast('📧 Kode dikirim ke '+email);
+    }catch(e){setAuthError(e.message||'Daftar gagal');}
+    finally{btn.disabled=false;btn.textContent=old;}
   });
-  const guestBtn=document.createElement('button');
-  guestBtn.className='guest-btn';
-  guestBtn.textContent='Masuk sebagai Tamu';
-  guestBtn.addEventListener('click',()=>{
-    const id='guest-'+uid();
-    state.profiles.push({id,type:'guest',name:'Tamu',isGuest:true,color:COLORS[7],createdAt:Date.now()});
-    completeLogin(id,true);
+
+  $('#verifySubmit')?.addEventListener('click',async()=>{
+    const code=$('#verifyCode').value.trim();
+    if(!code||code.length!==6){setAuthError('Kode harus 6 digit');return;}
+    if(!state.pendingEmail){setAuthError('Email tidak ditemukan. Coba daftar ulang.');return;}
+    const btn=$('#verifySubmit');const old=btn.textContent;btn.disabled=true;btn.textContent='Memverifikasi...';
+    try{
+      const data=await apiCall('verify',{email:state.pendingEmail,code});
+      await afterLogin(data.user,data.token,false);
+      toast('✅ Email terverifikasi!');
+    }catch(e){setAuthError(e.message||'Verifikasi gagal');}
+    finally{btn.disabled=false;btn.textContent=old;}
+  });
+
+  $('#resendOtpBtn')?.addEventListener('click',async()=>{
+    if(!state.pendingEmail)return;
+    try{
+      await apiCall('resend-otp',{email:state.pendingEmail});
+      toast('📧 Kode baru dikirim');
+    }catch(e){setAuthError(e.message||'Gagal kirim ulang');}
+  });
+
+  $('#backToLoginBtn')?.addEventListener('click',()=>{
+    $$('.auth-tab').forEach(t=>t.classList.remove('active'));
+    $$('.auth-tab')[0].classList.add('active');
+    showPanel('panelLogin');
+  });
+
+  $('#forgotPasswordBtn')?.addEventListener('click',()=>showPanel('panelForgot'));
+  $('#backFromForgotBtn')?.addEventListener('click',()=>{
+    $$('.auth-tab').forEach(t=>t.classList.remove('active'));
+    $$('.auth-tab')[0].classList.add('active');
+    showPanel('panelLogin');
+  });
+  $('#backFromResetBtn')?.addEventListener('click',()=>{
+    $$('.auth-tab').forEach(t=>t.classList.remove('active'));
+    $$('.auth-tab')[0].classList.add('active');
+    showPanel('panelLogin');
+  });
+
+  $('#forgotSubmit')?.addEventListener('click',async()=>{
+    const email=$('#forgotEmail').value.trim().toLowerCase();
+    if(!email){setAuthError('Isi email');return;}
+    const btn=$('#forgotSubmit');const old=btn.textContent;btn.disabled=true;btn.textContent='Mengirim...';
+    try{
+      await apiCall('forgot',{email});
+      state.pendingResetEmail=email;
+      $('#resetEmailDisplay').textContent=email;
+      showPanel('panelReset');
+      toast('📧 Kode reset dikirim');
+    }catch(e){setAuthError(e.message||'Gagal kirim');}
+    finally{btn.disabled=false;btn.textContent=old;}
+  });
+
+  $('#resetSubmit')?.addEventListener('click',async()=>{
+    const code=$('#resetCode').value.trim();
+    const newPassword=$('#resetPassword').value;
+    if(!code||code.length!==6){setAuthError('Kode 6 digit');return;}
+    if(!newPassword||newPassword.length<6){setAuthError('Password minimal 6 karakter');return;}
+    if(!state.pendingResetEmail){setAuthError('Email tidak ditemukan');return;}
+    const btn=$('#resetSubmit');const old=btn.textContent;btn.disabled=true;btn.textContent='Reset...';
+    try{
+      await apiCall('reset',{email:state.pendingResetEmail,code,newPassword});
+      toast('✅ Password direset. Silakan masuk.');
+      state.pendingResetEmail=null;
+      $$('.auth-tab').forEach(t=>t.classList.remove('active'));
+      $$('.auth-tab')[0].classList.add('active');
+      showPanel('panelLogin');
+    }catch(e){setAuthError(e.message||'Reset gagal');}
+    finally{btn.disabled=false;btn.textContent=old;}
+  });
+
+  $('#guestLoginBtn')?.addEventListener('click',async()=>{
+    await afterLogin({name:'Tamu',email:null,id:null},null,true);
     toast('👤 Mode Tamu — hanya Syon Bot');
   });
-  wrapper.appendChild(guestBtn);
 
+  // Google
   if(GOOGLE_CLIENT_ID&&location.protocol!=='file:'){
-    const holder=document.createElement('div');
-    holder.style.width='100%';
-    holder.style.marginTop='8px';
+    const holder=document.createElement('div');holder.style.width='100%';
     wrapper.appendChild(holder);
     const initG=()=>{
       if(window.google&&window.google.accounts){
         try{
-          window.google.accounts.id.initialize({
-            client_id:GOOGLE_CLIENT_ID,
-            callback:handleGoogleCredential,
-            auto_select:false
-          });
-          window.google.accounts.id.renderButton(holder,{
-            theme:'outline',
-            size:'large',
-            text:'continue_with',
-            shape:'rectangular',
-            logo_alignment:'left',
-            width:340
-          });
-        }catch(e){console.warn('GSI init failed:',e);}
-      } else {
-        setTimeout(initG,300);
-      }
+          window.google.accounts.id.initialize({client_id:GOOGLE_CLIENT_ID,callback:handleGoogleCredential,auto_select:false});
+          window.google.accounts.id.renderButton(holder,{theme:'outline',size:'large',text:'continue_with',shape:'rectangular',logo_alignment:'left',width:340});
+        }catch(e){console.warn('GSI failed:',e);}
+      } else setTimeout(initG,300);
     };
     initG();
   }
@@ -1487,50 +1508,53 @@ function initAuthScreen(){
 function decodeJwt(token){
   try{const p=token.split('.')[1];return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));}catch(e){return null;}
 }
-function handleGoogleCredential(resp){
+async function handleGoogleCredential(resp){
   const j=decodeJwt(resp.credential);
   if(!j){toast('Gagal decode token',true);return;}
-  const id='google-'+j.sub;
-  let p=state.profiles.find(x=>x.id===id);
-  if(!p){p={id,type:'google',name:j.name||j.email,email:j.email,picture:j.picture,color:COLORS[3],createdAt:Date.now()};state.profiles.push(p);}
-  else{p.name=j.name||p.name;p.email=j.email;p.picture=j.picture;}
-  if(!state.settingsByProfile[id])state.settingsByProfile[id]=defaultSettings();
-  if(!state.chatsByProfile[id])state.chatsByProfile[id]=[];
-  completeLogin(id,false);
-  toast('👋 Masuk: '+p.name);
+  try{
+    const data=await apiCall('google-sync',{email:j.email,name:j.name||j.email,googleId:j.sub,picture:j.picture});
+    await afterLogin(data.user,data.token,false);
+    toast('👋 Masuk: '+data.user.name);
+  }catch(e){toast('Login Google gagal: '+e.message,true);}
 }
 
-function init(){
+async function doLogout(){
+  if(!confirm('Keluar dari akun ini?'))return;
+  if(!state.isGuest&&state.token){
+    try{await apiCall('logout',{},true);}catch(e){}
+  }
+  state.token=null;state.user=null;state.isGuest=false;state.activeProfileId=null;
+  saveAll();location.reload();
+}
+
+/* ============ INIT ============ */
+async function init(){
   try{
     loadAll();
     applyTheme();
-
-    if('speechSynthesis' in window){
-      loadVoices();
-      speechSynthesis.onvoiceschanged=()=>{loadVoices();populateVoiceSelect();};
-    }
+    if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=()=>{loadVoices();populateVoiceSelect();};}
 
     initAuthScreen();
 
-    if(state.session&&state.session.userId){
-      const u=state.profiles.find(p=>p.id===state.session.userId);
-      if(u)completeLogin(u.id,state.session.isGuest);
-      else{state.session=null;state.activeProfileId=null;}
+    // Auto-login cek token ke backend
+    if(state.token&&!state.isGuest){
+      const u=await apiMe();
+      if(u){
+        state.user=u;
+        enterApp();
+      } else {
+        state.token=null;state.user=null;saveAll();
+      }
+    } else if(state.isGuest&&state.user){
+      enterApp();
     }
 
+    // Chat events
     $('#newChatBtn')?.addEventListener('click',()=>{createChat();closeSidebarMobile();});
     $('#menuBtn')?.addEventListener('click',openSidebarMobile);
-    $('#sendBtn')?.addEventListener('click',()=>{
-      if(state.generating&&currentAbort){currentAbort.abort();return;}
-      sendMessage();
-    });
+    $('#sendBtn')?.addEventListener('click',()=>{if(state.generating&&currentAbort){currentAbort.abort();return;}sendMessage();});
     const ta=$('#input');
-    if(ta){
-      ta.addEventListener('input',()=>autoGrow(ta));
-      ta.addEventListener('keydown',e=>{
-        if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(!state.generating)sendMessage();}
-      });
-    }
+    if(ta){ta.addEventListener('input',()=>autoGrow(ta));ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(!state.generating)sendMessage();}});}
     $('#attachBtn')?.addEventListener('click',()=>$('#fileInput').click());
     $('#fileInput')?.addEventListener('change',e=>{handleFiles(e.target.files);e.target.value='';});
     $('#micBtn')?.addEventListener('click',toggleVoiceInput);
@@ -1539,7 +1563,7 @@ function init(){
     $('#searchChats')?.addEventListener('input',e=>{state.searchQuery=e.target.value.trim();renderChatList();});
     $('#exportBtn')?.addEventListener('click',exportChat);
     $('#themeBtn')?.addEventListener('click',toggleTheme);
-    $('#logoutBtn')?.addEventListener('click',logout);
+    $('#logoutBtn')?.addEventListener('click',doLogout);
 
     $('#profileHeader')?.addEventListener('click',()=>{renderProfileList();$('#profileModal').classList.add('show');});
     $('#closeProfile')?.addEventListener('click',()=>$('#profileModal').classList.remove('show'));
@@ -1554,27 +1578,24 @@ function init(){
     $('#pitchRange')?.addEventListener('input',e=>{state.voice.pitch=parseFloat(e.target.value);$('#pitchVal').textContent=state.voice.pitch.toFixed(1);});
     $('#volumeRange')?.addEventListener('input',e=>{state.voice.volume=parseFloat(e.target.value);$('#volumeVal').textContent=Math.round(state.voice.volume*100)+'%';});
     $('#testVoiceBtn')?.addEventListener('click',()=>{speak('Halo, aku Syon. Suaraku seperti ini.');});
-    $('#saveVoice')?.addEventListener('click',()=>{saveAll();toast('✓ Pengaturan suara disimpan');$('#voiceModal').classList.remove('show');});
+    $('#saveVoice')?.addEventListener('click',()=>{saveAll();toast('✓ Tersimpan');$('#voiceModal').classList.remove('show');});
 
     $('#settingsBtn')?.addEventListener('click',()=>{renderSettingsModal();$('#settingsModal').classList.add('show');});
     $('#closeSettings')?.addEventListener('click',()=>{captureCurrentInputs();saveAll();updateTopbar();$('#settingsModal').classList.remove('show');});
     $('#settingsModal')?.addEventListener('click',e=>{if(e.target.id==='settingsModal'){captureCurrentInputs();saveAll();updateTopbar();e.currentTarget.classList.remove('show');}});
+    $('#autoDetectBtn')?.addEventListener('click',detectAllModels);
     $('#activeProvider')?.addEventListener('change',e=>{
       captureCurrentInputs();
       const s=currentSettings();
-      if(state.session?.isGuest&&e.target.value!=='syonbot'){
-        toast('Mode Tamu hanya bisa Syon Bot',true);
-        e.target.value='syonbot';s.provider='syonbot';return;
-      }
+      if(state.isGuest&&e.target.value!=='syonbot'){toast('Mode Tamu hanya Syon Bot',true);e.target.value='syonbot';s.provider='syonbot';return;}
       s.provider=e.target.value;
       const p=PROVIDERS[s.provider];
       if(p.models.length)s.model=p.models[0];
       if(s.fetchedModels[s.provider]?.length)s.model=s.fetchedModels[s.provider][0];
-      saveAll();renderModelSelect('#modelSelect',s.provider,s.model);
-      renderProviderList();updateTopbar();
+      saveAll();renderModelSelect('#modelSelect',s.provider,s.model);renderProviderList();updateTopbar();
     });
     $('#modelSelect')?.addEventListener('change',e=>{currentSettings().model=e.target.value;saveAll();updateTopbar();});
-    $('#saveSettings')?.addEventListener('click',()=>{captureCurrentInputs();saveAll();updateTopbar();toast('✓ Pengaturan disimpan');$('#settingsModal').classList.remove('show');});
+    $('#saveSettings')?.addEventListener('click',()=>{captureCurrentInputs();saveAll();updateTopbar();toast('✓ Tersimpan');$('#settingsModal').classList.remove('show');});
 
     $('#promptsBtn')?.addEventListener('click',()=>{renderPrompts();$('#promptsModal').classList.add('show');});
     $('#closePrompts')?.addEventListener('click',()=>$('#promptsModal').classList.remove('show'));
@@ -1584,27 +1605,19 @@ function init(){
     $('#closeShortcuts')?.addEventListener('click',()=>$('#shortcutsModal').classList.remove('show'));
     $('#shortcutsModal')?.addEventListener('click',e=>{if(e.target.id==='shortcutsModal')e.currentTarget.classList.remove('show');});
 
-    $('#closeArtifact')?.addEventListener('click',()=>{
-      $('#artifactModal').classList.remove('show');
-      const frame=$('#artifactFrame');if(frame)frame.srcdoc='';
-    });
-    $('#artifactModal')?.addEventListener('click',e=>{if(e.target.id==='artifactModal'){e.currentTarget.classList.remove('show');const frame=$('#artifactFrame');if(frame)frame.srcdoc='';}});
+    $('#closeArtifact')?.addEventListener('click',()=>{$('#artifactModal').classList.remove('show');const f=$('#artifactFrame');if(f)f.srcdoc='';});
+    $('#artifactModal')?.addEventListener('click',e=>{if(e.target.id==='artifactModal'){e.currentTarget.classList.remove('show');const f=$('#artifactFrame');if(f)f.srcdoc='';}});
 
     $('#modelPill')?.addEventListener('click',openModelModal);
     $('#closeModel')?.addEventListener('click',()=>$('#modelModal').classList.remove('show'));
     $('#modelModal')?.addEventListener('click',e=>{if(e.target.id==='modelModal')e.currentTarget.classList.remove('show');});
-    $('#quickProvider')?.addEventListener('change',e=>{
-      const p=e.target.value;const s=currentSettings();
-      const first=s.fetchedModels[p]?.[0]||PROVIDERS[p].models[0]||'gpt-3.5-turbo';
-      renderModelSelect('#quickModel',p,first);
-    });
+    $('#quickProvider')?.addEventListener('change',e=>{const p=e.target.value;const s=currentSettings();const first=s.fetchedModels[p]?.[0]||PROVIDERS[p].models[0]||'gpt-3.5-turbo';renderModelSelect('#quickModel',p,first);});
     $('#applyModel')?.addEventListener('click',()=>{
       const s=currentSettings();
       const chosen=$('#quickProvider').value;
-      if(state.session?.isGuest&&chosen!=='syonbot'){toast('Mode Tamu hanya bisa Syon Bot',true);return;}
+      if(state.isGuest&&chosen!=='syonbot'){toast('Mode Tamu hanya Syon Bot',true);return;}
       s.provider=chosen;s.model=$('#quickModel').value;
-      saveAll();updateTopbar();
-      toast('✓ '+s.model);$('#modelModal').classList.remove('show');
+      saveAll();updateTopbar();toast('✓ '+s.model);$('#modelModal').classList.remove('show');
     });
 
     document.addEventListener('keydown',e=>{
@@ -1620,19 +1633,16 @@ function init(){
       }
     });
 
-    window.addEventListener('resize',()=>{
-      setTimeout(()=>scrollToBottom(),150);
-    });
+    window.addEventListener('resize',()=>setTimeout(()=>scrollToBottom(),150));
 
-    console.log('✅ Syon AI v12 (ChatGPT/DeepSeek style) initialized');
+    console.log('✅ Syon AI v13 initialized');
   }catch(err){
     console.error('❌ Init error:',err);
-    const t=$('#toast');
-    if(t){t.textContent='Error saat memuat: '+err.message;t.classList.add('show','error');}
+    const t=$('#toast');if(t){t.textContent='Error: '+err.message;t.classList.add('show','error');}
   }
 }
 
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-   </html>
+</html>
