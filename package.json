@@ -1,0 +1,10 @@
+{
+  "name": "syon-ai",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.3",
+    "bcryptjs": "^2.4.3",
+    "resend": "^4.0.1"
+  }
+}
