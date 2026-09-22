@@ -200,6 +200,10 @@ textarea#input::placeholder{color:var(--text-2)}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,92,255,.1)}
 .field .help{font-size:11.5px;color:var(--text-2);margin-top:6px;line-height:1.5}
 .field .help a{color:var(--accent)}
+.key-input-wrap{position:relative}
+.key-input-wrap input{padding-right:44px!important;font-family:var(--font-mono)!important;font-size:13px!important}
+.key-toggle-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-2);cursor:pointer;padding:6px;display:flex;border-radius:6px;transition:background .12s,color .12s}
+.key-toggle-btn:hover{background:var(--bg-2);color:var(--text-0)}
 .range-row{display:flex;align-items:center;gap:10px}
 .range-row input[type=range]{flex:1;padding:0;accent-color:var(--accent)}
 .range-val{font-size:12px;color:var(--text-2);min-width:44px;text-align:right;font-family:var(--font-mono)}
@@ -275,7 +279,6 @@ textarea#input::placeholder{color:var(--text-2)}
 .shortcut-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
 .shortcut-row:last-child{border-bottom:none}
 
-/* Loading overlay */
 #loadingOverlay{position:fixed;inset:0;background:var(--bg-0);display:none;align-items:center;justify-content:center;flex-direction:column;gap:16px;z-index:3000}
 #loadingOverlay.show{display:flex}
 .loader-spinner{width:48px;height:48px;border:3px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite}
@@ -450,8 +453,13 @@ Keluar</button>
 <div class="modal-body">
 <div class="field">
 <label style="font-size:14px;font-weight:600">All Detect Model AI</label>
-<input type="password" id="autoDetectKeyInput" placeholder="Paste API key dari provider apa aja..." autocomplete="off" style="font-family:var(--font-mono);font-size:13px;padding:14px">
-<div class="help">Paste key dari <b>Groq, Gemini, OpenAI, OpenRouter, Anthropic, DeepSeek, Mistral, xAI, Together, Fireworks, Perplexity, Cohere, Aerolink, Cerebras, NVIDIA, HuggingFace</b>, dan 40+ lainnya. Sistem otomatis deteksi.</div>
+<div class="key-input-wrap">
+<input type="text" id="autoDetectKeyInput" placeholder="Paste API key di sini..." autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text" style="-webkit-text-security:disc">
+<button type="button" class="key-toggle-btn" id="toggleKeyVisibility" title="Lihat key">
+<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+</button>
+</div>
+<div class="help">Paste key dari <b>Groq, Gemini, OpenAI, OpenRouter, Anthropic, DeepSeek, Mistral, xAI, Together, Fireworks, Perplexity, Cohere, Aerolink, Cerebras, NVIDIA, HuggingFace</b>, dan 40+ lainnya.</div>
 </div>
 <button class="btn-primary" id="autoDetectSubmit" style="padding:14px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Deteksi & Tambah</button>
 <div class="detect-log" id="autoDetectLog"></div>
@@ -527,7 +535,7 @@ Keluar</button>
 
 <script>
 /* ============================================================
-   SYON AI v16 — Auto-Save Akun + CORS Proxy + 50+ Provider
+   SYON AI v17 — Auto-Fix Model Deprecated + Toggle Key + Auto-Save
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
@@ -580,7 +588,7 @@ const SHORTCUTS = [
 /* ============ 50+ PROVIDERS ============ */
 const PROVIDERS = {
   syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2'],modelsEndpoint:null,modelsParser:null,keyPrefix:null},
-  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:[],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
+  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.5-flash','gemini-2.5-pro','gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash-latest','gemini-1.5-pro-latest','gemini-1.5-flash-8b-latest'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
   groq:{name:'Groq',type:'openai',url:'https://api.groq.com/openai/v1/chat/completions',keyUrl:'https://console.groq.com/keys',free:true,vision:false,models:[],modelsEndpoint:'https://api.groq.com/openai/v1/models',modelsParser:'openai',keyPrefix:'gsk_'},
   openrouter:{name:'OpenRouter',type:'openai',url:'https://openrouter.ai/api/v1/chat/completions',keyUrl:'https://openrouter.ai/keys',free:true,vision:true,models:[],modelsEndpoint:'https://openrouter.ai/api/v1/models',modelsParser:'openrouter',keyPrefix:'sk-or-'},
   openai:{name:'OpenAI',type:'openai',url:'https://api.openai.com/v1/chat/completions',keyUrl:'https://platform.openai.com/api-keys',free:false,vision:true,models:[],modelsEndpoint:'https://api.openai.com/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
@@ -635,7 +643,7 @@ const state = {
   initialized:false
 };
 
-const LS='syon_v16';
+const LS='syon_v17';
 
 function defaultSettings(){
   return {
@@ -647,7 +655,6 @@ function defaultSettings(){
   };
 }
 
-/* ============ AUTO-SAVE STORAGE ============ */
 function loadAll(){
   try{
     const raw=localStorage.getItem(LS);
@@ -709,6 +716,24 @@ function toast(msg,isErr){
 }
 function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,200)+'px';}
 function showLoading(show){const el=$('#loadingOverlay');if(el)el.classList.toggle('show',!!show);}
+
+/* ============ AUTO-FIX MODEL DEPRECATED ============ */
+function parseModelSuggestion(msg){
+  if(!msg)return null;
+  // Pola: "use models/gemini-X.X-flash"
+  let m=msg.match(/use\s+models\/([a-zA-Z0-9\-\.]+)/i);
+  if(m)return m[1];
+  // Pola: "update to models/gemini-X"
+  m=msg.match(/update\s+(?:your\s+code\s+)?to\s+(?:use\s+)?models\/([a-zA-Z0-9\-\.]+)/i);
+  if(m)return m[1];
+  // Pola: "did you mean gemini-X"
+  m=msg.match(/did you mean\s+([a-zA-Z0-9\-\.]+)/i);
+  if(m)return m[1];
+  // Pola: cari "gemini-X.X-xxx" di message
+  m=msg.match(/\b(gemini-[a-zA-Z0-9\-\.]+)\b/i);
+  if(m)return m[1];
+  return null;
+}
 
 /* ============ BACKEND API ============ */
 async function apiCall(action,body={},useAuth=false){
@@ -893,7 +918,7 @@ async function callGemini(apiKey,model,messages,onDelta,signal){
   if(systemText)body.systemInstruction={parts:[{text:systemText.trim()}]};
   const url=PROVIDERS.gemini.url+'/models/'+model+':streamGenerateContent?alt=sse';
   const res=await fetchWithRetry(url,{method:'POST',signal,headers:{'Content-Type':'application/json','x-goog-api-key':apiKey},body:JSON.stringify(body)},1);
-  if(!res.ok){const t=await res.text().catch(()=>'');throw new Error('HTTP '+res.status+': '+(t.slice(0,200)||res.statusText));}
+  if(!res.ok){const t=await res.text().catch(()=>'');throw new Error('HTTP '+res.status+': '+(t.slice(0,500)||res.statusText));}
   const reader=res.body.getReader();const decoder=new TextDecoder();let buf='';
   while(true){const{value,done}=await reader.read();if(done)break;buf+=decoder.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){const st=line.trim();if(!st.startsWith('data:'))continue;const data=st.slice(5).trim();if(!data)continue;try{const j=JSON.parse(data);const txt=j.candidates?.[0]?.content?.parts?.map(p=>p.text).join('')||'';if(txt)onDelta(txt);}catch(e){}}}
 }
@@ -911,6 +936,8 @@ async function callAnthropic(apiKey,model,messages,onDelta,signal){
   const reader=res.body.getReader();const decoder=new TextDecoder();let buf='';
   while(true){const{value,done}=await reader.read();if(done)break;buf+=decoder.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){const st=line.trim();if(!st.startsWith('data:'))continue;const data=st.slice(5).trim();if(!data)continue;try{const j=JSON.parse(data);if(j.type==='content_block_delta'&&j.delta?.text)onDelta(j.delta.text);}catch(e){}}}
 }
+
+/* ============ STREAM CHAT dengan AUTO-FIX MODEL ============ */
 async function streamChat(onDelta,signal){
   const s=currentSettings();const p=s.provider;const cfg=PROVIDERS[p];
   if(cfg.type==='syonbot'){
@@ -929,7 +956,24 @@ async function streamChat(onDelta,signal){
     if(messages[0]?.role==='system')messages[0].content+='\n\nSEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>.';
     else messages.unshift({role:'system',content:'SEBELUM menjawab, tuliskan proses berpikirmu di dalam <thinking>...</thinking>.'});
   }
-  if(cfg.type==='gemini')return callGemini(key,s.model,messages,onDelta,signal);
+
+  if(cfg.type==='gemini'){
+    try{
+      return await callGemini(key,s.model,messages,onDelta,signal);
+    }catch(err){
+      // Auto-fix kalau model deprecated
+      const msg=err.message||'';
+      const suggested=parseModelSuggestion(msg);
+      if(suggested&&suggested!==s.model){
+        console.log('Auto-switch model:',s.model,'→',suggested);
+        toast('Model deprecated, auto-switch ke '+suggested);
+        s.model=suggested;
+        saveAll();updateTopbar();
+        return await callGemini(key,s.model,messages,onDelta,signal);
+      }
+      throw err;
+    }
+  }
   if(cfg.type==='anthropic')return callAnthropic(key,s.model,messages,onDelta,signal);
   const providerCfg=p==='custom'?{...cfg,url:s.customUrl}:cfg;
   return callOpenAICompatible(providerCfg,key||'none',s.model,messages,onDelta,signal);
@@ -945,10 +989,8 @@ function parseModels(j,parser){
 
 async function fetchDirect(url,headers,timeoutMs=7000){
   const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),timeoutMs);
-  try{
-    const r=await fetch(url,{headers,signal:ctrl.signal});
-    return r;
-  }finally{clearTimeout(t);}
+  try{return await fetch(url,{headers,signal:ctrl.signal});}
+  finally{clearTimeout(t);}
 }
 
 async function fetchViaProxy(url,headers,timeoutMs=15000){
@@ -964,7 +1006,6 @@ async function fetchViaProxy(url,headers,timeoutMs=15000){
       try{
         const r=await fetch(proxyUrl,{signal:ctrl.signal});
         if(r.ok)return r;
-        if(r.status===401||r.status===403)throw new Error('HTTP '+r.status);
         lastErr=new Error('HTTP '+r.status);
       }finally{clearTimeout(t);}
     }catch(e){lastErr=e;continue;}
@@ -980,22 +1021,17 @@ async function tryFetchModels(pid,apiKey){
   else if(pid==='anthropic'){headers['x-api-key']=apiKey;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
   else headers['Authorization']='Bearer '+apiKey;
 
-  // 1. Coba direct dulu
   try{
     const r=await fetchDirect(cfg.modelsEndpoint,headers,6000);
     if(r.ok){
       const j=await r.json();
       return{models:parseModels(j,cfg.modelsParser)};
     }
-    if(r.status===401||r.status===403){
-      throw new Error('Key invalid (HTTP '+r.status+')');
-    }
+    if(r.status===401||r.status===403)throw new Error('Key invalid (HTTP '+r.status+')');
   }catch(e){
     if(e.message&&(e.message.includes('Key invalid')||e.message.includes('401')||e.message.includes('403')))throw e;
-    // CORS/network error → lanjut ke proxy
   }
 
-  // 2. Fallback via CORS proxy
   const r2=await fetchViaProxy(cfg.modelsEndpoint,headers,15000);
   if(!r2.ok)throw new Error('Proxy HTTP '+r2.status);
   const j2=await r2.json();
@@ -1068,7 +1104,7 @@ async function detectProviderFromKey(apiKey){
       log('bad',cfg.name+' — '+(e.message||'gagal').slice(0,50));
     }
   }
-  log('warn','Tidak ada provider yang cocok. Cek lagi key-nya.');
+  log('warn','Tidak ada provider yang cocok.');
   return null;
 }
 
@@ -1682,16 +1718,6 @@ async function doLogout(){
   location.reload();
 }
 
-/* ============ AUTO-SAVE INDICATOR ============ */
-function showAutoSaveIndicator(){
-  const t=$('#toast');
-  if(!t)return;
-  t.textContent='Data tersimpan otomatis';
-  t.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t=setTimeout(()=>t.classList.remove('show'),1500);
-}
-
 /* ============ INIT ============ */
 async function init(){
   try{
@@ -1700,7 +1726,7 @@ async function init(){
     if('speechSynthesis' in window){loadVoices();speechSynthesis.onvoiceschanged=()=>{loadVoices();populateVoiceSelect();};}
     initAuthScreen();
 
-    // AUTO-LOGIN — cek session tersimpan
+    // AUTO-LOGIN
     if(state.token&&!state.isGuest){
       showLoading(true);
       const u=await apiMe();
@@ -1708,7 +1734,6 @@ async function init(){
       if(u){state.user=u;saveAll();enterApp();}
       else{state.token=null;state.user=null;saveAll();}
     } else if(state.isGuest&&state.user&&state.activeProfileId){
-      // Tamu tetap tersimpan
       enterApp();
     }
 
@@ -1762,6 +1787,13 @@ async function init(){
     $('#autoDetectSubmit')?.addEventListener('click',handleAutoDetect);
     $('#autoDetectKeyInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleAutoDetect();});
 
+    // TOGGLE KEY VISIBILITY
+    $('#toggleKeyVisibility')?.addEventListener('click',()=>{
+      const inp=$('#autoDetectKeyInput');if(!inp)return;
+      const isHidden=inp.style.webkitTextSecurity==='disc';
+      inp.style.webkitTextSecurity=isHidden?'none':'disc';
+    });
+
     $('#activeProvider')?.addEventListener('change',e=>{
       captureCurrentInputs();const s=currentSettings();
       s.provider=e.target.value;
@@ -1806,17 +1838,13 @@ async function init(){
 
     window.addEventListener('resize',()=>setTimeout(()=>scrollToBottom(),150));
 
-    // Auto-save setiap 30 detik
+    // AUTO-SAVE
     setInterval(()=>{if(state.initialized)saveAll();},30000);
-
-    // Save on beforeunload
     window.addEventListener('beforeunload',()=>saveAll());
-
-    // Save on visibility change (mobile)
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('Syon AI v16 — Auto-save aktif');
+    console.log('Syon AI v17 — Auto-save + Auto-fix model aktif');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
