@@ -2297,12 +2297,18 @@ function initAuthScreen(){
     initG();
   }
 }
-function decodeJwt(token){try{const p=token.split('.')[1];return JSON.parse(atob(p.replace(/-/g,'+').replace(/_/g,'/')));}catch(e){return null;}}
+
+/* ⚡ PERUBAHAN UTAMA: verify Google JWT di backend */
 async function handleGoogleCredential(resp){
-  const j=decodeJwt(resp.credential);if(!j){toast('Gagal decode',true);return;}
-  try{const data=await apiCall('google-sync',{email:j.email,name:j.name||j.email,googleId:j.sub,picture:j.picture});await afterLogin(data.user,data.token,false);toast('Masuk: '+data.user.name);}
-  catch(e){toast('Login Google gagal: '+e.message,true);}
+  try{
+    const data = await apiCall('google-sync', { credential: resp.credential });
+    await afterLogin(data.user, data.token, false);
+    toast('Masuk: ' + data.user.name);
+  } catch(e){
+    toast('Login Google gagal: ' + e.message, true);
+  }
 }
+
 async function doLogout(){
   if(!confirm('Keluar dari akun ini?'))return;
   if(!state.isGuest&&state.token){try{await apiCall('logout',{},true);}catch(e){}}
@@ -2523,4 +2529,4 @@ async function init(){
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-   </html>
+                                                                                                                                                                                                                                                                                                                          </html>
