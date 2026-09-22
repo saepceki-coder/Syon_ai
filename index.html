@@ -1,4 +1,4 @@
-.<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
 <meta charset="UTF-8" />
@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css" id="hljs-theme" />
 <script src="https://accounts.google.com/gsi/client" async defer></script>
 <style>
-:root{--bg-0:#fff;--bg-1:#f9f9f9;--bg-2:#ececf1;--bg-3:#e5e5e5;--border:#e5e5e5;--text-0:#0d0d0d;--text-1:#565869;--text-2:#8e8ea0;--accent:#0b5cff;--accent-soft:#e8f0ff;--success:#10a37f;--danger:#ef4444;--warn:#f59e0b;--radius:14px;--font-mono:'JetBrains Mono',Consolas,monospace}
+:root{--bg-0:#fff;--bg-1:#f9f9f9;--bg-2:#ececf1;--bg-3:#e5e5e5;--border:#e5e5e5;--text-0:#0d0d0d;--text-1:#565869;--text-2:#8e8ea0;--accent:#0b5cff;--accent-soft:#e8f0ff;--success:#10a37f;--danger:#ef4444;--warn:#f59e0b;--font-mono:'JetBrains Mono',Consolas,monospace}
 [data-theme="dark"]{--bg-0:#0d0d0d;--bg-1:#171717;--bg-2:#212121;--bg-3:#2f2f2f;--border:#2f2f2f;--text-0:#ececec;--text-1:#b4b4b4;--text-2:#8e8e8e;--accent:#4d8eff;--accent-soft:#1a2740}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%;background:var(--bg-0);color:var(--text-0);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:15px;overflow:hidden;-webkit-font-smoothing:antialiased}
@@ -71,6 +71,7 @@ body{display:flex;height:100vh;height:100dvh}
 .auth-icon{display:flex;justify-content:center;align-items:center;margin-bottom:12px;color:var(--accent)}
 .auth-title{text-align:center;font-size:14px;font-weight:600;margin-bottom:4px}
 .auth-desc{text-align:center;font-size:12.5px;color:var(--text-2);line-height:1.5;margin-bottom:6px}
+.auth-desc b{color:var(--accent)}
 #googleBtnWrapper{width:100%;display:flex;flex-direction:column;gap:8px;margin-top:8px;align-items:center}
 #googleBtnWrapper > div{width:100% !important}
 .guest-btn{width:100%;padding:11px;background:var(--bg-2);color:var(--text-0);border:1px solid transparent;border-radius:10px;font-weight:500;font-size:13.5px;cursor:pointer;font-family:inherit;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
@@ -97,6 +98,7 @@ body{display:flex;height:100vh;height:100dvh}
 .chat-item::before{content:'';position:absolute;left:6px;top:50%;transform:translateY(-50%);width:2px;height:0;background:var(--accent);border-radius:2px;transition:height .2s}
 .chat-item.active::before{height:60%}
 .chat-item .title{flex:1;overflow:hidden;text-overflow:ellipsis}
+.chat-item .title-input{flex:1;background:var(--bg-0);border:1px solid var(--accent);border-radius:6px;padding:2px 6px;font-size:13.5px;color:var(--text-0);outline:none;font-family:inherit}
 .chat-item .pin,.chat-item .del{opacity:0;background:none;border:none;color:var(--text-2);cursor:pointer;padding:3px;display:flex;border-radius:5px}
 .chat-item:hover .pin,.chat-item:hover .del{opacity:1}
 .chat-item .pin.active{opacity:1;color:var(--accent)}
@@ -118,7 +120,6 @@ body{display:flex;height:100vh;height:100dvh}
 .icon-top.active{color:var(--accent)}
 .icon-top.think-active{color:var(--accent);background:rgba(77,142,255,.1)}
 .icon-top.search-active{color:var(--success);background:rgba(16,163,127,.1)}
-.icon-top.combo-active{color:#8b5cf6;background:rgba(139,92,246,.12)}
 .chat-scroll{flex:1;overflow-y:auto;padding:8px 16px 140px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 .chat-inner{max-width:740px;margin:0 auto}
 .welcome{text-align:center;padding:60px 20px 40px;display:flex;flex-direction:column;align-items:center;gap:14px}
@@ -203,7 +204,6 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 .field textarea{resize:vertical;min-height:70px;line-height:1.5}
 .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,92,255,.1)}
 .field .help{font-size:11.5px;color:var(--text-2);margin-top:6px;line-height:1.5}
-.field .help a{color:var(--accent)}
 .key-input-wrap{position:relative}
 .key-input-wrap input{padding-right:44px!important;font-family:var(--font-mono)!important;font-size:13px!important}
 .key-input-wrap input[type="text"]{-webkit-text-security:disc}
@@ -264,7 +264,6 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 ::-webkit-scrollbar-thumb{background:var(--bg-3);border-radius:4px;border:2px solid var(--bg-0)}
 .kbd{font-family:var(--font-mono);background:var(--bg-2);padding:2px 7px;border-radius:5px;font-size:11px;border:1px solid var(--border)}
 .shortcut-row{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);font-size:13px}
-.combo-card{padding:14px;background:linear-gradient(135deg,rgba(11,92,255,.06),rgba(139,92,246,.06));border:1px solid var(--accent);border-radius:12px;margin-bottom:20px}
 @media (max-width:768px){
 .sidebar{position:fixed;top:0;bottom:0;left:0;transform:translateX(-100%);box-shadow:8px 0 30px rgba(0,0,0,.15);transition:transform .25s}
 .sidebar.open{transform:translateX(0)}
@@ -280,8 +279,7 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <body>
 
 <div id="loadingOverlay"><div class="loader-spinner"></div><div class="loader-text">Memuat...</div></div>
-
-<div class="save-indicator" id="saveIndicator"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg></div>
+<div class="save-indicator" id="saveIndicator"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
 
 <div id="loginScreen">
 <div class="login-card">
@@ -293,8 +291,8 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <button class="auth-tab" data-tab="register">Daftar</button>
 </div>
 <div class="auth-panel active" id="panelLogin">
-<input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
-<input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password">
+<input type="email" id="loginEmail" placeholder="Email">
+<input type="password" id="loginPassword" placeholder="Password">
 <button class="auth-submit" id="loginSubmit">Masuk</button>
 <button type="button" class="auth-link" id="forgotPasswordBtn">Lupa password?</button>
 </div>
@@ -308,7 +306,7 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <div class="auth-icon"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="20" height="16" rx="3"/><path d="M22 7l-10 6L2 7"/></svg></div>
 <div class="auth-title">Cek Email Kamu</div>
 <div class="auth-desc">Kode dikirim ke <b id="verifyEmailDisplay">email</b></div>
-<input type="text" id="verifyCode" placeholder="000000" maxlength="6" inputmode="numeric">
+<input type="text" id="verifyCode" placeholder="000000" maxlength="6">
 <button class="auth-submit" id="verifySubmit">Verifikasi</button>
 <button type="button" class="auth-link" id="resendOtpBtn">Kirim ulang kode</button>
 <button type="button" class="auth-link muted" id="backToLoginBtn">Kembali ke Masuk</button>
@@ -325,7 +323,7 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <div class="auth-icon"><svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
 <div class="auth-title">Reset Password</div>
 <div class="auth-desc">Kode dikirim ke <b id="resetEmailDisplay">email</b></div>
-<input type="text" id="resetCode" placeholder="000000" maxlength="6" inputmode="numeric">
+<input type="text" id="resetCode" placeholder="000000" maxlength="6">
 <input type="password" id="resetPassword" placeholder="Password baru (min 6)">
 <button class="auth-submit" id="resetSubmit">Reset Password</button>
 <button type="button" class="auth-link muted" id="backFromResetBtn">Kembali ke Masuk</button>
@@ -344,7 +342,7 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <div class="profile-avatar" id="headerAvatar">S</div>
 <div class="brand" id="headerName">Syon 1.0</div>
 </div>
-<button class="new-chat-btn" id="newChatBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Obrolan Baru</button>
+<button class="new-chat-btn" id="newChatBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Obrolan Baru</button>
 <div class="search-box"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--text-2)" stroke-width="2.2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><input type="text" id="searchChats" placeholder="Cari obrolan" /></div>
 <div class="chat-list" id="chatList"></div>
 <div class="sidebar-footer">
@@ -359,7 +357,6 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <button class="menu-btn" id="menuBtn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
 <div class="model-pill" id="modelPill"><span class="dot" id="statusDot"></span><span class="name" id="modelName">Syon 1.0</span><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg></div>
 <div class="spacer"></div>
-<button class="icon-top" id="comboModeBtn" title="Mode Cerdas"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="12" r="3"/><line x1="8.5" y1="7.5" x2="15.5" y2="10.5"/><line x1="8.5" y1="16.5" x2="15.5" y2="13.5"/></svg></button>
 <button class="icon-top" id="thinkModeBtn" title="Mode Berpikir"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg></button>
 <button class="icon-top" id="searchModeBtn" title="Cari Web"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></button>
 <button class="icon-top" id="voiceToggleBtn" title="Suara AI"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
@@ -384,25 +381,6 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 </main>
 </div>
 
-<div class="modal-backdrop" id="comboModal">
-<div class="modal" style="max-width:600px">
-<div class="modal-head"><h2>⚙️ Konfigurasi Syon 1.0</h2><button class="close" id="closeCombo">×</button></div>
-<div class="modal-body">
-<div class="combo-card">
-<label style="display:flex;align-items:center;gap:10px;cursor:pointer;margin-bottom:8px">
-<input type="checkbox" id="comboToggle" style="width:auto">
-<span style="font-size:14px;font-weight:700">🚀 Aktifkan Mode Cerdas</span>
-</label>
-<div class="help" style="margin:0">Syon 1.0 otomatis memilih otak terbaik untuk setiap pertanyaan. Kamu cukup ngobrol seperti biasa.</div>
-</div>
-<div class="field"><label>🧠 Kepribadian Umum</label><select id="comboGeneral"></select><div class="help">Untuk ngobrol santai, nulis artikel, tanya umum.</div></div>
-<div class="field"><label>💻 Spesialis Coding</label><select id="comboCoding"></select><div class="help">Untuk programming, algoritma, debugging.</div></div>
-<div class="field"><label>⚡ Mode Kilat</label><select id="comboFast"></select><div class="help">Untuk sapaan, hitungan cepat, obrolan singkat.</div></div>
-<button class="btn-primary" id="saveCombo" style="padding:14px;font-size:14px">Simpan Konfigurasi</button>
-</div>
-</div>
-</div>
-
 <div class="modal-backdrop" id="settingsModal">
 <div class="modal">
 <div class="modal-head"><h2>Pengaturan</h2><button class="close" id="closeSettings">×</button></div>
@@ -411,7 +389,7 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <div class="field"><label>Model</label><select id="modelSelect"></select></div>
 <div class="field">
 <button class="btn-primary" id="openAddAiBtn" style="padding:13px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Tambah AI Baru (Auto-Detect)</button>
-<div class="help">Paste API key dari provider apa aja — sistem otomatis deteksi.</div>
+<div class="help">Paste API key dari provider apa aja — sistem otomatis deteksi dan atur.</div>
 </div>
 <div class="field"><label>Parameter</label>
 <div style="display:flex;gap:12px">
@@ -437,7 +415,7 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <button type="button" class="key-toggle-btn" id="toggleKeyVisibility"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
 </div>
 <button type="button" class="btn-secondary" id="pasteKeyBtn" style="margin-top:8px">Paste dari Clipboard</button>
-<div class="help">Paste key dari <b>Groq, Gemini, OpenAI, OpenRouter, Anthropic, DeepSeek, Mistral, xAI</b>, dan 50+ lainnya.</div>
+<div class="help">Paste key dari <b>OpenRouter, Groq, Gemini, OpenAI, Anthropic, DeepSeek</b>, dan lainnya. Sistem otomatis atur otak terbaik.</div>
 </div>
 <button class="btn-primary" id="autoDetectSubmit" style="padding:14px;font-size:14px">Deteksi & Tambah</button>
 <div class="detect-log" id="autoDetectLog"></div>
@@ -462,6 +440,19 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 <div class="modal">
 <div class="modal-head"><h2>Akun</h2><button class="close" id="closeProfile">×</button></div>
 <div class="modal-body"><div id="profileList"></div></div>
+</div>
+</div>
+
+<div class="modal-backdrop" id="modelModal">
+<div class="modal" style="max-width:420px">
+<div class="modal-head"><h2>Ganti Model</h2><button class="close" id="closeModel">×</button></div>
+<div class="modal-body">
+<div class="field"><label>Provider</label><select id="quickProvider"></select></div>
+<div class="field"><label>Model</label><select id="quickModel"></select>
+<button type="button" class="btn-secondary" id="favModelBtn" style="margin-top:8px;font-size:12.5px;padding:8px">★ Tandai Favorit</button>
+</div>
+<button class="btn-primary" id="applyModel">Terapkan</button>
+</div>
 </div>
 </div>
 
@@ -492,11 +483,58 @@ textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:
 /* ============================================================
    SYON 1.0 — CORE
    ============================================================ */
-
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 const API_BASE = '/api/auth';
 const LS = 'syon_v21_data';
 const OLD_LS_KEYS = ['syon_data','syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
+
+/* ============ AUTO-MAPPER — Pilih otak otomatis ============ */
+const AUTO_MAP = {
+  coding: [
+    /qwen.*coder/i, /qwen3.*coder/i, /qwen2\.5.*coder/i,
+    /qwen.*72/i, /qwen.*32/i, /qwen3/i, /qwen2\.5/i, /qwen/i,
+    /deepseek.*coder/i, /deepseek.*v3/i, /deepseek.*r1/i, /deepseek/i,
+    /codellama/i, /starcoder/i, /codegemma/i, /code-?llama/i,
+    /claude.*sonnet/i, /gpt-4.*turbo/i
+  ],
+  general: [
+    /gpt-oss-120/i, /gpt-4o(?!-mini)/i, /gpt-4-turbo/i, /gpt-4(?!o)/i,
+    /claude.*opus/i, /claude-3-5-sonnet/i, /claude-3\.7/i, /claude.*sonnet/i,
+    /llama-3\.3-70/i, /llama-3\.1-70/i, /llama-3-70/i, /llama.*70b/i,
+    /qwen.*72/i, /qwen2\.5-72/i,
+    /gemini-2\.5-pro/i, /gemini-2\.0-pro/i, /gemini-1\.5-pro/i,
+    /gemini-2\.5-flash/i, /gemini-2\.0-flash/i, /gemini-1\.5-flash/i,
+    /mixtral.*8x/i, /command-r-plus/i
+  ],
+  fast: [
+    /gpt-oss-20/i, /gpt-4o-mini/i,
+    /llama-3\.2-3/i, /llama-3\.2-1/i, /llama-3\.1-8/i, /llama-3-8/i,
+    /gemini.*flash.*8/i, /gemini-2\.0-flash-lite/i, /gemini-2\.5-flash-lite/i,
+    /haiku/i, /mini/i, /small/i, /instant/i,
+    /(?:^|[^0-9])(3b|7b|8b|1b)(?:[^0-9]|$)/i
+  ]
+};
+
+function autoConfigCombo(models){
+  const result = {general:'', coding:'', fast:''};
+  const used = new Set();
+  for(const p of AUTO_MAP.coding){
+    const m = models.find(x => p.test(x) && !used.has(x));
+    if(m){ result.coding = m; used.add(m); break; }
+  }
+  for(const p of AUTO_MAP.general){
+    const m = models.find(x => p.test(x) && !used.has(x));
+    if(m){ result.general = m; used.add(m); break; }
+  }
+  for(const p of AUTO_MAP.fast){
+    const m = models.find(x => p.test(x) && !used.has(x));
+    if(m){ result.fast = m; used.add(m); break; }
+  }
+  if(!result.coding) result.coding = result.general || models[0];
+  if(!result.general) result.general = models[0];
+  if(!result.fast) result.fast = models[models.length-1] || models[0];
+  return result;
+}
 
 /* ============ PROMPT LIBRARY ============ */
 const PROMPT_LIBRARY = [
@@ -509,7 +547,6 @@ const PROMPT_LIBRARY = [
   {t:'Ide Konten',d:'10 ide konten',p:'Kasih 10 ide konten [TOPIK] untuk media sosial.'},
   {t:'Roadmap',d:'Belajar 30 hari',p:'Buat roadmap belajar [SKILL] untuk pemula selama 30 hari.'}
 ];
-
 const SHORTCUTS = [
   ['Ctrl / Cmd + K','Fokus pencarian'],
   ['Ctrl / Cmd + N','Chat baru'],
@@ -518,14 +555,14 @@ const SHORTCUTS = [
   ['Ctrl / Cmd + /','Buka panel ini'],
   ['Ctrl / Cmd + T','Toggle Mode Berpikir'],
   ['Ctrl / Cmd + R','Toggle Cari Web'],
-  ['Ctrl / Cmd + B','Toggle Mode Cerdas'],
   ['Enter','Kirim pesan'],
   ['Shift + Enter','Baris baru'],
   ['Escape','Tutup modal']
 ];
 
-/* ============ PROVIDERS (TANPA SYONBOT) ============ */
+/* ============ PROVIDERS ============ */
 const PROVIDERS = {
+  syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2'],modelsEndpoint:null,modelsParser:null,keyPrefix:null},
   gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash-latest','gemini-1.5-pro-latest'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
   groq:{name:'Groq',type:'openai',url:'https://api.groq.com/openai/v1/chat/completions',keyUrl:'https://console.groq.com/keys',free:true,vision:false,models:[],modelsEndpoint:'https://api.groq.com/openai/v1/models',modelsParser:'openai',keyPrefix:'gsk_'},
   openrouter:{name:'OpenRouter',type:'openai',url:'https://openrouter.ai/api/v1/chat/completions',keyUrl:'https://openrouter.ai/keys',free:true,vision:true,models:[],modelsEndpoint:'https://openrouter.ai/api/v1/models',modelsParser:'openrouter',keyPrefix:'sk-or-'},
@@ -567,9 +604,9 @@ const state = {
 
 function defaultSettings(){
   return {
-    provider:'',model:'',
+    provider:'syonbot',model:'syon-v2',
     keys:{},keyStatus:{},fetchedModels:{},
-    systemPrompt:'Kamu adalah Syon 1.0, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap.',
+    systemPrompt:'Kamu adalah Syon 1.0, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu.',
     customUrl:'',customModels:'',
     thinking:false,temperature:0.7,maxTokens:2048,
     favModels:[],
@@ -609,7 +646,6 @@ function loadAll(){
   if(!state.settingsByUser) state.settingsByUser = {};
   if(!state.pinnedChats) state.pinnedChats = {};
 }
-
 function saveAll(){
   try{
     localStorage.setItem(LS, JSON.stringify({
@@ -652,25 +688,19 @@ function currentChats(){const id = getUserId();return state.chatsByUser[id] || (
 function currentChatId(){return state.activeChatByUser[getUserId()];}
 function setCurrentChatId(id){state.activeChatByUser[getUserId()] = id;}
 function getActiveChat(){return currentChats().find(c => c.id === currentChatId());}
-
 function toast(msg, isErr){
   const t = $('#toast'); if(!t) return;
-  t.textContent = msg;
-  t.classList.toggle('error', !!isErr);
-  t.classList.add('show');
-  clearTimeout(toast._t);
-  toast._t = setTimeout(() => t.classList.remove('show'), 3200);
+  t.textContent = msg; t.classList.toggle('error', !!isErr); t.classList.add('show');
+  clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 3200);
 }
 function autoGrow(el){el.style.height = 'auto';el.style.height = Math.min(el.scrollHeight, 200) + 'px';}
 function showLoading(show){const el = $('#loadingOverlay');if(el) el.classList.toggle('show', !!show);}
-
 function isChatModel(id){
-  const bad = ['whisper','tts','dall-e','embedding','embed-','moderation','image-','sora','text-embedding','gpt-image','audio'];
+  const bad = ['whisper','tts','dall-e','embedding','embed-','moderation','image-','sora','text-embedding','gpt-image','audio','rerank'];
   const low = String(id||'').toLowerCase();
   if(low === 'gemini-api' || low === 'gemini') return false;
   return !bad.some(b => low.includes(b));
 }
-
 function parseModelSuggestion(msg){
   if(!msg) return null;
   let m = msg.match(/use\s+models\/([a-zA-Z0-9\-\.]+)/i); if(m) return m[1];
@@ -686,7 +716,7 @@ function renderMarkdown(text){
   const m = text.match(/<thinking>([\s\S]*?)<\/thinking>/i);
   if(m){thinking = m[1].trim();main = text.replace(m[0], '').trim();}
   let html = '';
-  if(thinking){
+  if(thinking && state.thinkingMode){
     html += '<details class="thinking-block" open><summary><span class="brain-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg></span> Proses Berpikir Syon 1.0</summary><div class="think-body">' + esc(thinking) + '</div></details>';
   }
   html += DOMPurify.sanitize(marked.parse(main || ''), {FORBID_TAGS:['script','iframe','object','embed','form']});
@@ -760,59 +790,11 @@ function tryMath(input){
   }catch(e){return null;}
   return null;
 }
-
-/* ============================================================
-   SYON 1.0 — INTENT DETECTION & ROUTER
-   ============================================================ */
-function detectIntent(text){
-  const t = String(text||'').toLowerCase();
-  if(!t.trim()) return 'general';
-  const codingKw = ['kode','code','coding','program','script','function','fungsi','class','javascript','python','java','c++','cpp','php','html','css','sql','react','vue','node','express','laravel','django','flask','bug','error','debug','compile','syntax','variable','variabel','array','object','loop','if else','api','endpoint','algorithm','algoritma','regex','json','git','npm','pip','database','query','backend','frontend','fullstack','bikin web','buat web','buatkan website','bikin aplikasi','buat program','refactor','perbaiki kode','jelaskan kode','contoh html','contoh python','contoh javascript'];
-  const fastKw = ['halo','hai','hi','hello','hey','apa kabar','kabar','terima kasih','makasih','thanks','thank you','thx','sip','oke','ok','siapa kamu','kamu siapa','nama kamu','bye','dadah','selamat pagi','selamat siang','selamat malam','pagi','siang','malam','berapa','hitung'];
-  const codingHits = codingKw.filter(k => t.includes(k)).length;
-  const fastHits = fastKw.filter(k => t.includes(k)).length;
-  if(codingHits >= 1) return 'coding';
-  if(fastHits >= 1 && t.length < 40) return 'fast';
-  return 'general';
-}
-
-function findProviderForModel(modelId){
-  if(!modelId) return null;
-  const s = currentSettings();
-  const keys = s.keys || {};
-  const fetched = s.fetchedModels || {};
-  for(const pid of Object.keys(keys)){
-    if(!keys[pid]) continue;
-    const list = fetched[pid] || PROVIDERS[pid]?.models || [];
-    if(list.includes(modelId)) return {provider:pid, model:modelId};
-  }
-  for(const pid of Object.keys(keys)){
-    if(!keys[pid]) continue;
-    if((PROVIDERS[pid]?.models||[]).includes(modelId)) return {provider:pid, model:modelId};
-  }
-  return null;
-}
-
-function pickComboModel(intent){
-  const s = currentSettings();
-  const cfg = s.comboConfig || {};
-  let pick = null;
-  if(intent === 'coding')  pick = findProviderForModel(cfg.coding);
-  if(intent === 'fast')    pick = findProviderForModel(cfg.fast);
-  if(intent === 'general') pick = findProviderForModel(cfg.general);
-  if(!pick && cfg.general) pick = findProviderForModel(cfg.general);
-  if(!pick && cfg.fast)    pick = findProviderForModel(cfg.fast);
-  if(!pick && cfg.coding)  pick = findProviderForModel(cfg.coding);
-  if(!pick){
-    const firstKey = Object.keys(s.keys||{}).find(k => s.keys[k]);
-    if(firstKey){
-      const list = s.fetchedModels?.[firstKey] || PROVIDERS[firstKey]?.models || [];
-      pick = {provider:firstKey, model:list[0] || ''};
-    } else {
-      pick = {provider:s.provider, model:s.model};
-    }
-  }
-  return {provider:pick.provider, model:pick.model, apiKey:s.keys[pick.provider] || null};
+function syonBotReply(t){
+  if(!t.trim()) return 'Ketik sesuatu dong.';
+  const math = tryMath(t);
+  if(math) return '**' + math.expr + ' = ' + math.result + '**\n\n_Kalkulator deterministik_';
+  return 'Hmm, aku belum punya jawaban itu. 🤔\n\n**Yang aku kuasai:**\n- 🧮 **Matematika** — coba `12*8+5`\n- 💡 **Umum** — coba `apa itu ai`\n\n**Mau jawaban lebih luas?** Klik ikon ⚙️ dan **Tambah AI Baru** dengan API key! ✨';
 }
 
 /* ============ VOICE ============ */
@@ -822,8 +804,7 @@ function populateVoiceSelect(){
   const sel = $('#voiceSelect'); if(!sel) return;
   loadVoices(); sel.innerHTML = '';
   if(!voicesList.length){
-    const o = document.createElement('option');
-    o.value = ''; o.textContent = '(Belum ada suara)';
+    const o = document.createElement('option'); o.value = ''; o.textContent = '(Belum ada suara)';
     sel.appendChild(o); return;
   }
   const id = voicesList.filter(v => v.lang && v.lang.toLowerCase().startsWith('id'));
@@ -832,8 +813,7 @@ function populateVoiceSelect(){
     if(!arr.length) return;
     const grp = document.createElement('optgroup'); grp.label = label;
     arr.forEach(v => {
-      const o = document.createElement('option');
-      o.value = v.voiceURI; o.textContent = v.name + ' (' + v.lang + ')';
+      const o = document.createElement('option'); o.value = v.voiceURI; o.textContent = v.name + ' (' + v.lang + ')';
       grp.appendChild(o);
     });
     sel.appendChild(grp);
@@ -854,14 +834,10 @@ function speak(text){
   speechSynthesis.speak(u);
 }
 function stopSpeaking(){if('speechSynthesis' in window) speechSynthesis.cancel();}
-</script>
 
-<script>
 /* ============================================================
-   SYON 1.0 — API & CHAT LOGIC
+   API & CHAT
    ============================================================ */
-
-/* ============ BACKEND AUTH ============ */
 async function apiCall(action, body={}, useAuth=false){
   const headers = {'Content-Type':'application/json'};
   if(useAuth && state.token) headers['Authorization'] = 'Bearer ' + state.token;
@@ -893,10 +869,7 @@ async function searchWikipedia(query){
     const j2 = await r2.json();
     const pages = j2.query && j2.query.pages;
     let extract = '';
-    if(pages){
-      const k = Object.keys(pages)[0];
-      extract = pages[k].extract || '';
-    }
+    if(pages){ const k = Object.keys(pages)[0]; extract = pages[k].extract || ''; }
     return {title:top.title, url:'https://id.wikipedia.org/wiki/' + encodeURIComponent(top.title), snippet:top.snippet.replace(/<[^>]+>/g,''), extract:extract.slice(0,1500)};
   }catch(e){ return null; }
 }
@@ -922,7 +895,7 @@ function buildSearchContext(results){
   if(!results || !results.length) return '';
   let ctx = '\n\n[KONTEKS HASIL PENCARIAN WEB]\n';
   results.forEach((r,i) => { ctx += `\n[${i+1}] ${r.title}\nURL: ${r.url}\n${r.snippet}\n`; });
-  ctx += '\n[AKHIR KONTEKS]\nGunakan informasi di atas untuk menjawab. Sebutkan sumber dengan [1], [2] sesuai nomor.\n';
+  ctx += '\n[AKHIR KONTEKS]\nGunakan informasi di atas untuk menjawab. Sebutkan sumber dengan [1], [2].\n';
   return ctx;
 }
 
@@ -932,7 +905,7 @@ function buildMessages(chat, forVision, extraContext){
   const msgs = [];
   let sys = s.systemPrompt || '';
   if(state.thinkingMode){
-    sys += '\n\nINSTRUKSI MODE BERPIKIR: Sebelum memberikan jawaban final, tuliskan proses berpikirmu di dalam tag <thinking>...</thinking>. Setelah tag penutup </thinking>, berikan jawaban final yang rapi dan ringkas.';
+    sys += '\n\nINSTRUKSI MODE BERPIKIR: Sebelum memberikan jawaban final, tuliskan proses berpikirmu di dalam tag <thinking>...</thinking>. Setelah tag penutup </thinking>, berikan jawaban final yang rapi.';
   }
   if(extraContext) sys += '\n\n' + extraContext;
   if(sys) msgs.push({role:'system', content:sys});
@@ -958,11 +931,11 @@ async function callOpenAICompatible(provider, apiKey, model, messages, onDelta, 
   const s = currentSettings();
   const headers = {'Content-Type':'application/json'};
   if(apiKey && apiKey !== 'none') headers['Authorization'] = 'Bearer ' + apiKey;
+  if(provider.url.includes('openrouter')){ headers['HTTP-Referer'] = location.origin; headers['X-Title'] = 'Syon 1.0'; }
   const bodyObj = {model, messages, stream:true, temperature:s.temperature, max_tokens:s.maxTokens};
   let res;
-  try{
-    res = await fetch(provider.url, {method:'POST', signal, headers, body:JSON.stringify(bodyObj)});
-  }catch(corsErr){
+  try{ res = await fetch(provider.url, {method:'POST', signal, headers, body:JSON.stringify(bodyObj)}); }
+  catch(corsErr){
     if(corsErr.name === 'AbortError') throw corsErr;
     bodyObj.stream = false;
     const proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(provider.url);
@@ -983,24 +956,17 @@ async function callOpenAICompatible(provider, apiKey, model, messages, onDelta, 
     if(res.status === 429) hint = ' — rate limit';
     throw new Error('HTTP ' + res.status + hint + '. ' + t.slice(0,200));
   }
-  const reader = res.body.getReader();
-  const decoder = new TextDecoder();
-  let buf = '';
+  const reader = res.body.getReader(); const decoder = new TextDecoder(); let buf = '';
   while(true){
-    const {value, done} = await reader.read();
-    if(done) break;
+    const {value, done} = await reader.read(); if(done) break;
     buf += decoder.decode(value, {stream:true});
-    const lines = buf.split('\n');
-    buf = lines.pop();
+    const lines = buf.split('\n'); buf = lines.pop();
     for(const line of lines){
-      const st = line.trim();
-      if(!st.startsWith('data:')) continue;
-      const data = st.slice(5).trim();
-      if(data === '[DONE]') return;
+      const st = line.trim(); if(!st.startsWith('data:')) continue;
+      const data = st.slice(5).trim(); if(data === '[DONE]') return;
       try{
         const j = JSON.parse(data);
-        const delta = j.choices?.[0]?.delta;
-        if(!delta) continue;
+        const delta = j.choices?.[0]?.delta; if(!delta) continue;
         const reasoning = delta.reasoning_content || delta.reasoning || '';
         if(reasoning && onReasoning) onReasoning(reasoning);
         const content = delta.content || '';
@@ -1045,12 +1011,8 @@ async function callGemini(apiKey, model, messages, onDelta, onReasoning, signal)
   const body = {contents:sanitized, generationConfig:{temperature:s.temperature, maxOutputTokens:s.maxTokens}};
   if(systemText) body.systemInstruction = {parts:[{text:systemText.trim()}]};
   const url = PROVIDERS.gemini.url + '/models/' + model + ':streamGenerateContent?alt=sse';
-  const res = await fetch(url, {
-    method:'POST', signal,
-    headers:{'Content-Type':'application/json', 'x-goog-api-key':apiKey},
-    body:JSON.stringify(body)
-  });
-  if(!res.ok){ const t = await res.text().catch(()=>''); throw new Error('HTTP ' + res.status + ': ' + (t.slice(0,500)||res.statusText)); }
+  const res = await fetch(url, {method:'POST', signal, headers:{'Content-Type':'application/json', 'x-goog-api-key':apiKey}, body:JSON.stringify(body)});
+  if(!res.ok){ const t = await res.text().catch(()=>''); throw new Error('HTTP ' + res.status + ': ' + (t.slice(0,300)||res.statusText)); }
   const reader = res.body.getReader(); const decoder = new TextDecoder(); let buf = '';
   while(true){
     const {value, done} = await reader.read(); if(done) break;
@@ -1072,27 +1034,26 @@ async function callGemini(apiKey, model, messages, onDelta, onReasoning, signal)
 }
 const GEMINI_FALLBACKS = ['gemini-2.0-flash','gemini-1.5-flash-latest','gemini-1.5-flash-8b-latest'];
 async function callGeminiSmart(key, model, messages, onDelta, onReasoning, signal, attempt=1, modelIndex=0){
-  try{
-    return await callGemini(key, model, messages, onDelta, onReasoning, signal);
-  }catch(err){
+  try{ return await callGemini(key, model, messages, onDelta, onReasoning, signal); }
+  catch(err){
     const msg = String(err.message||'').toLowerCase();
-    const isServerBusy = msg.includes('503') || msg.includes('429') || msg.includes('500') || msg.includes('high demand') || msg.includes('unavailable');
-    const isDeprecated = msg.includes('404') || msg.includes('no longer available') || msg.includes('not found');
-    if(isServerBusy && attempt <= 2){
+    const isBusy = msg.includes('503') || msg.includes('429') || msg.includes('500') || msg.includes('high demand') || msg.includes('unavailable');
+    const isDep = msg.includes('404') || msg.includes('no longer available') || msg.includes('not found');
+    if(isBusy && attempt <= 2){
       await new Promise(r => setTimeout(r, attempt*1500));
       if(signal && signal.aborted) throw err;
       return callGeminiSmart(key, model, messages, onDelta, onReasoning, signal, attempt+1, modelIndex);
     }
-    const suggested = parseModelSuggestion(err.message);
-    if(isDeprecated && suggested && suggested !== model){
-      const s = currentSettings(); s.model = suggested; saveAll(); updateTopbar();
-      return callGeminiSmart(key, suggested, messages, onDelta, onReasoning, signal, 1, 0);
+    const sug = parseModelSuggestion(err.message);
+    if(isDep && sug && sug !== model){
+      const s = currentSettings(); s.model = sug; saveAll(); updateTopbar();
+      return callGeminiSmart(key, sug, messages, onDelta, onReasoning, signal, 1, 0);
     }
-    if((isServerBusy || isDeprecated) && modelIndex < GEMINI_FALLBACKS.length){
-      const fallback = GEMINI_FALLBACKS[modelIndex];
-      if(fallback !== model){
-        const s = currentSettings(); s.model = fallback; saveAll(); updateTopbar();
-        return callGeminiSmart(key, fallback, messages, onDelta, onReasoning, signal, 1, modelIndex+1);
+    if((isBusy || isDep) && modelIndex < GEMINI_FALLBACKS.length){
+      const fb = GEMINI_FALLBACKS[modelIndex];
+      if(fb !== model){
+        const s = currentSettings(); s.model = fb; saveAll(); updateTopbar();
+        return callGeminiSmart(key, fb, messages, onDelta, onReasoning, signal, 1, modelIndex+1);
       }
     }
     throw err;
@@ -1145,13 +1106,55 @@ async function callAnthropic(apiKey, model, messages, onDelta, onReasoning, sign
   }
 }
 
-/* ============================================================
-   SYON 1.0 — STREAM CHAT (SEAMLESS)
-   ============================================================ */
+/* ============ INTENT DETECTION ============ */
+function detectIntent(text){
+  const t = String(text||'').toLowerCase();
+  if(!t.trim()) return 'general';
+  const codingKw = ['kode','code','coding','program','script','function','fungsi','class','javascript','python','java','c++','cpp','php','html','css','sql','react','vue','node','express','laravel','django','flask','bug','error','debug','compile','syntax','variable','variabel','array','object','loop','if else','api','endpoint','algorithm','algoritma','regex','json','git','npm','pip','database','query','backend','frontend','fullstack','bikin web','buat web','buatkan website','bikin aplikasi','buat program','refactor','perbaiki kode','jelaskan kode','contoh html','contoh python','contoh javascript'];
+  const fastKw = ['halo','hai','hi','hello','hey','apa kabar','kabar','terima kasih','makasih','thanks','thank you','thx','sip','oke','ok','siapa kamu','kamu siapa','nama kamu','bye','dadah','selamat pagi','selamat siang','selamat malam','pagi','siang','malam','berapa','hitung'];
+  const cHits = codingKw.filter(k => t.includes(k)).length;
+  const fHits = fastKw.filter(k => t.includes(k)).length;
+  if(cHits >= 1) return 'coding';
+  if(fHits >= 1 && t.length < 40) return 'fast';
+  return 'general';
+}
+function findProviderForModel(modelId){
+  if(!modelId) return null;
+  const s = currentSettings();
+  for(const pid of Object.keys(s.keys||{})){
+    if(!s.keys[pid]) continue;
+    const list = s.fetchedModels[pid] || PROVIDERS[pid]?.models || [];
+    if(list.includes(modelId)) return {provider:pid, model:modelId};
+  }
+  for(const pid of Object.keys(s.keys||{})){
+    if(!s.keys[pid]) continue;
+    if((PROVIDERS[pid]?.models||[]).includes(modelId)) return {provider:pid, model:modelId};
+  }
+  return null;
+}
+function pickComboModel(intent){
+  const s = currentSettings();
+  const cfg = s.comboConfig || {};
+  let pick = null;
+  if(intent === 'coding')  pick = findProviderForModel(cfg.coding);
+  if(intent === 'fast')    pick = findProviderForModel(cfg.fast);
+  if(intent === 'general') pick = findProviderForModel(cfg.general);
+  if(!pick && cfg.general) pick = findProviderForModel(cfg.general);
+  if(!pick && cfg.fast)    pick = findProviderForModel(cfg.fast);
+  if(!pick && cfg.coding)  pick = findProviderForModel(cfg.coding);
+  if(!pick){
+    const pid = Object.keys(s.keys||{}).find(k => s.keys[k]);
+    if(pid){
+      const list = s.fetchedModels[pid] || PROVIDERS[pid]?.models || [];
+      pick = {provider:pid, model:list[0] || ''};
+    } else pick = {provider:s.provider, model:s.model};
+  }
+  return pick;
+}
+
+/* ============ STREAM CHAT ============ */
 async function streamChat(onDelta, onReasoning, signal){
   const s = currentSettings();
-  
-  // Cek apakah ada AI yang terkonfigurasi
   const hasAI = Object.keys(s.keys||{}).some(k => s.keys[k]);
   if(!hasAI){
     const chat = getActiveChat();
@@ -1163,23 +1166,22 @@ async function streamChat(onDelta, onReasoning, signal){
       for(let i = 0; i < reply.length; i++){ onDelta(reply[i]); if(i%3===0) await new Promise(r=>setTimeout(r,5)); }
       return;
     }
-    const reply = 'Halo! Aku **Syon 1.0** 👋\n\nUntuk bisa jawab pertanyaanmu, aku perlu **setup API key** dulu.\n\nKlik ikon ⚙️ di pojok atau tombol di bawah untuk mulai setup. Gratis kok, cuma 30 detik!';
+    const reply = 'Halo! Aku **Syon 1.0** 👋\n\nUntuk bisa jawab pertanyaanmu, aku perlu **setup API key** dulu.\n\nKlik ikon ⚙️ di pojok atau tombol di bawah untuk mulai. Gratis kok, cuma 30 detik!';
     for(let i = 0; i < reply.length; i++){ onDelta(reply[i]); if(i%3===0) await new Promise(r=>setTimeout(r,5)); }
     return;
   }
-  
-  // Combo Mode
-  if(s.comboMode){
-    return streamChatCombo(onDelta, onReasoning, signal);
+  if(s.comboMode) return streamChatCombo(onDelta, onReasoning, signal);
+  // Single
+  const p = s.provider; const cfg = PROVIDERS[p];
+  if(!cfg || cfg.type === 'syonbot'){
+    const chat = getActiveChat();
+    const lastUser = [...chat.messages].reverse().find(m => m.role === 'user');
+    const reply = syonBotReply(lastUser?.content || '');
+    for(let i = 0; i < reply.length; i++){ onDelta(reply[i]); if(i%3===0) await new Promise(r=>setTimeout(r,5)); }
+    return;
   }
-  
-  // Single Mode
-  const p = s.provider;
-  const cfg = PROVIDERS[p];
-  if(!cfg) throw new Error('Belum ada AI terkonfigurasi');
   const key = s.keys[p];
   if(!key && p !== 'custom') throw new Error('API key belum diisi');
-  if(p === 'custom' && !s.customUrl) throw new Error('URL endpoint custom belum diisi');
   const chat = getActiveChat();
   let searchContext = '';
   if(state.searchMode){
@@ -1192,8 +1194,8 @@ async function streamChat(onDelta, onReasoning, signal){
   const messages = buildMessages(chat, cfg.vision, searchContext);
   let finalModel = s.model;
   if(!finalModel || finalModel === '(belum ada model)'){
-    finalModel = cfg.models[0] || (s.fetchedModels[p]?.[0]);
-    if(!finalModel) throw new Error('Belum ada model tersedia');
+    finalModel = cfg.models[0] || s.fetchedModels[p]?.[0];
+    if(!finalModel) throw new Error('Belum ada model');
     s.model = finalModel; saveAll(); updateTopbar();
   }
   if(cfg.type === 'gemini') return await callGeminiSmart(key, finalModel, messages, onDelta, onReasoning, signal);
@@ -1202,9 +1204,7 @@ async function streamChat(onDelta, onReasoning, signal){
   return callOpenAICompatible(providerCfg, key, finalModel, messages, onDelta, onReasoning, signal);
 }
 
-/* ============================================================
-   SYON 1.0 — COMBO (SEAMLESS, user gak tau ada multi-model)
-   ============================================================ */
+/* ============ COMBO (SEAMLESS) ============ */
 async function streamChatCombo(onDelta, onReasoning, signal){
   const s = currentSettings();
   const chat = getActiveChat();
@@ -1212,39 +1212,34 @@ async function streamChatCombo(onDelta, onReasoning, signal){
   const userMsg = lastUser?.content || '';
   const intent = detectIntent(userMsg);
   const pick = pickComboModel(intent);
-  
-  if(!pick.provider || !pick.model) throw new Error('Combo mode belum dikonfigurasi');
+  if(!pick.provider || !pick.model) throw new Error('Combo belum dikonfigurasi');
   const cfg = PROVIDERS[pick.provider];
-  if(!cfg) throw new Error('Provider tidak ditemukan');
+  if(!cfg || cfg.type === 'syonbot'){
+    const reply = syonBotReply(userMsg);
+    for(let i = 0; i < reply.length; i++){ onDelta(reply[i]); if(i%3===0) await new Promise(r=>setTimeout(r,5)); }
+    return;
+  }
   const key = s.keys[pick.provider];
   if(!key && pick.provider !== 'custom') throw new Error('API key belum ada');
-  
   let searchContext = '';
   if(state.searchMode){
     const results = await searchWeb(userMsg);
     if(results.length) searchContext = buildSearchContext(results);
   }
   const messages = buildMessages(chat, cfg.vision, searchContext);
-  
   try{
-    if(cfg.type === 'gemini'){
-      await callGeminiSmart(key, pick.model, messages, onDelta, onReasoning, signal);
-    } else if(cfg.type === 'anthropic'){
-      await callAnthropic(key, pick.model, messages, onDelta, onReasoning, signal);
-    } else {
+    if(cfg.type === 'gemini') await callGeminiSmart(key, pick.model, messages, onDelta, onReasoning, signal);
+    else if(cfg.type === 'anthropic') await callAnthropic(key, pick.model, messages, onDelta, onReasoning, signal);
+    else {
       const providerCfg = pick.provider === 'custom' ? {...cfg, url:s.customUrl} : cfg;
       await callOpenAICompatible(providerCfg, key, pick.model, messages, onDelta, onReasoning, signal);
     }
   }catch(err){
-    // Silent fallback
-    const fallbacks = [s.comboConfig?.general, s.comboConfig?.fast, s.comboConfig?.coding]
-      .filter(m => m && m !== pick.model);
+    const fallbacks = [s.comboConfig?.general, s.comboConfig?.fast, s.comboConfig?.coding].filter(m => m && m !== pick.model);
     for(const fb of fallbacks){
-      const fbp = findProviderForModel(fb);
-      if(!fbp) continue;
+      const fbp = findProviderForModel(fb); if(!fbp) continue;
       try{
-        const fbCfg = PROVIDERS[fbp.provider];
-        const fbKey = s.keys[fbp.provider];
+        const fbCfg = PROVIDERS[fbp.provider]; const fbKey = s.keys[fbp.provider];
         if(fbCfg.type === 'gemini') await callGeminiSmart(fbKey, fb, messages, onDelta, onReasoning, signal);
         else if(fbCfg.type === 'anthropic') await callAnthropic(fbKey, fb, messages, onDelta, onReasoning, signal);
         else await callOpenAICompatible(fbCfg, fbKey, fb, messages, onDelta, onReasoning, signal);
@@ -1264,8 +1259,7 @@ function parseModels(j, parser){
 }
 async function fetchDirect(url, headers, timeoutMs=7000){
   const ctrl = new AbortController(); const t = setTimeout(() => ctrl.abort(), timeoutMs);
-  try{ return await fetch(url, {headers, signal:ctrl.signal}); }
-  finally{ clearTimeout(t); }
+  try{ return await fetch(url, {headers, signal:ctrl.signal}); } finally{ clearTimeout(t); }
 }
 async function fetchViaProxy(url, headers, timeoutMs=15000){
   const proxies = [
@@ -1314,11 +1308,8 @@ async function detectProviderFromKey(apiKey){
   const logEl = $('#autoDetectLog');
   logEl.innerHTML = ''; logEl.classList.add('show');
   const log = (status, msg) => {
-    const line = document.createElement('div');
-    line.className = 'line ' + status;
-    line.textContent = msg;
-    logEl.appendChild(line);
-    logEl.scrollTop = logEl.scrollHeight;
+    const line = document.createElement('div'); line.className = 'line ' + status; line.textContent = msg;
+    logEl.appendChild(line); logEl.scrollTop = logEl.scrollHeight;
   };
   const trimmed = apiKey.trim();
   if(!trimmed){ log('bad','API key kosong'); return null; }
@@ -1331,27 +1322,21 @@ async function detectProviderFromKey(apiKey){
   byPrefix('pplx-','perplexity',100); byPrefix('csk-','cerebras',100); byPrefix('nvapi-','nvidia',100);
   byPrefix('ghp_','github',100); byPrefix('hf_','huggingface',100); byPrefix('sk_','novita',90);
   if(priority.length === 0){
-    ['groq','gemini','openrouter','cohere','cerebras','sambanova','hyperbolic','novita','nvidia','zhipu','qwen','huggingface','openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','github','moonshot','deepinfra','siliconflow'].forEach((id,i) => {
-      priority.push({id, score:60-i});
-    });
+    ['openrouter','groq','gemini','cohere','cerebras','sambanova','hyperbolic','novita','nvidia','zhipu','qwen','huggingface','openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','github','moonshot','deepinfra','siliconflow'].forEach((id,i) => { priority.push({id, score:60-i}); });
   }
   priority.sort((a,b) => b.score - a.score);
   for(const cand of priority){
-    const pid = cand.id;
-    if(pid === 'custom') continue;
-    const cfg = PROVIDERS[pid];
-    if(!cfg || !cfg.modelsEndpoint) continue;
+    const pid = cand.id; if(pid === 'custom' || pid === 'syonbot') continue;
+    const cfg = PROVIDERS[pid]; if(!cfg || !cfg.modelsEndpoint) continue;
     log('info','Mencoba ' + cfg.name + '...');
     try{
       const result = await tryFetchModels(pid, trimmed);
       if(result && result.models && result.models.length){
-        log('ok', cfg.name + ' — ' + result.models.length + ' model chat');
+        log('ok', cfg.name + ' — ' + result.models.length + ' model');
         return {provider:pid, models:result.models, key:trimmed};
       }
       log('bad', cfg.name + ' — tidak cocok');
-    }catch(e){
-      log('bad', cfg.name + ' — ' + (e.message||'gagal').slice(0,50));
-    }
+    }catch(e){ log('bad', cfg.name + ' — ' + (e.message||'gagal').slice(0,50)); }
   }
   log('warn','Tidak ada provider yang cocok.');
   return null;
@@ -1369,13 +1354,8 @@ async function handleAutoDetect(){
     if(!result){ toast('Tidak terdeteksi', true); return; }
     const cfg = PROVIDERS[result.provider];
     resultEl.style.display = 'block';
-    resultEl.innerHTML = '<div class="detect-result-card"><h3>Terdeteksi <span class="badge-provider">' + esc(cfg.name) + '</span></h3>' +
-      '<div class="model-info">Ditemukan <b>' + result.models.length + '</b> model chat.</div>' +
-      '<div class="provider-list-mini">' + result.models.slice(0,15).map(m => esc(m)).join(', ') + (result.models.length > 15 ? ' ... +' + (result.models.length - 15) + ' lagi' : '') + '</div>' +
-      '<div class="actions"><button class="cancel" id="cancelDetectBtn">Batal</button><button class="save" id="saveDetectedBtn">Simpan & Pakai</button></div></div>';
-    $('#cancelDetectBtn').addEventListener('click', () => {
-      resultEl.style.display = 'none'; input.value = ''; $('#autoDetectLog').innerHTML = '';
-    });
+    resultEl.innerHTML = '<div class="detect-result-card"><h3>Terdeteksi <span class="badge-provider">' + esc(cfg.name) + '</span></h3><div class="model-info">Ditemukan <b>' + result.models.length + '</b> model chat. Sistem otomatis atur otak terbaik.</div><div class="provider-list-mini">' + result.models.slice(0,15).map(m => esc(m)).join(', ') + (result.models.length > 15 ? ' ... +' + (result.models.length - 15) + ' lagi' : '') + '</div><div class="actions"><button class="cancel" id="cancelDetectBtn">Batal</button><button class="save" id="saveDetectedBtn">Simpan & Pakai</button></div></div>';
+    $('#cancelDetectBtn').addEventListener('click', () => { resultEl.style.display = 'none'; input.value = ''; $('#autoDetectLog').innerHTML = ''; });
     $('#saveDetectedBtn').addEventListener('click', () => {
       const s = currentSettings();
       s.keys[result.provider] = result.key;
@@ -1383,12 +1363,11 @@ async function handleAutoDetect(){
       s.fetchedModels[result.provider] = result.models;
       s.provider = result.provider;
       s.model = result.models[0];
-      // Auto-setup combo kalau belum ada
-      if(!s.comboConfig.general) s.comboConfig.general = result.models.find(m => /70b|72b|120b|qwen3|llama-3\.3/i.test(m)) || result.models[0];
-      if(!s.comboConfig.coding) s.comboConfig.coding = result.models.find(m => /qwen|coder|deepseek|code/i.test(m)) || result.models[0];
-      if(!s.comboConfig.fast) s.comboConfig.fast = result.models.find(m => /8b|7b|instant|flash|mini|small/i.test(m)) || result.models[0];
+      // 🎯 AUTO-CONFIG COMBO
+      s.comboMode = true;
+      s.comboConfig = autoConfigCombo(result.models);
       saveAll();
-      toast('✓ ' + cfg.name + ' disimpan!');
+      toast('✓ ' + cfg.name + ' siap!');
       $('#addAiModal').classList.remove('show');
       updateTopbar();
       setTimeout(() => renderSettingsModal(), 100);
@@ -1404,14 +1383,12 @@ async function handleAutoDetect(){
    ============================================================ */
 function createChat(){
   const chat = {id:uid(), title:'Obrolan Baru', messages:[], createdAt:Date.now()};
-  currentChats().unshift(chat);
-  setCurrentChatId(chat.id);
+  currentChats().unshift(chat); setCurrentChatId(chat.id);
   saveAll(); renderChatList(); renderChat();
   return chat;
 }
 function deleteChat(id){
-  const arr = currentChats();
-  const i = arr.findIndex(c => c.id === id);
+  const arr = currentChats(); const i = arr.findIndex(c => c.id === id);
   if(i < 0) return;
   arr.splice(i,1);
   if(currentChatId() === id) setCurrentChatId(arr[0]?.id || null);
@@ -1449,7 +1426,7 @@ function renderChatList(){
     el.className = 'chat-item' + (c.id === currentChatId() ? ' active' : '');
     el.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="title">' + esc(c.title) + '</span><button class="pin' + (isPinned?' active':'') + '"><svg width="12" height="12" viewBox="0 0 24 24" fill="' + (isPinned?'currentColor':'none') + '" stroke="currentColor" stroke-width="2"><path d="M12 17v5M9 10.76a2 2 0 0 1-1.11 1.79l-1.78.9A2 2 0 0 0 5 15.24V16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-.76a2 2 0 0 0-1.11-1.79l-1.78-.9A2 2 0 0 1 15 10.76V7a1 1 0 0 1 1-1 2 2 0 0 0 0-4H8a2 2 0 0 0 0 4 1 1 0 0 1 1 1z"/></svg></button><button class="del"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>';
     el.addEventListener('click', e => {
-      if(e.target.closest('.del') || e.target.closest('.pin') || e.target.closest('.title-input')) return;
+      if(e.target.closest('.del') || e.target.closest('.pin')) return;
       setCurrentChatId(c.id); renderChatList(); renderChat(); closeSidebarMobile();
     });
     el.querySelector('.pin').addEventListener('click', e => {
@@ -1462,46 +1439,40 @@ function renderChatList(){
     return el;
   };
   if(pinned.length){
-    const sec = document.createElement('div'); sec.className = 'sidebar-section';
-    sec.innerHTML = '★ Dipin';
-    list.appendChild(sec);
-    pinned.forEach(c => list.appendChild(createItem(c)));
+    const sec = document.createElement('div'); sec.className = 'sidebar-section'; sec.innerHTML = '★ Dipin';
+    list.appendChild(sec); pinned.forEach(c => list.appendChild(createItem(c)));
   }
   const groups = {};
   unpinned.forEach(c => { const g = getDateGroup(c.createdAt||Date.now()); if(!groups[g]) groups[g] = []; groups[g].push(c); });
   ['Hari Ini','Kemarin','7 Hari Terakhir','Lebih Lama'].forEach(label => {
     if(!groups[label]) return;
     const sec = document.createElement('div'); sec.className = 'sidebar-section'; sec.textContent = label;
-    list.appendChild(sec);
-    groups[label].forEach(c => list.appendChild(createItem(c)));
+    list.appendChild(sec); groups[label].forEach(c => list.appendChild(createItem(c)));
   });
 }
-
 function messageToolbar(role, idx){
-  const svgCopy = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
-  const svgDel = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
-  const svgEdit = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
-  const svgSpeak = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
-  const svgRegen = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
-  if(role === 'user') return '<div class="msg-toolbar"><button data-act="copy" data-idx="' + idx + '">' + svgCopy + ' Copy</button><button data-act="edit" data-idx="' + idx + '">' + svgEdit + ' Edit</button><button data-act="del" data-idx="' + idx + '">' + svgDel + ' Hapus</button></div>';
-  return '<div class="msg-toolbar"><button data-act="copy" data-idx="' + idx + '">' + svgCopy + ' Copy</button><button data-act="speak" data-idx="' + idx + '">' + svgSpeak + ' Baca</button><button data-act="regen" data-idx="' + idx + '">' + svgRegen + ' Ulangi</button><button data-act="del" data-idx="' + idx + '">' + svgDel + ' Hapus</button></div>';
+  const sC = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+  const sD = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/></svg>';
+  const sE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+  const sS = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>';
+  const sR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>';
+  if(role === 'user') return '<div class="msg-toolbar"><button data-act="copy" data-idx="' + idx + '">' + sC + ' Copy</button><button data-act="edit" data-idx="' + idx + '">' + sE + ' Edit</button><button data-act="del" data-idx="' + idx + '">' + sD + ' Hapus</button></div>';
+  return '<div class="msg-toolbar"><button data-act="copy" data-idx="' + idx + '">' + sC + ' Copy</button><button data-act="speak" data-idx="' + idx + '">' + sS + ' Baca</button><button data-act="regen" data-idx="' + idx + '">' + sR + ' Ulangi</button><button data-act="del" data-idx="' + idx + '">' + sD + ' Hapus</button></div>';
 }
-
 function renderChat(){
   const inner = $('#chatInner'); if(!inner) return;
-  const chat = getActiveChat();
-  inner.innerHTML = '';
+  const chat = getActiveChat(); inner.innerHTML = '';
   if(!chat || !chat.messages.length){
     const prof = currentProfile();
     const pname = prof ? (prof.name || 'Kamu') : 'Kamu';
     const hasAI = Object.keys(currentSettings().keys||{}).some(k => currentSettings().keys[k]);
     if(!hasAI){
-      inner.innerHTML = '<div class="welcome"><img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon"><h1>Selamat datang di <span>Syon 1.0</span></h1><p>Asisten AI serbaguna yang siap bantu kamu. Untuk mulai, kamu perlu <b>menyambungkan API key</b> (gratis).</p><button class="welcome-add-ai" id="welcomeAddAiBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Setup API Key Sekarang</button><div class="suggestions" style="margin-top:24px"><div class="suggestion" style="pointer-events:none;opacity:.7"><b>🆓 Gratis</b>Groq, Gemini, Cerebras — tanpa kartu kredit</div><div class="suggestion" style="pointer-events:none;opacity:.7"><b>⚡ 30 detik</b>Copy-paste, auto-detect</div></div></div>';
+      inner.innerHTML = '<div class="welcome"><img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon"><h1>Selamat datang di <span>Syon 1.0</span></h1><p>Asisten AI serbaguna yang siap bantu kamu. Untuk mulai, sambungkan API key dulu (gratis).</p><button class="welcome-add-ai" id="welcomeAddAiBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Setup API Key Sekarang</button><div class="suggestions" style="margin-top:24px"><div class="suggestion" style="pointer-events:none;opacity:.7"><b>🆓 Gratis</b>OpenRouter, Groq, Gemini — tanpa kartu kredit</div><div class="suggestion" style="pointer-events:none;opacity:.7"><b>⚡ 30 detik</b>Copy-paste, auto-detect</div></div></div>';
       const btn = inner.querySelector('#welcomeAddAiBtn');
       if(btn) btn.addEventListener('click', () => { const m = $('#addAiModal'); if(m) m.classList.add('show'); });
       return;
     }
-    inner.innerHTML = '<div class="welcome"><img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon"><h1>Halo, <span>' + esc(pname) + '</span></h1><p><b>Syon 1.0</b> — AI serbaguna yang siap bantu. Coding, nulis, tanya apa aja. Pakai 🧠 untuk Mode Berpikir, 🔍 untuk Cari Web.</p><div class="suggestions"><div class="suggestion" data-p="2+3*5"><b>Hitung</b>2 + 3 × 5 = ?</div><div class="suggestion" data-p="contoh html"><b>Buat web</b>Contoh halaman HTML</div><div class="suggestion" data-p="apa itu ai"><b>Tanya</b>Apa itu AI?</div><div class="suggestion" data-p="contoh python"><b>Coding</b>Contoh Python dasar</div></div></div>';
+    inner.innerHTML = '<div class="welcome"><img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon"><h1>Halo, <span>' + esc(pname) + '</span></h1><p><b>Syon 1.0</b> — AI serbaguna. Coding, nulis, tanya apa aja. Pakai 🧠 untuk Mode Berpikir, 🔍 untuk Cari Web.</p><div class="suggestions"><div class="suggestion" data-p="2+3*5"><b>Hitung</b>2 + 3 × 5 = ?</div><div class="suggestion" data-p="contoh html"><b>Buat web</b>Contoh halaman HTML</div><div class="suggestion" data-p="apa itu ai"><b>Tanya</b>Apa itu AI?</div><div class="suggestion" data-p="contoh python"><b>Coding</b>Contoh Python dasar</div></div></div>';
     inner.querySelectorAll('.suggestion').forEach(s => {
       s.addEventListener('click', () => { $('#input').value = s.dataset.p; autoGrow($('#input')); sendMessage(); });
     });
@@ -1517,11 +1488,6 @@ function renderChat(){
       if(m.attachments?.length) m.attachments.forEach(a => { if(a.type === 'image') html += '<img class="media-thumb" src="' + a.dataUrl + '">'; });
     } else {
       html = renderMarkdown(m.content);
-      if(m.sources && m.sources.length){
-        html += '<div class="sources"><div class="sources-label">Sumber:</div>';
-        m.sources.forEach((s,i) => { html += '<div class="source-item"><span class="source-num">' + (i+1) + '</span><a href="' + esc(s.url) + '" target="_blank">' + esc(s.title) + '</a></div>'; });
-        html += '</div>';
-      }
     }
     div.innerHTML = '<div class="body"><div class="content">' + html + '</div>' + messageToolbar(m.role, idx) + '</div>';
     inner.appendChild(div);
@@ -1532,7 +1498,6 @@ function renderChat(){
   });
   scrollToBottom();
 }
-
 function handleMessageAction(act, idx){
   const chat = getActiveChat(); if(!chat) return;
   const m = chat.messages[idx]; if(!m) return;
@@ -1563,11 +1528,10 @@ function handleMessageAction(act, idx){
     saveAll(); renderChat(); regenerateFrom(userIdx);
   }
 }
-
 async function regenerateFrom(userIdx){
   if(state.generating) return;
   const chat = getActiveChat(); if(!chat) return;
-  chat.messages.push({role:'assistant', content:'', sources:[]});
+  chat.messages.push({role:'assistant', content:''});
   const botIdx = chat.messages.length - 1;
   state.generating = true; updateSendBtn();
   const controller = new AbortController(); let acc = ''; let reasoningBuf = '';
@@ -1575,7 +1539,9 @@ async function regenerateFrom(userIdx){
   try{
     await streamChat(
       delta => { acc += delta; chat.messages[botIdx].content = acc; updateStreamingBot(renderMarkdown(acc)); },
-      r => { reasoningBuf = reasoningBuf ? reasoningBuf + '\n' + r : r;
+      r => {
+        if(!state.thinkingMode) return;  // ← FIX: kalau mode berpikir OFF, skip
+        reasoningBuf = reasoningBuf ? reasoningBuf + '\n' + r : r;
         const preview = '<details class="thinking-block" open><summary>💭 Berpikir...</summary><div class="think-body">' + esc(reasoningBuf) + '</div></details>';
         updateStreamingBot(preview + renderMarkdown(acc));
       },
@@ -1590,7 +1556,6 @@ async function regenerateFrom(userIdx){
     saveAll(); renderChat();
   }finally{ state.generating = false; updateSendBtn(); }
 }
-
 function scrollToBottom(){ const el = $('#chatScroll'); if(el) el.scrollTop = el.scrollHeight; }
 function updateStreamingBot(html){
   const inner = $('#chatInner'); if(!inner) return;
@@ -1609,7 +1574,6 @@ function updateStreamingBot(html){
   }
   scrollToBottom();
 }
-
 let currentAbort = null;
 async function sendMessage(){
   if(state.generating) return;
@@ -1621,13 +1585,12 @@ async function sendMessage(){
     let chat = getActiveChat(); if(!chat) chat = createChat();
     chat.messages.push({role:'user', content:text, attachments:state.attachments.slice()});
     if(chat.messages.filter(m => m.role === 'user').length === 1){
-      chat.title = (text||'Gambar').slice(0,40);
-      renderChatList();
+      chat.title = (text||'Gambar').slice(0,40); renderChatList();
     }
     state.attachments = []; renderAttachments();
     input.value = ''; autoGrow(input);
     saveAll(); renderChat();
-    chat.messages.push({role:'assistant', content:'', sources:[]});
+    chat.messages.push({role:'assistant', content:''});
     const botIdx = chat.messages.length - 1;
     state.generating = true; updateSendBtn();
     const controller = new AbortController(); currentAbort = controller;
@@ -1643,12 +1606,13 @@ async function sendMessage(){
           acc += delta;
           chat.messages[botIdx].content = acc;
           let finalHtml = '';
-          if(reasoningBuf){
+          if(reasoningBuf && state.thinkingMode){
             finalHtml = '<details class="thinking-block" open><summary>💭 Berpikir...</summary><div class="think-body">' + esc(reasoningBuf) + '</div></details>';
           }
           updateStreamingBot(finalHtml + renderMarkdown(acc));
         },
         r => {
+          if(!state.thinkingMode) return;  // ← FIX: skip kalau OFF
           reasoningBuf = reasoningBuf ? reasoningBuf + '\n' + r : r;
           let finalHtml = '<details class="thinking-block" open><summary>💭 Berpikir...</summary><div class="think-body">' + esc(reasoningBuf) + '</div></details>';
           updateStreamingBot(finalHtml + renderMarkdown(acc));
@@ -1659,27 +1623,20 @@ async function sendMessage(){
       saveAll(); renderChat();
       if(state.voice.enabled) speak(acc);
     }catch(err){
-      if(err.name === 'AbortError'){
-        chat.messages[botIdx].content = acc + '\n\n_[Dihentikan]_';
-      } else {
+      if(err.name === 'AbortError') chat.messages[botIdx].content = acc + '\n\n_[Dihentikan]_';
+      else {
         const errMsg = err.message || 'Gagal';
         chat.messages[botIdx].content = acc + '\n\n**Error:** ' + esc(errMsg) + '\n\n_Coba lagi atau ganti model._';
         toast('Gagal: ' + errMsg.slice(0,60), true);
       }
       saveAll(); renderChat();
-    }finally{
-      state.generating = false; currentAbort = null; updateSendBtn();
-    }
+    }finally{ state.generating = false; currentAbort = null; updateSendBtn(); }
   }catch(err){ toast('Error: ' + err.message, true); state.generating = false; updateSendBtn(); }
 }
-
 function updateSendBtn(){
   const btn = $('#sendBtn'); if(!btn) return;
-  if(state.generating){
-    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
-  } else {
-    btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
-  }
+  if(state.generating) btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+  else btn.innerHTML = '<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
 }
 function renderAttachments(){
   const wrap = $('#attachPreview'); if(!wrap) return;
@@ -1702,8 +1659,6 @@ function handleFiles(files){
     reader.readAsDataURL(f);
   });
 }
-
-/* ============ PROFILE ============ */
 function renderProfileHeader(){
   const p = currentProfile(); if(!p) return;
   const av = $('#headerAvatar'); const nm = $('#headerName');
@@ -1715,8 +1670,6 @@ function renderProfileList(){
   const u = currentProfile(); if(!u) return;
   list.innerHTML = '<div class="profile-row active"><div class="profile-avatar lg" style="background:var(--accent)">' + ((u.name[0]||'S').toUpperCase()) + '</div><div class="profile-info"><div class="pname">' + esc(u.name||'User') + '</div><div class="pmeta">' + esc(u.email||'Mode Tamu') + '</div></div></div>';
 }
-
-/* ============ SETTINGS ============ */
 function captureCurrentInputs(){
   const s = currentSettings();
   const sp = $('#systemPrompt'); if(sp) s.systemPrompt = sp.value.trim();
@@ -1730,21 +1683,16 @@ function renderSettingsModal(){
   const s = currentSettings();
   const sel = $('#activeProvider'); if(!sel) return;
   sel.innerHTML = '';
-  const available = [];
+  const available = ['syonbot'];
   Object.keys(s.keys).forEach(k => { if(s.keys[k] && s.keys[k].trim()) available.push(k); });
-  if(!available.length){
-    const o = document.createElement('option'); o.value = ''; o.textContent = '(Belum ada AI — tambah dulu)';
+  if(!available.includes('custom')) available.push('custom');
+  [...new Set(available)].forEach(id => {
+    const p = PROVIDERS[id]; if(!p) return;
+    const o = document.createElement('option'); o.value = id; o.textContent = p.name;
+    if(s.provider === id) o.selected = true;
     sel.appendChild(o);
-  } else {
-    available.forEach(id => {
-      const p = PROVIDERS[id]; if(!p) return;
-      const o = document.createElement('option'); o.value = id; o.textContent = p.name;
-      if(s.provider === id) o.selected = true;
-      sel.appendChild(o);
-    });
-  }
-  if(available.length && (!s.provider || !available.includes(s.provider))){ s.provider = available[0]; saveAll(); }
-  if(s.provider) renderModelSelect('#modelSelect', s.provider, s.model);
+  });
+  renderModelSelect('#modelSelect', s.provider, s.model);
   renderProviderList();
   $('#systemPrompt').value = s.systemPrompt || '';
   $('#tempInput').value = s.temperature;
@@ -1818,104 +1766,41 @@ function renderProviderList(){
       if(!confirm('Hapus ' + PROVIDERS[id].name + '?')) return;
       const s = currentSettings();
       delete s.keys[id]; delete s.keyStatus[id]; delete s.fetchedModels[id];
-      if(s.provider === id){ s.provider = ''; s.model = ''; }
+      if(s.provider === id){ s.provider = 'syonbot'; s.model = 'syon-v2'; }
       saveAll(); renderSettingsModal(); updateTopbar(); toast('Dihapus');
     });
   });
 }
-
 function openModelModal(){
   const s = currentSettings();
   const p = $('#quickProvider'); if(!p) return;
   p.innerHTML = '';
-  const keys = Object.keys(s.keys).filter(k => s.keys[k]);
-  if(!keys.length){ toast('Belum ada AI', true); return; }
-  keys.forEach(id => {
-    const o = document.createElement('option'); o.value = id; o.textContent = PROVIDERS[id].name;
+  Object.entries(PROVIDERS).forEach(([id,cfg]) => {
+    if(id !== 'syonbot' && id !== 'custom' && !s.keys[id]) return;
+    const o = document.createElement('option'); o.value = id; o.textContent = cfg.name;
     if(s.provider === id) o.selected = true;
     p.appendChild(o);
   });
-  renderModelSelect('#quickModel', s.provider || keys[0], s.model);
+  renderModelSelect('#quickModel', s.provider, s.model);
   const m = $('#modelModal'); if(m) m.classList.add('show');
 }
 function openSidebarMobile(){ const s = $('#sidebar'); if(s) s.classList.add('open'); }
 function closeSidebarMobile(){ const s = $('#sidebar'); if(s) s.classList.remove('open'); }
-
 function updateTopbar(){
   const s = currentSettings();
   const nameEl = $('#modelName'); const dot = $('#statusDot');
   const hasAnyAI = Object.keys(s.keys||{}).some(k => s.keys[k]);
-  if(s.comboMode){
+  if(s.provider === 'syonbot' && !hasAnyAI){
+    if(nameEl) nameEl.textContent = 'Syon 1.0';
+    if(dot) dot.classList.add('on');
+  } else {
     if(nameEl) nameEl.textContent = 'Syon 1.0';
     if(dot){ dot.classList.toggle('on', hasAnyAI); dot.classList.toggle('warn', !hasAnyAI); }
-  } else {
-    const p = s.provider; const cfg = PROVIDERS[p];
-    if(!cfg || !hasAnyAI){
-      if(nameEl) nameEl.textContent = 'Syon 1.0';
-      if(dot) dot.classList.add('warn');
-    } else {
-      if(nameEl) nameEl.textContent = s.model || 'Syon 1.0';
-      const st = s.keyStatus[p]; const hasKey = s.keys[p];
-      let ok = false, warn = false;
-      if(p === 'custom') ok = !!s.customUrl;
-      else { ok = st === 'ok'; warn = !!hasKey && !st; }
-      if(dot){ dot.classList.toggle('on', ok); dot.classList.toggle('warn', warn && !ok); }
-    }
   }
   const vbtn = $('#voiceToggleBtn'); if(vbtn) vbtn.classList.toggle('active', !!state.voice.enabled);
   const tbtn = $('#thinkModeBtn'); if(tbtn) tbtn.classList.toggle('think-active', !!state.thinkingMode);
   const sbtn = $('#searchModeBtn'); if(sbtn) sbtn.classList.toggle('search-active', !!state.searchMode);
-  const cbtn = $('#comboModeBtn'); if(cbtn) cbtn.classList.toggle('combo-active', !!s.comboMode);
 }
-
-/* ============ COMBO UI ============ */
-function renderComboModal(){
-  const s = currentSettings();
-  if(!s.comboConfig) s.comboConfig = {general:'', coding:'', fast:''};
-  $('#comboToggle').checked = !!s.comboMode;
-  const allModels = [];
-  for(const pid of Object.keys(s.keys||{})){
-    if(!s.keys[pid]) continue;
-    const list = s.fetchedModels?.[pid] || PROVIDERS[pid]?.models || [];
-    list.forEach(m => { if(isChatModel(m)) allModels.push({id:m, provider:pid}); });
-  }
-  const seen = new Set();
-  const uniqueModels = allModels.filter(x => { if(seen.has(x.id)) return false; seen.add(x.id); return true; });
-  const fill = (selId, cur) => {
-    const sel = $(selId); if(!sel) return;
-    sel.innerHTML = '';
-    if(!uniqueModels.length){
-      const o = document.createElement('option'); o.value = ''; o.textContent = '(Belum ada model)';
-      sel.appendChild(o); return;
-    }
-    uniqueModels.forEach(m => {
-      const o = document.createElement('option'); o.value = m.id; o.textContent = m.id;
-      if(m.id === cur) o.selected = true;
-      sel.appendChild(o);
-    });
-  };
-  fill('#comboGeneral', s.comboConfig.general);
-  fill('#comboCoding', s.comboConfig.coding);
-  fill('#comboFast', s.comboConfig.fast);
-  
-  // Auto-suggest
-  const autoPick = (key, patterns) => {
-    if(s.comboConfig[key]) return;
-    for(const m of uniqueModels){
-      if(patterns.some(p => m.id.toLowerCase().includes(p))){ s.comboConfig[key] = m.id; saveAll(); return; }
-    }
-  };
-  autoPick('coding', ['qwen', 'coder', 'deepseek']);
-  autoPick('general', ['llama-3.3-70', 'qwen3', 'gemini-2', 'gpt-4', 'llama-3.1-70']);
-  autoPick('fast', ['8b-instant', '7b', 'flash', 'mini', 'small', 'llama-3.1-8']);
-  
-  fill('#comboGeneral', s.comboConfig.general);
-  fill('#comboCoding', s.comboConfig.coding);
-  fill('#comboFast', s.comboConfig.fast);
-}
-function openComboModal(){ renderComboModal(); $('#comboModal').classList.add('show'); }
-
-/* ============ MISC ============ */
 function exportChat(){
   const chat = getActiveChat(); if(!chat){ toast('Tidak ada chat', true); return; }
   const md = chat.messages.map(m => (m.role === 'user' ? '## Kamu' : '## Syon 1.0') + '\n\n' + m.content).join('\n\n---\n\n');
@@ -1978,8 +1863,8 @@ function applyTheme(){
   if(hl) hl.href = state.theme === 'dark' ? 'https://cdn.jsdelivr.net/npm/highlight.js@11/styles/atom-one-dark.min.css' : 'https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css';
 }
 function toggleTheme(){ state.theme = state.theme === 'dark' ? 'light' : 'dark'; applyTheme(); saveAll(); toast(state.theme === 'dark' ? 'Mode gelap' : 'Mode terang'); }
-function toggleThinkingMode(){ state.thinkingMode = !state.thinkingMode; saveAll(); updateTopbar(); toast(state.thinkingMode ? '🧠 Mode Berpikir AKTIF' : 'Mode Berpikir nonaktif'); }
-function toggleSearchMode(){ state.searchMode = !state.searchMode; saveAll(); updateTopbar(); toast(state.searchMode ? '🔍 Cari Web AKTIF' : 'Cari Web nonaktif'); }
+function toggleThinkingMode(){ state.thinkingMode = !state.thinkingMode; saveAll(); updateTopbar(); toast(state.thinkingMode ? '🧠 Mode Berpikir AKTIF' : 'Mode Berpikir OFF'); }
+function toggleSearchMode(){ state.searchMode = !state.searchMode; saveAll(); updateTopbar(); toast(state.searchMode ? '🔍 Cari Web AKTIF' : 'Cari Web OFF'); }
 
 /* ============ AUTH ============ */
 function showPanel(id){
@@ -2012,7 +1897,6 @@ async function afterLogin(user, token, isGuest){
   saveAll(); enterApp();
 }
 function setAuthError(msg){ const e = $('#authError'); if(e) e.textContent = msg || ''; }
-
 function initAuthScreen(){
   const wrapper = $('#googleBtnWrapper'); if(!wrapper) return;
   wrapper.innerHTML = '';
@@ -2030,7 +1914,10 @@ function initAuthScreen(){
     if(!email || !password){ setAuthError('Isi email & password'); return; }
     const btn = $('#loginSubmit'); btn.disabled = true; btn.textContent = 'Memuat...';
     try{ const data = await apiCall('login', {email, password}); await afterLogin(data.user, data.token, false); toast('Selamat datang!'); }
-    catch(e){ setAuthError(e.message || 'Login gagal'); }
+    catch(e){
+      if(e.message && e.message.includes('belum diverifikasi')){ state.pendingEmail = email; $('#verifyEmailDisplay').textContent = email; showPanel('panelVerify'); }
+      else setAuthError(e.message || 'Login gagal');
+    }
     finally{ btn.disabled = false; btn.textContent = 'Masuk'; }
   });
   $('#regSubmit')?.addEventListener('click', async () => {
@@ -2108,16 +1995,13 @@ async function doLogout(){
   location.reload();
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
+/* ============ INIT ============ */
 async function init(){
   try{
     loadAll();
     applyTheme();
     if('speechSynthesis' in window){ loadVoices(); speechSynthesis.onvoiceschanged = () => { loadVoices(); populateVoiceSelect(); }; }
     initAuthScreen();
-    
     if(state.token && !state.isGuest){
       showLoading(true);
       const u = await apiMe();
@@ -2127,14 +2011,16 @@ async function init(){
     } else if(state.isGuest && state.user && state.activeProfileId){
       enterApp();
     }
-    
-    // Auto-setup combo
-    const s = currentSettings();
-    if(s.comboMode === undefined) s.comboMode = true;
-    if(!s.comboConfig) s.comboConfig = {general:'', coding:'', fast:''};
-    saveAll();
-    
-    /* Chat */
+    // Auto-setup combo mode kalau user punya key
+    const s0 = currentSettings();
+    if(!s0.comboConfig) s0.comboConfig = {general:'', coding:'', fast:''};
+    if(!s0.comboConfig.coding){
+      const pid = Object.keys(s0.keys||{}).find(k => s0.keys[k]);
+      if(pid){
+        const models = s0.fetchedModels?.[pid] || PROVIDERS[pid]?.models || [];
+        if(models.length){ s0.comboConfig = autoConfigCombo(models); s0.comboMode = true; saveAll(); }
+      }
+    }
     $('#newChatBtn')?.addEventListener('click', () => { createChat(); closeSidebarMobile(); });
     $('#menuBtn')?.addEventListener('click', openSidebarMobile);
     $('#sendBtn')?.addEventListener('click', () => {
@@ -2159,21 +2045,6 @@ async function init(){
     $('#logoutBtn')?.addEventListener('click', doLogout);
     $('#thinkModeBtn')?.addEventListener('click', toggleThinkingMode);
     $('#searchModeBtn')?.addEventListener('click', toggleSearchMode);
-    
-    /* Combo */
-    $('#comboModeBtn')?.addEventListener('click', openComboModal);
-    $('#closeCombo')?.addEventListener('click', () => $('#comboModal').classList.remove('show'));
-    $('#comboModal')?.addEventListener('click', e => { if(e.target.id === 'comboModal') e.currentTarget.classList.remove('show'); });
-    $('#saveCombo')?.addEventListener('click', () => {
-      const s = currentSettings();
-      s.comboMode = $('#comboToggle').checked;
-      s.comboConfig = {general:$('#comboGeneral').value, coding:$('#comboCoding').value, fast:$('#comboFast').value};
-      saveAll(); updateTopbar();
-      toast(s.comboMode ? '🚀 Syon 1.0 Mode Cerdas aktif!' : 'Mode standar aktif');
-      $('#comboModal').classList.remove('show');
-    });
-    
-    /* Backup */
     $('#backupBtn')?.addEventListener('click', () => {
       const data = {version:'syon-1.0', exportedAt:new Date().toISOString(), state:{chatsByUser:state.chatsByUser, settingsByUser:state.settingsByUser, pinnedChats:state.pinnedChats, theme:state.theme, voice:state.voice}};
       const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
@@ -2181,8 +2052,6 @@ async function init(){
       const a = document.createElement('a'); a.href = url; a.download = 'syon-backup-' + new Date().toISOString().slice(0,10) + '.json';
       a.click(); URL.revokeObjectURL(url); toast('Backup berhasil!');
     });
-    
-    /* Scroll */
     const cs = $('#chatScroll'); const sb = $('#scrollBottomBtn');
     if(cs && sb){
       cs.addEventListener('scroll', () => {
@@ -2191,13 +2060,9 @@ async function init(){
       });
       sb.addEventListener('click', () => { cs.scrollTop = cs.scrollHeight; });
     }
-    
-    /* Profile */
     $('#profileHeader')?.addEventListener('click', () => { renderProfileList(); $('#profileModal').classList.add('show'); });
     $('#closeProfile')?.addEventListener('click', () => $('#profileModal').classList.remove('show'));
     $('#profileModal')?.addEventListener('click', e => { if(e.target.id === 'profileModal') e.currentTarget.classList.remove('show'); });
-    
-    /* Voice */
     $('#voiceToggleBtn')?.addEventListener('click', () => { renderVoiceModal(); $('#voiceModal').classList.add('show'); });
     $('#closeVoice')?.addEventListener('click', () => $('#voiceModal').classList.remove('show'));
     $('#voiceModal')?.addEventListener('click', e => { if(e.target.id === 'voiceModal') e.currentTarget.classList.remove('show'); });
@@ -2206,13 +2071,9 @@ async function init(){
     $('#rateRange')?.addEventListener('input', e => { state.voice.rate = parseFloat(e.target.value); $('#rateVal').textContent = state.voice.rate.toFixed(1) + 'x'; });
     $('#testVoiceBtn')?.addEventListener('click', () => speak('Halo, aku Syon 1.0.'));
     $('#saveVoice')?.addEventListener('click', () => { saveAll(); toast('Tersimpan'); $('#voiceModal').classList.remove('show'); });
-    
-    /* Settings */
     $('#settingsBtn')?.addEventListener('click', () => { renderSettingsModal(); $('#settingsModal').classList.add('show'); });
     $('#closeSettings')?.addEventListener('click', () => { captureCurrentInputs(); updateTopbar(); $('#settingsModal').classList.remove('show'); });
     $('#settingsModal')?.addEventListener('click', e => { if(e.target.id === 'settingsModal'){ captureCurrentInputs(); updateTopbar(); e.currentTarget.classList.remove('show'); } });
-    
-    /* Add AI */
     $('#openAddAiBtn')?.addEventListener('click', () => $('#addAiModal').classList.add('show'));
     $('#closeAddAi')?.addEventListener('click', () => $('#addAiModal').classList.remove('show'));
     $('#addAiModal')?.addEventListener('click', e => { if(e.target.id === 'addAiModal') e.currentTarget.classList.remove('show'); });
@@ -2223,8 +2084,6 @@ async function init(){
       try{ const text = await navigator.clipboard.readText(); const inp = $('#autoDetectKeyInput'); if(inp){ inp.value = text.trim(); inp.focus(); } toast('Key di-paste'); }
       catch(e){ toast('Izinkan akses clipboard', true); }
     });
-    
-    /* Provider/Model */
     $('#activeProvider')?.addEventListener('change', e => {
       captureCurrentInputs(); const s = currentSettings();
       s.provider = e.target.value;
@@ -2235,22 +2094,14 @@ async function init(){
     });
     $('#modelSelect')?.addEventListener('change', e => { currentSettings().model = e.target.value; saveAll(); updateTopbar(); });
     $('#saveSettings')?.addEventListener('click', () => { captureCurrentInputs(); updateTopbar(); toast('Tersimpan'); $('#settingsModal').classList.remove('show'); });
-    
-    /* Prompts */
     $('#promptsBtn')?.addEventListener('click', () => { renderPrompts(); $('#promptsModal').classList.add('show'); });
     $('#closePrompts')?.addEventListener('click', () => $('#promptsModal').classList.remove('show'));
     $('#promptsModal')?.addEventListener('click', e => { if(e.target.id === 'promptsModal') e.currentTarget.classList.remove('show'); });
-    
-    /* Shortcuts */
     $('#shortcutsBtn')?.addEventListener('click', () => { renderShortcuts(); $('#shortcutsModal').classList.add('show'); });
     $('#closeShortcuts')?.addEventListener('click', () => $('#shortcutsModal').classList.remove('show'));
     $('#shortcutsModal')?.addEventListener('click', e => { if(e.target.id === 'shortcutsModal') e.currentTarget.classList.remove('show'); });
-    
-    /* Artifact */
     $('#closeArtifact')?.addEventListener('click', () => { $('#artifactModal').classList.remove('show'); const f = $('#artifactFrame'); if(f) f.srcdoc = ''; });
     $('#artifactModal')?.addEventListener('click', e => { if(e.target.id === 'artifactModal'){ e.currentTarget.classList.remove('show'); const f = $('#artifactFrame'); if(f) f.srcdoc = ''; } });
-    
-    /* Model picker */
     $('#modelPill')?.addEventListener('click', openModelModal);
     $('#closeModel')?.addEventListener('click', () => $('#modelModal').classList.remove('show'));
     $('#modelModal')?.addEventListener('click', e => { if(e.target.id === 'modelModal') e.currentTarget.classList.remove('show'); });
@@ -2261,13 +2112,11 @@ async function init(){
     });
     $('#applyModel')?.addEventListener('click', () => {
       const s = currentSettings();
-      s.provider = $('#quickProvider').value;
-      s.model = $('#quickModel').value;
+      s.provider = $('#quickProvider').value; s.model = $('#quickModel').value;
       saveAll(); updateTopbar(); toast(s.model); $('#modelModal').classList.remove('show');
     });
     $('#favModelBtn')?.addEventListener('click', () => {
-      const s = currentSettings();
-      const m = $('#quickModel').value;
+      const s = currentSettings(); const m = $('#quickModel').value;
       if(!m || m === '(belum ada model)'){ toast('Pilih model dulu', true); return; }
       if(!s.favModels) s.favModels = [];
       const i = s.favModels.indexOf(m);
@@ -2275,8 +2124,6 @@ async function init(){
       else { s.favModels.push(m); toast('★ Ditambah ke favorit'); }
       saveAll(); renderModelSelect('#quickModel', $('#quickProvider').value, m);
     });
-    
-    /* Keyboard */
     document.addEventListener('keydown', e => {
       const cmd = e.ctrlKey || e.metaKey;
       if(cmd && e.key === 'k'){ e.preventDefault(); $('#searchChats').focus(); }
@@ -2286,7 +2133,6 @@ async function init(){
       if(cmd && e.key === '/'){ e.preventDefault(); renderShortcuts(); $('#shortcutsModal').classList.add('show'); }
       if(cmd && e.key === 't'){ e.preventDefault(); toggleThinkingMode(); }
       if(cmd && e.key === 'r'){ e.preventDefault(); toggleSearchMode(); }
-      if(cmd && e.key === 'b'){ e.preventDefault(); openComboModal(); }
       if(e.key === 'Escape'){
         if(speechSynthesis.speaking){ stopSpeaking(); return; }
         $$('.modal-backdrop.show').forEach(m => m.classList.remove('show'));
@@ -2296,7 +2142,6 @@ async function init(){
     setInterval(() => { if(state.initialized) saveAll(); }, 30000);
     window.addEventListener('beforeunload', saveAll);
     document.addEventListener('visibilitychange', () => { if(document.hidden) saveAll(); });
-    
     state.initialized = true;
     console.log('✅ Syon 1.0 siap!');
   }catch(err){
@@ -2308,4 +2153,4 @@ async function init(){
 window.addEventListener('DOMContentLoaded', init);
 </script>
 </body>
-</html>
+   </html>
