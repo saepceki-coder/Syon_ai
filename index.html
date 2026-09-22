@@ -192,6 +192,8 @@ textarea#input::placeholder{color:var(--text-2)}
 .field .help a{color:var(--accent)}
 .key-input-wrap{position:relative}
 .key-input-wrap input{padding-right:44px!important;font-family:var(--font-mono)!important;font-size:13px!important}
+.key-input-wrap input[type="text"]{-webkit-text-security:disc}
+.key-input-wrap.show-key input[type="text"]{-webkit-text-security:none}
 .key-toggle-btn{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text-2);cursor:pointer;padding:6px;display:flex;border-radius:6px}
 .key-toggle-btn:hover{background:var(--bg-2);color:var(--text-0)}
 .range-row{display:flex;align-items:center;gap:10px}
@@ -434,12 +436,16 @@ Obrolan Baru</button>
 <div class="modal-body">
 <div class="field">
 <label style="font-size:14px;font-weight:600">All Detect Model AI</label>
-<div class="key-input-wrap">
-<input type="password" id="autoDetectKeyInput" placeholder="Paste API key di sini..." autocomplete="new-password" autocorrect="off" autocapitalize="off" spellcheck="false" inputmode="text">
-<button type="button" class="key-toggle-btn" id="toggleKeyVisibility" title="Lihat key">
+<div class="key-input-wrap" id="keyInputWrap">
+<input type="text" id="autoDetectKeyInput" placeholder="Paste API key di sini..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false" inputmode="text">
+<button type="button" class="key-toggle-btn" id="toggleKeyVisibility" title="Sembunyikan/Tampilkan">
 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
 </button>
 </div>
+<button type="button" class="btn-secondary" id="pasteKeyBtn" style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:6px">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+Paste dari Clipboard
+</button>
 <div class="help">Paste key dari <b>Groq, Gemini, OpenAI, OpenRouter, Anthropic, DeepSeek, Mistral, xAI, Together, Fireworks, Perplexity, Cohere, Aerolink, Cerebras, NVIDIA, HuggingFace</b>, dan 40+ lainnya.</div>
 </div>
 <button class="btn-primary" id="autoDetectSubmit" style="padding:14px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Deteksi & Tambah</button>
@@ -516,12 +522,16 @@ Obrolan Baru</button>
 
 <script>
 /* ============================================================
-   SYON AI v18 — FULL OPTIMIZED
-   Fix: model validation, Gemini turn, CORS, chat filter, etc.
+   SYON AI v19 — STABLE
+   Fix: localStorage persist, Gemini 503 retry, keyboard normal
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 const API_BASE = '/api/auth';
+
+/* ============ STORAGE KEY FIX ============ */
+const LS='syon_data';
+const OLD_LS_KEYS=['syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_v11_2','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
@@ -567,7 +577,7 @@ const SHORTCUTS = [
   ['Escape','Tutup modal'],
 ];
 
-/* ============ 50+ PROVIDERS ============ */
+/* ============ PROVIDERS ============ */
 const PROVIDERS = {
   syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2'],modelsEndpoint:null,modelsParser:null,keyPrefix:null},
   gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash-latest','gemini-1.5-pro-latest','gemini-1.5-flash-8b-latest'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
@@ -595,20 +605,7 @@ const PROVIDERS = {
   zhipu:{name:'Zhipu GLM',type:'openai',url:'https://open.bigmodel.cn/api/paas/v4/chat/completions',keyUrl:'https://open.bigmodel.cn',free:true,vision:false,models:[],modelsEndpoint:'https://open.bigmodel.cn/api/paas/v4/models',modelsParser:'openai',keyPrefix:null},
   qwen:{name:'Qwen (DashScope)',type:'openai',url:'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',keyUrl:'https://dashscope.console.aliyun.com',free:true,vision:true,models:[],modelsEndpoint:'https://dashscope.aliyuncs.com/compatible-mode/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
   deepinfra:{name:'DeepInfra',type:'openai',url:'https://api.deepinfra.com/v1/openai/chat/completions',keyUrl:'https://deepinfra.com/dash/api_keys',free:true,vision:false,models:[],modelsEndpoint:'https://api.deepinfra.com/v1/openai/models',modelsParser:'openai',keyPrefix:null},
-  anyscale:{name:'Anyscale',type:'openai',url:'https://api.endpoints.anyscale.com/v1/chat/completions',keyUrl:'https://app.endpoints.anyscale.com',free:false,vision:false,models:[],modelsEndpoint:'https://api.endpoints.anyscale.com/v1/models',modelsParser:'openai',keyPrefix:null},
   siliconflow:{name:'SiliconFlow',type:'openai',url:'https://api.siliconflow.cn/v1/chat/completions',keyUrl:'https://siliconflow.cn',free:true,vision:false,models:[],modelsEndpoint:'https://api.siliconflow.cn/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
-  ai21:{name:'AI21 Labs',type:'openai',url:'https://api.ai21.com/studio/v1/chat/completions',keyUrl:'https://studio.ai21.com',free:false,vision:false,models:[],modelsEndpoint:'https://api.ai21.com/studio/v1/models',modelsParser:'openai',keyPrefix:null},
-  voyage:{name:'Voyage AI',type:'openai',url:'https://api.voyageai.com/v1/chat/completions',keyUrl:'https://dash.voyageai.com',free:true,vision:false,models:[],modelsEndpoint:'https://api.voyageai.com/v1/models',modelsParser:'openai',keyPrefix:'pa-'},
-  yi:{name:'Yi (01.AI)',type:'openai',url:'https://api.lingyiwanwu.com/v1/chat/completions',keyUrl:'https://platform.lingyiwanwu.com',free:false,vision:false,models:[],modelsEndpoint:'https://api.lingyiwanwu.com/v1/models',modelsParser:'openai',keyPrefix:null},
-  baichuan:{name:'Baichuan',type:'openai',url:'https://api.baichuan-ai.com/v1/chat/completions',keyUrl:'https://platform.baichuan-ai.com',free:false,vision:false,models:[],modelsEndpoint:'https://api.baichuan-ai.com/v1/models',modelsParser:'openai',keyPrefix:null},
-  sarvam:{name:'Sarvam AI',type:'openai',url:'https://api.sarvam.ai/v1/chat/completions',keyUrl:'https://dashboard.sarvam.ai',free:true,vision:false,models:[],modelsEndpoint:'https://api.sarvam.ai/v1/models',modelsParser:'openai',keyPrefix:null},
-  aleph:{name:'Aleph Alpha',type:'openai',url:'https://api.aleph-alpha.com/chat/completions',keyUrl:'https://app.aleph-alpha.com',free:false,vision:false,models:[],modelsEndpoint:'https://api.aleph-alpha.com/models',modelsParser:'openai',keyPrefix:null},
-  nous:{name:'Nous Research',type:'openai',url:'https://inference-api.nousresearch.com/v1/chat/completions',keyUrl:'https://portal.nousresearch.com',free:true,vision:false,models:[],modelsEndpoint:'https://inference-api.nousresearch.com/v1/models',modelsParser:'openai',keyPrefix:null},
-  liquid:{name:'Liquid AI',type:'openai',url:'https://api.liquid.ai/v1/chat/completions',keyUrl:'https://www.liquid.ai',free:false,vision:false,models:[],modelsEndpoint:'https://api.liquid.ai/v1/models',modelsParser:'openai',keyPrefix:null},
-  kluster:{name:'Kluster AI',type:'openai',url:'https://api.kluster.ai/v1/chat/completions',keyUrl:'https://platform.kluster.ai',free:false,vision:false,models:[],modelsEndpoint:'https://api.kluster.ai/v1/models',modelsParser:'openai',keyPrefix:null},
-  octoai:{name:'OctoAI',type:'openai',url:'https://text.octoai.run/v1/chat/completions',keyUrl:'https://octoai.cloud',free:false,vision:false,models:[],modelsEndpoint:'https://text.octoai.run/v1/models',modelsParser:'openai',keyPrefix:null},
-  ollama:{name:'Ollama (Local)',type:'openai',url:'http://localhost:11434/v1/chat/completions',keyUrl:'https://ollama.com',free:true,vision:false,models:[],modelsEndpoint:'http://localhost:11434/v1/models',modelsParser:'openai',keyPrefix:'ollama'},
-  lmstudio:{name:'LM Studio (Local)',type:'openai',url:'http://localhost:1234/v1/chat/completions',keyUrl:'https://lmstudio.ai',free:true,vision:false,models:[],modelsEndpoint:'http://localhost:1234/v1/models',modelsParser:'openai',keyPrefix:'lm-studio'},
   custom:{name:'Custom (OpenAI-compatible)',type:'openai',url:'',keyUrl:'',free:null,vision:false,models:[],modelsEndpoint:null,modelsParser:null,keyPrefix:null}
 };
 
@@ -622,8 +619,6 @@ const state = {
   initialized:false
 };
 
-const LS='syon_v18';
-
 function defaultSettings(){
   return {
     provider:'syonbot',model:'syon-v2',
@@ -634,9 +629,27 @@ function defaultSettings(){
   };
 }
 
+/* ============ LOAD/SAVE dengan MIGRATE ============ */
 function loadAll(){
   try{
-    const raw=localStorage.getItem(LS);
+    let raw=localStorage.getItem(LS);
+    // Migrate dari key lama kalau key baru kosong
+    if(!raw){
+      for(const oldKey of OLD_LS_KEYS){
+        const old=localStorage.getItem(oldKey);
+        if(old){
+          try{
+            const parsed=JSON.parse(old);
+            if(parsed&&typeof parsed==='object'){
+              raw=old;
+              localStorage.setItem(LS,old);
+              console.log('Migrated from',oldKey);
+              break;
+            }
+          }catch(e){}
+        }
+      }
+    }
     if(raw){
       const d=JSON.parse(raw);
       if(d.token)state.token=d.token;
@@ -644,18 +657,19 @@ function loadAll(){
       if(d.isGuest)state.isGuest=d.isGuest;
       if(d.activeProfileId)state.activeProfileId=d.activeProfileId;
       if(d.theme)state.theme=d.theme;
-      if(d.voice)state.voice=d.voice;
+      if(d.voice)state.voice=Object.assign({enabled:false,voiceURI:'',rate:1,pitch:1,volume:1},d.voice);
       if(d.chatsByUser)state.chatsByUser=d.chatsByUser;
       if(d.activeChatByUser)state.activeChatByUser=d.activeChatByUser;
       if(d.settingsByUser)state.settingsByUser=d.settingsByUser;
       if(d.pinnedChats)state.pinnedChats=d.pinnedChats;
     }
-  }catch(e){}
+  }catch(e){console.warn('loadAll:',e);}
   if(!state.chatsByUser)state.chatsByUser={};
   if(!state.activeChatByUser)state.activeChatByUser={};
   if(!state.settingsByUser)state.settingsByUser={};
   if(!state.pinnedChats)state.pinnedChats={};
 }
+
 function saveAll(){
   try{
     localStorage.setItem(LS,JSON.stringify({
@@ -665,7 +679,7 @@ function saveAll(){
       settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,
       savedAt:Date.now()
     }));
-  }catch(e){}
+  }catch(e){console.warn('saveAll:',e);}
 }
 
 const $=s=>document.querySelector(s);
@@ -696,12 +710,11 @@ function toast(msg,isErr){
 function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,200)+'px';}
 function showLoading(show){const el=$('#loadingOverlay');if(el)el.classList.toggle('show',!!show);}
 
-/* ============ MODEL FILTER & VALIDATION ============ */
+/* ============ MODEL FILTER ============ */
 function isChatModel(id){
-  const bad=['whisper','tts','dall-e','embedding','embed-','moderation','image-','sora','text-embedding','gpt-image','audio','-vision-preview'];
+  const bad=['whisper','tts','dall-e','embedding','embed-','moderation','image-','sora','text-embedding','gpt-image','audio'];
   const low=String(id||'').toLowerCase();
-  if(low.includes('gemini-api'))return false;
-  if(low==='gemini')return false;
+  if(low==='gemini-api'||low==='gemini')return false;
   return !bad.some(b=>low.includes(b));
 }
 
@@ -716,15 +729,6 @@ function parseModelSuggestion(msg){
   m=msg.match(/\b(gemini-[a-zA-Z0-9\-\.]+)\b/i);
   if(m)return m[1];
   return null;
-}
-
-function validateModel(providerId,model){
-  if(!model||model==='gemini-api'||model==='(belum ada model)'||model==='')return null;
-  const cfg=PROVIDERS[providerId];
-  if(!cfg)return model;
-  if(cfg.models.includes(model))return model;
-  if(cfg._chatModels&&cfg._chatModels.includes(model))return model;
-  return model;
 }
 
 /* ============ BACKEND API ============ */
@@ -882,7 +886,6 @@ function buildMessages(chat,forVision){
   return msgs;
 }
 
-/* ============ FETCH WITH PROXY FALLBACK ============ */
 async function fetchWithRetry(url,options,retries=1){
   let lastErr;
   for(let i=0;i<=retries;i++){
@@ -892,26 +895,7 @@ async function fetchWithRetry(url,options,retries=1){
   throw lastErr;
 }
 
-async function fetchWithProxy(url,options){
-  // 1. Direct
-  try{
-    return await fetch(url,options);
-  }catch(e){
-    if(e.name==='AbortError')throw e;
-    // 2. Via proxy (kalau bukan streaming)
-    if(options.body){
-      try{
-        const bodyObj=JSON.parse(options.body);
-        bodyObj.stream=false;
-        const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(url);
-        return await fetch(proxyUrl,{...options,body:JSON.stringify(bodyObj)});
-      }catch(e2){}
-    }
-    throw e;
-  }
-}
-
-/* ============ OPENAI-COMPATIBLE (FIX: CORS fallback) ============ */
+/* ============ OPENAI-COMPATIBLE ============ */
 async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,signal){
   const s=currentSettings();
   const headers={'Content-Type':'application/json'};
@@ -922,14 +906,13 @@ async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,signa
     res=await fetchWithRetry(provider.url,{method:'POST',signal,headers,body:JSON.stringify(bodyObj)},1);
   }catch(corsErr){
     if(corsErr.name==='AbortError')throw corsErr;
-    // Retry via proxy dengan stream=false
     bodyObj.stream=false;
     const proxyUrl='https://corsproxy.io/?'+encodeURIComponent(provider.url);
     res=await fetch(proxyUrl,{method:'POST',signal,headers,body:JSON.stringify(bodyObj)});
     if(res.ok){
       const j=await res.json();
-      const txt=j.choices?.[0]?.message?.content||j.choices?.[0]?.text||'';
-      if(txt){onDelta(txt);}
+      const txt=j.choices?.[0]?.message?.content||'';
+      if(txt)onDelta(txt);
       return;
     }
   }
@@ -938,7 +921,7 @@ async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,signa
   while(true){const{value,done}=await reader.read();if(done)break;buf+=decoder.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){const st=line.trim();if(!st.startsWith('data:'))continue;const data=st.slice(5).trim();if(data==='[DONE]')return;try{const j=JSON.parse(data);const delta=j.choices?.[0]?.delta?.content||'';if(delta)onDelta(delta);}catch(e){}}}
 }
 
-/* ============ GEMINI (FIX: sanitize contents) ============ */
+/* ============ GEMINI ============ */
 async function callGemini(apiKey,model,messages,onDelta,signal){
   const s=currentSettings();
   const contents=[];let systemText='';
@@ -955,7 +938,7 @@ async function callGemini(apiKey,model,messages,onDelta,signal){
     if(!parts.length)continue;
     contents.push({role,parts});
   }
-  // Sanitize
+  // Sanitize: merge consecutive, last must be user
   const sanitized=[];
   for(const c of contents){
     const last=sanitized[sanitized.length-1];
@@ -972,6 +955,49 @@ async function callGemini(apiKey,model,messages,onDelta,signal){
   if(!res.ok){const t=await res.text().catch(()=>'');throw new Error('HTTP '+res.status+': '+(t.slice(0,500)||res.statusText));}
   const reader=res.body.getReader();const decoder=new TextDecoder();let buf='';
   while(true){const{value,done}=await reader.read();if(done)break;buf+=decoder.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){const st=line.trim();if(!st.startsWith('data:'))continue;const data=st.slice(5).trim();if(!data)continue;try{const j=JSON.parse(data);const txt=j.candidates?.[0]?.content?.parts?.map(p=>p.text).join('')||'';if(txt)onDelta(txt);}catch(e){}}}
+}
+
+/* ============ GEMINI SMART RETRY (503/429/500) ============ */
+const GEMINI_FALLBACKS=['gemini-2.0-flash','gemini-1.5-flash-latest','gemini-1.5-flash-8b-latest','gemini-1.5-pro-latest'];
+
+async function callGeminiSmart(key,model,messages,onDelta,signal,attempt=1,modelIndex=0){
+  try{
+    return await callGemini(key,model,messages,onDelta,signal);
+  }catch(err){
+    const msg=String(err.message||'').toLowerCase();
+    const isServerBusy=msg.includes('503')||msg.includes('429')||msg.includes('500')||msg.includes('high demand')||msg.includes('unavailable')||msg.includes('overloaded')||msg.includes('try again');
+    const isDeprecated=msg.includes('404')||msg.includes('no longer available')||msg.includes('not found');
+    const originalMsg=String(err.message||'');
+    
+    // 1. Retry on server busy
+    if(isServerBusy&&attempt<=2){
+      const wait=attempt*1500;
+      toast('Server sibuk, coba lagi ('+attempt+'/2)...');
+      await new Promise(r=>setTimeout(r,wait));
+      if(signal&&signal.aborted)throw err;
+      return callGeminiSmart(key,model,messages,onDelta,signal,attempt+1,modelIndex);
+    }
+    
+    // 2. Auto-switch if deprecated
+    const suggested=parseModelSuggestion(originalMsg);
+    if(isDeprecated&&suggested&&suggested!==model){
+      toast('Pindah ke '+suggested);
+      const s=currentSettings();s.model=suggested;saveAll();updateTopbar();
+      return callGeminiSmart(key,suggested,messages,onDelta,signal,1,0);
+    }
+    
+    // 3. Fallback model
+    if((isServerBusy||isDeprecated)&&modelIndex<GEMINI_FALLBACKS.length){
+      const fallback=GEMINI_FALLBACKS[modelIndex];
+      if(fallback!==model){
+        toast('Coba model '+fallback);
+        const s=currentSettings();s.model=fallback;saveAll();updateTopbar();
+        return callGeminiSmart(key,fallback,messages,onDelta,signal,1,modelIndex+1);
+      }
+    }
+    
+    throw err;
+  }
 }
 
 /* ============ ANTHROPIC ============ */
@@ -993,7 +1019,7 @@ async function callAnthropic(apiKey,model,messages,onDelta,signal){
   while(true){const{value,done}=await reader.read();if(done)break;buf+=decoder.decode(value,{stream:true});const lines=buf.split('\n');buf=lines.pop();for(const line of lines){const st=line.trim();if(!st.startsWith('data:'))continue;const data=st.slice(5).trim();if(!data)continue;try{const j=JSON.parse(data);if(j.type==='content_block_delta'&&j.delta?.text)onDelta(j.delta.text);}catch(e){}}}
 }
 
-/* ============ STREAM CHAT (FIX: validate model + auto-retry) ============ */
+/* ============ STREAM CHAT ============ */
 async function streamChat(onDelta,signal){
   const s=currentSettings();const p=s.provider;const cfg=PROVIDERS[p];
   if(cfg.type==='syonbot'){
@@ -1021,26 +1047,7 @@ async function streamChat(onDelta,signal){
   }
 
   if(cfg.type==='gemini'){
-    try{
-      return await callGemini(key,finalModel,messages,onDelta,signal);
-    }catch(err){
-      const msg=err.message||'';
-      const suggested=parseModelSuggestion(msg);
-      if(suggested&&suggested!==finalModel){
-        console.log('Auto-switch:',finalModel,'→',suggested);
-        toast('Model deprecated, auto-switch');
-        s.model=suggested;saveAll();updateTopbar();
-        return await callGemini(key,suggested,messages,onDelta,signal);
-      }
-      // Fallback ke gemini-2.0-flash
-      if(finalModel!=='gemini-2.0-flash'&&msg.includes('404')){
-        try{
-          s.model='gemini-2.0-flash';saveAll();updateTopbar();
-          return await callGemini(key,'gemini-2.0-flash',messages,onDelta,signal);
-        }catch(e2){throw err;}
-      }
-      throw err;
-    }
+    return await callGeminiSmart(key,finalModel,messages,onDelta,signal);
   }
   if(cfg.type==='anthropic')return callAnthropic(key,finalModel,messages,onDelta,signal);
   const providerCfg=p==='custom'?{...cfg,url:s.customUrl}:cfg;
@@ -1150,8 +1157,8 @@ async function detectProviderFromKey(apiKey){
 
   if(priority.length===0){
     ['gemini','groq','openrouter','cohere','cerebras','sambanova','hyperbolic','novita','nvidia','zhipu','qwen','huggingface','aerolink',
-     'openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','kluster','github','replicate','moonshot',
-     'deepinfra','siliconflow','ai21','voyage','yi','baichuan','sarvam','aleph','nous','liquid','octoai'].forEach((id,i)=>{
+     'openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','github','replicate','moonshot',
+     'deepinfra','siliconflow'].forEach((id,i)=>{
       priority.push({id,score:60-i});
     });
   }
@@ -1221,7 +1228,7 @@ async function handleAutoDetect(){
   finally{btn.disabled=false;btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Deteksi & Tambah';}
 }
 
-/* ============ FULL DIAGNOSTIC ============ */
+/* ============ DIAGNOSTIC ============ */
 async function diagnoseProvider(pid,apiKey){
   const cfg=PROVIDERS[pid];
   const result={provider:pid,name:cfg.name,models:'pending',chat:'pending',note:'',modelCount:0};
@@ -1231,14 +1238,9 @@ async function diagnoseProvider(pid,apiKey){
   }
   try{
     const r=await tryFetchModels(pid,apiKey);
-    if(r&&r.models&&r.models.length){
-      result.models='ok';
-      result.modelCount=r.models.length;
-    } else result.models='empty';
-  }catch(e){
-    result.models='fail';
-    result.note=e.message||'Gagal';
-  }
+    if(r&&r.models&&r.models.length){result.models='ok';result.modelCount=r.models.length;}
+    else result.models='empty';
+  }catch(e){result.models='fail';result.note=e.message||'Gagal';}
   try{
     const model=(cfg._chatModels&&cfg._chatModels[0])||cfg.models[0]||'default';
     const headers={'Content-Type':'application/json'};
@@ -1251,40 +1253,27 @@ async function diagnoseProvider(pid,apiKey){
       chatUrl=cfg.url+'/models/'+model+':generateContent';
       chatBody={contents:[{role:'user',parts:[{text:'hi'}]}],generationConfig:{maxOutputTokens:5}};
     } else if(pid==='anthropic'){
-      chatUrl=cfg.url;
-      chatBody={model,max_tokens:5,messages:[{role:'user',content:'hi'}]};
+      chatUrl=cfg.url;chatBody={model,max_tokens:5,messages:[{role:'user',content:'hi'}]};
     } else {
-      chatUrl=cfg.url;
-      chatBody={model,messages:[{role:'user',content:'hi'}],max_tokens:5};
+      chatUrl=cfg.url;chatBody={model,messages:[{role:'user',content:'hi'}],max_tokens:5};
     }
 
     const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),12000);
     let chatRes;
-    try{
-      chatRes=await fetch(chatUrl,{method:'POST',headers,signal:ctrl.signal,body:JSON.stringify(chatBody)});
-    }catch(ce){
+    try{chatRes=await fetch(chatUrl,{method:'POST',headers,signal:ctrl.signal,body:JSON.stringify(chatBody)});}
+    catch(ce){
       try{
         const proxy='https://corsproxy.io/?'+encodeURIComponent(chatUrl);
-        const bodyObj=JSON.parse(JSON.stringify(chatBody));
-        chatRes=await fetch(proxy,{method:'POST',headers,signal:ctrl.signal,body:JSON.stringify(bodyObj)});
+        chatRes=await fetch(proxy,{method:'POST',headers,signal:ctrl.signal,body:JSON.stringify(chatBody)});
         result.note=(result.note?' | ':'')+'Chat via proxy';
-      }catch(e2){
-        clearTimeout(t);
-        result.chat='cors';
-        result.note=(result.note?' | ':'')+'Chat CORS block';
-        return result;
-      }
+      }catch(e2){clearTimeout(t);result.chat='cors';result.note=(result.note?' | ':'')+'CORS block';return result;}
     }
     clearTimeout(t);
-
     if(chatRes.ok)result.chat='ok';
-    else if(chatRes.status===401||chatRes.status===403){result.chat='auth';result.note=(result.note?' | ':'')+'Chat auth gagal';}
-    else if(chatRes.status===404){result.chat='model';result.note=(result.note?' | ':'')+'Model tidak valid';}
-    else{result.chat='error';result.note=(result.note?' | ':'')+'Chat HTTP '+chatRes.status;}
-  }catch(e){
-    result.chat='error';
-    result.note=(result.note?' | ':'')+(e.message||'Error');
-  }
+    else if(chatRes.status===401||chatRes.status===403){result.chat='auth';result.note=(result.note?' | ':'')+'Auth gagal';}
+    else if(chatRes.status===404){result.chat='model';result.note=(result.note?' | ':'')+'Model invalid';}
+    else{result.chat='error';result.note=(result.note?' | ':'')+'HTTP '+chatRes.status;}
+  }catch(e){result.chat='error';result.note=(result.note?' | ':'')+(e.message||'Error');}
   return result;
 }
 
@@ -1294,9 +1283,9 @@ async function runDiagnoseAll(){
   const s=currentSettings();
   const providers=Object.keys(s.keys).filter(k=>s.keys[k]);
   if(!providers.length){toast('Belum ada API key',true);return;}
-  btn.disabled=true;btn.innerHTML='Menguji '+providers.length+' provider...';
+  btn.disabled=true;btn.innerHTML='Menguji '+providers.length+'...';
   resultEl.style.display='block';
-  resultEl.innerHTML='<div class="diagnose-summary">Menguji '+providers.length+' provider... tunggu.</div>';
+  resultEl.innerHTML='<div class="diagnose-summary">Menguji '+providers.length+' provider...</div>';
 
   const results=[];
   for(const pid of providers){
@@ -1308,12 +1297,11 @@ async function runDiagnoseAll(){
 
   const badge=(st)=>{
     if(st==='ok')return '<span class="badge-ok">OK</span>';
-    if(st==='partial')return '<span class="badge-partial">PARTIAL</span>';
     if(st==='empty')return '<span class="badge-fail">KOSONG</span>';
-    if(st==='auth')return '<span class="badge-fail">AUTH GAGAL</span>';
-    if(st==='cors')return '<span class="badge-partial">CORS BLOCK</span>';
-    if(st==='model')return '<span class="badge-partial">MODEL INVALID</span>';
-    if(st==='skip')return '<span style="color:var(--text-2)">SKIP</span>';
+    if(st==='auth')return '<span class="badge-fail">AUTH</span>';
+    if(st==='cors')return '<span class="badge-partial">CORS</span>';
+    if(st==='model')return '<span class="badge-partial">MODEL</span>';
+    if(st==='skip')return '<span style="color:var(--text-2)">-</span>';
     if(st==='fail')return '<span class="badge-fail">GAGAL</span>';
     return '<span style="color:var(--text-2)">?</span>';
   };
@@ -1325,21 +1313,18 @@ async function runDiagnoseAll(){
     else partialCount++;
   });
 
-  let html='<div class="diagnose-summary"><b>Ringkasan:</b> '+results.length+' provider diuji. <b style="color:var(--success)">'+okCount+' OK</b>, <b style="color:#b45309">'+partialCount+' Partial</b>, <b style="color:var(--danger)">'+failCount+' Gagal</b></div>';
+  let html='<div class="diagnose-summary"><b>'+results.length+' provider:</b> <b style="color:var(--success)">'+okCount+' OK</b>, <b style="color:#b45309">'+partialCount+' Partial</b>, <b style="color:var(--danger)">'+failCount+' Gagal</b></div>';
   html+='<table class="diagnose-table"><thead><tr><th>Provider</th><th>Models</th><th>Chat</th></tr></thead><tbody>';
-  results.forEach(r=>{
-    html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+badge(r.models)+(r.modelCount?'<div class="note">'+r.modelCount+' model</div>':'')+'</td><td>'+badge(r.chat)+'</td></tr>';
-  });
+  results.forEach(r=>{html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+badge(r.models)+(r.modelCount?'<div class="note">'+r.modelCount+'</div>':'')+'</td><td>'+badge(r.chat)+'</td></tr>';});
   html+='</tbody></table>';
 
   const corsBlocked=results.filter(r=>r.chat==='cors');
   if(corsBlocked.length){
-    html+='<div class="diagnose-summary" style="border-color:var(--warn)"><b>Provider CORS block:</b> '+corsBlocked.map(r=>r.name).join(', ')+'. Provider ini tidak bisa dipakai dari browser tanpa backend. Coba Groq, Gemini, atau OpenRouter.</div>';
+    html+='<div class="diagnose-summary" style="border-color:var(--warn)"><b>CORS block:</b> '+corsBlocked.map(r=>r.name).join(', ')+'. Pakai Groq, Gemini, atau OpenRouter.</div>';
   }
-
   resultEl.innerHTML=html;
   btn.disabled=false;btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Cek Semua AI (Full Diagnostic)';
-  toast('Diagnostic: '+okCount+' OK, '+partialCount+' partial, '+failCount+' gagal');
+  toast('Diagnostic selesai');
 }
 
 /* ============ CHAT LOGIC ============ */
@@ -1443,7 +1428,7 @@ function renderChat(){
     inner.innerHTML='<div class="welcome">'+
       '<img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon">'+
       '<h1>Halo, <span>'+esc(pname)+'</span></h1>'+
-      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode. Tambah AI dengan API key biar makin pintar.</p>'+
+      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode.</p>'+
       '<button class="welcome-add-ai" id="welcomeAddAiBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Tambah AI dengan API Key</button>'+
       '<div class="suggestions">'+
       '<div class="suggestion" data-p="2+3*5"><b>Hitung</b>2 + 3 × 5 = ?</div>'+
@@ -1607,7 +1592,6 @@ function renderProfileList(){
 
 function captureCurrentInputs(){
   const s=currentSettings();
-  $$('.key-input').forEach(inp=>{s.keys[inp.dataset.provider]=inp.value.trim();});
   const sp=$('#systemPrompt');if(sp)s.systemPrompt=sp.value.trim();
   const tp=$('#tempInput');if(tp)s.temperature=parseFloat(tp.value)||0.7;
   const mt=$('#maxTokenInput');if(mt)s.maxTokens=parseInt(mt.value)||2048;
@@ -1641,7 +1625,6 @@ function renderModelSelect(selId,providerId,current){
     if(!models.length)models=['gpt-3.5-turbo'];
   }
   if(!models.length)models=['(belum ada model)'];
-  // Ensure current model is valid
   if(current==='gemini-api'||!models.includes(current)){
     if(models[0]!=='(belum ada model)'){current=models[0];s.model=current;saveAll();}
   }
@@ -1653,7 +1636,7 @@ function renderProviderList(){
   list.innerHTML='';
   const userKeys=Object.keys(s.keys).filter(k=>s.keys[k]);
   if(!userKeys.length){
-    list.innerHTML='<div class="help" style="text-align:center;padding:20px">Belum ada AI. Klik tombol Tambah AI di atas.</div>';
+    list.innerHTML='<div class="help" style="text-align:center;padding:20px">Belum ada AI. Klik Tambah AI di atas.</div>';
     return;
   }
   userKeys.forEach(id=>{
@@ -1677,7 +1660,7 @@ function renderProviderList(){
       try{
         const result=await tryFetchModels(id,key);
         s.keyStatus[id]='ok';s.fetchedModels[id]=result.models;
-        toast(result.models.length+' model ditemukan');
+        toast(result.models.length+' model');
         renderSettingsModal();
       }catch(e){s.keyStatus[id]='bad';toast('Gagal: '+(e.message||'').slice(0,50),true);renderSettingsModal();}
       finally{btn.textContent=oldText;btn.disabled=false;saveAll();updateTopbar();}
@@ -1977,8 +1960,16 @@ async function init(){
     $('#autoDetectKeyInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleAutoDetect();});
 
     $('#toggleKeyVisibility')?.addEventListener('click',()=>{
-      const inp=$('#autoDetectKeyInput');if(!inp)return;
-      inp.type=inp.type==='password'?'text':'password';
+      const wrap=$('#keyInputWrap');
+      if(wrap)wrap.classList.toggle('show-key');
+    });
+    $('#pasteKeyBtn')?.addEventListener('click',async()=>{
+      try{
+        const text=await navigator.clipboard.readText();
+        const inp=$('#autoDetectKeyInput');
+        if(inp){inp.value=text.trim();inp.focus();}
+        toast('Key di-paste');
+      }catch(e){toast('Izinkan akses clipboard di browser',true);}
     });
 
     $('#diagnoseAllBtn')?.addEventListener('click',runDiagnoseAll);
@@ -2032,7 +2023,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('Syon AI v18 — FULL OPTIMIZED');
+    console.log('Syon AI v19 STABLE');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
