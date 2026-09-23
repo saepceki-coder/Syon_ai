@@ -24,6 +24,11 @@ body{display:flex;height:100vh;height:100dvh}
 .save-indicator{position:fixed;top:14px;right:14px;width:22px;height:22px;border-radius:50%;background:var(--success);color:#fff;display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s;z-index:999;pointer-events:none;box-shadow:0 2px 8px rgba(16,163,127,.3)}
 .save-indicator.show{opacity:1}
 
+/* NET STATUS */
+.net-status{position:fixed;bottom:12px;left:12px;padding:6px 12px;border-radius:99px;font-size:11px;font-weight:600;background:var(--danger);color:#fff;z-index:999;display:none;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.net-status.show{display:flex;align-items:center;gap:6px}
+.net-status.online{background:var(--success)}
+
 /* LOADING ANIMATIONS */
 .loading-dots{display:inline-flex;gap:4px;align-items:center;vertical-align:middle;margin-left:4px}
 .loading-dots span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:bounce 1.4s infinite ease-in-out both}
@@ -40,7 +45,7 @@ body{display:flex;height:100vh;height:100dvh}
 .searching-indicator svg{animation:rotate 1.5s linear infinite}
 @keyframes rotate{to{transform:rotate(360deg)}}
 
-/* THINKING BLOCK (DeepSeek style) */
+/* THINKING BLOCK */
 .thinking-block{border:1px solid var(--border);border-radius:12px;background:linear-gradient(135deg,rgba(99,102,241,.04),rgba(168,85,247,.04));margin-bottom:14px;overflow:hidden;transition:border-color .2s}
 .thinking-block[open]{border-color:rgba(99,102,241,.3)}
 .thinking-block summary{padding:11px 14px;cursor:pointer;font-size:12.5px;color:var(--text-1);display:flex;align-items:center;gap:8px;list-style:none;font-weight:600;user-select:none}
@@ -573,19 +578,19 @@ Paste dari Clipboard
 
 <div class="toast" id="toast"></div>
 
+<div class="net-status" id="netStatus"></div>
+
 <script>
 /* ============================================================
-   SYON AI v21 — Part 2/4: Constants & State
+   SYON AI v22 — Part 1/4: Constants & State (OPTIMIZED)
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 const API_BASE = '/api/auth';
 
-/* ============ STORAGE ============ */
 const LS='syon_data';
 const OLD_LS_KEYS=['syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
 
-/* ============ KNOWLEDGE BASE ============ */
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
   {q:['siapa kamu','kamu siapa','nama kamu','kenalan'],a:'Aku **Syon AI** 🤖 — asisten pribadi kamu.'},
@@ -635,7 +640,7 @@ const SHORTCUTS = [
 const PROVIDERS = {
   syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2'],modelsEndpoint:null,modelsParser:null,keyPrefix:null},
   tokenharbor:{name:'TokenHarbor',type:'openai',url:'https://tokenharbor.ai/v1/chat/completions',keyUrl:'https://tokenharbor.ai/dashboard/api-keys',free:true,vision:false,models:[],modelsEndpoint:'https://tokenharbor.ai/v1/models',modelsParser:'openai',keyPrefix:'sk-harbor-'},
-  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash-latest','gemini-1.5-pro-latest','gemini-1.5-flash-8b-latest'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
+  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.5-flash','gemini-2.5-pro','gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash-latest','gemini-1.5-pro-latest','gemini-1.5-flash-8b-latest'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
   groq:{name:'Groq',type:'openai',url:'https://api.groq.com/openai/v1/chat/completions',keyUrl:'https://console.groq.com/keys',free:true,vision:false,models:[],modelsEndpoint:'https://api.groq.com/openai/v1/models',modelsParser:'openai',keyPrefix:'gsk_'},
   openrouter:{name:'OpenRouter',type:'openai',url:'https://openrouter.ai/api/v1/chat/completions',keyUrl:'https://openrouter.ai/keys',free:true,vision:true,models:[],modelsEndpoint:'https://openrouter.ai/api/v1/models',modelsParser:'openrouter',keyPrefix:'sk-or-'},
   openai:{name:'OpenAI',type:'openai',url:'https://api.openai.com/v1/chat/completions',keyUrl:'https://platform.openai.com/api-keys',free:false,vision:true,models:[],modelsEndpoint:'https://api.openai.com/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
@@ -663,7 +668,6 @@ const PROVIDERS = {
   custom:{name:'Custom (OpenAI-compatible)',type:'openai',url:'',keyUrl:'',free:null,vision:false,models:[],modelsEndpoint:null,modelsParser:null,keyPrefix:null}
 };
 
-/* ============ STATE ============ */
 const state = {
   token:null,user:null,isGuest:false,activeProfileId:null,
   theme:'dark',
@@ -687,7 +691,6 @@ function defaultSettings(){
   };
 }
 
-/* ============ LOAD/SAVE ============ */
 function loadAll(){
   try{
     let raw=localStorage.getItem(LS);
@@ -697,12 +700,7 @@ function loadAll(){
         if(old){
           try{
             const parsed=JSON.parse(old);
-            if(parsed&&typeof parsed==='object'){
-              raw=old;
-              localStorage.setItem(LS,old);
-              console.log('[Migrate] from',oldKey);
-              break;
-            }
+            if(parsed&&typeof parsed==='object'){raw=old;localStorage.setItem(LS,old);break;}
           }catch(e){}
         }
       }
@@ -748,7 +746,6 @@ function saveAll(){
   }catch(e){console.warn('saveAll:',e);}
 }
 
-/* ============ HELPERS ============ */
 const $=s=>document.querySelector(s);
 const $$=s=>document.querySelectorAll(s);
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,8);
@@ -777,7 +774,6 @@ function toast(msg,isErr){
 function autoGrow(el){el.style.height='auto';el.style.height=Math.min(el.scrollHeight,200)+'px';}
 function showLoading(show){const el=$('#loadingOverlay');if(el)el.classList.toggle('show',!!show);}
 
-/* ============ MODEL FILTER ============ */
 function isChatModel(id){
   const bad=['whisper','tts','dall-e','embedding','embed-','moderation','image-','sora','text-embedding','gpt-image','audio'];
   const low=String(id||'').toLowerCase();
@@ -798,10 +794,8 @@ function parseModelSuggestion(msg){
   return null;
 }
 
-/* ============ MARKDOWN ============ */
 marked.setOptions({breaks:true,gfm:true});
 function renderMarkdown(text){
-  // Extract thinking block
   let thinking=null;let main=text;
   const m=text.match(/<thinking>([\s\S]*?)<\/thinking>/i);
   if(m){thinking=m[1].trim();main=text.replace(m[0],'').trim();}
@@ -859,7 +853,6 @@ function stripMarkdown(s){
   return s.replace(/<thinking>[\s\S]*?<\/thinking>/gi,'').replace(/```[\s\S]*?```/g,' ').replace(/`([^`]+)`/g,'$1').replace(/\*\*([^*]+)\*\*/g,'$1').replace(/\*([^*]+)\*/g,'$1').replace(/^\s*[-*+]\s+/gm,'').replace(/^\s*\d+\.\s+/gm,'').replace(/\[([^\]]+)\]\([^)]+\)/g,'$1').replace(/^#+\s+/gm,'').replace(/\n{2,}/g,'\n').trim();
 }
 
-/* ============ SYON BOT ============ */
 function normalize(s){return String(s).toLowerCase().replace(/[^\w\s+*\-/^%().=]/g,' ').replace(/\s+/g,' ').trim();}
 function tryMath(input){
   let s=input.toLowerCase().replace(/^(berapa|hitung|hasil dari|hasil|tolong hitung|what is|calculate)\s*/i,'').replace(/[?]/g,'').replace(/[x×]/g,'*').replace(/[:÷]/g,'/').replace(/,/g,'.').trim();
@@ -897,7 +890,6 @@ function syonBotReply(t){
   return 'Hmm, aku belum punya jawaban itu. 🤔\n\n**Yang aku kuasai:**\n- 🧮 **Matematika** — coba `12*8+5`\n- 💻 **Coding** — coba `contoh python`\n- 💡 **Umum** — coba `apa itu ai`\n\n**Mau jawaban lebih luas?** Klik tombol **"Tambah AI dengan API Key"** di atas! ✨';
 }
 
-/* ============ VOICE ============ */
 let voicesList=[];
 function loadVoices(){try{voicesList=speechSynthesis.getVoices()||[];}catch(e){voicesList=[];}}
 function populateVoiceSelect(){
@@ -940,10 +932,9 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 
 <script>
 /* ============================================================
-   SYON AI v21 — Part 3/4: API & Auto-Detect & Web Search
+   SYON AI v22 — Part 2/4: API & Auto-Detect & Web Search (OPTIMIZED)
    ============================================================ */
 
-/* ============ BACKEND ============ */
 async function apiCall(action,body={},useAuth=false){
   const headers={'Content-Type':'application/json'};
   if(useAuth&&state.token)headers['Authorization']='Bearer '+state.token;
@@ -963,7 +954,6 @@ async function apiMe(){
   }catch(e){return null;}
 }
 
-/* ============ WEB SEARCH (DuckDuckGo + Wikipedia) ============ */
 async function searchWikipedia(query){
   try{
     const r=await fetch('https://id.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srlimit=3&srsearch='+encodeURIComponent(query));
@@ -973,15 +963,11 @@ async function searchWikipedia(query){
     const top=j.query.search[0];
     const title=top.title;
     const snippet=top.snippet.replace(/<[^>]+>/g,'');
-    // Get extract
     const r2=await fetch('https://id.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=extracts&exintro=1&explaintext=1&titles='+encodeURIComponent(title));
     const j2=await r2.json();
     const pages=j2.query&&j2.query.pages;
     let extract='';
-    if(pages){
-      const k=Object.keys(pages)[0];
-      extract=pages[k].extract||'';
-    }
+    if(pages){const k=Object.keys(pages)[0];extract=pages[k].extract||'';}
     return{title,url:'https://id.wikipedia.org/wiki/'+encodeURIComponent(title),snippet,extract:extract.slice(0,1500)};
   }catch(e){return null;}
 }
@@ -989,32 +975,16 @@ async function searchWikipedia(query){
 async function searchWeb(query){
   const results=[];
   try{
-    // 1. Wikipedia Indonesia
     const wiki=await searchWikipedia(query);
-    if(wiki){
-      results.push({
-        title:wiki.title,
-        url:wiki.url,
-        snippet:wiki.extract||wiki.snippet||''
-      });
-    }
+    if(wiki){results.push({title:wiki.title,url:wiki.url,snippet:wiki.extract||wiki.snippet||''});}
   }catch(e){}
   try{
-    // 2. DuckDuckGo Instant Answer (JSON via proxy)
     const ddg=await fetch('https://api.duckduckgo.com/?format=json&no_html=1&skip_disambig=1&q='+encodeURIComponent(query));
     const j=await ddg.json();
-    if(j.AbstractText){
-      results.push({
-        title:j.Heading||query,
-        url:j.AbstractURL||'',
-        snippet:j.AbstractText
-      });
-    }
+    if(j.AbstractText){results.push({title:j.Heading||query,url:j.AbstractURL||'',snippet:j.AbstractText});}
     if(j.RelatedTopics&&j.RelatedTopics.length){
       j.RelatedTopics.slice(0,3).forEach(t=>{
-        if(t.Text&&t.FirstURL){
-          results.push({title:t.Text.slice(0,60),url:t.FirstURL,snippet:t.Text});
-        }
+        if(t.Text&&t.FirstURL){results.push({title:t.Text.slice(0,60),url:t.FirstURL,snippet:t.Text});}
       });
     }
   }catch(e){}
@@ -1024,26 +994,36 @@ async function searchWeb(query){
 function buildSearchContext(results){
   if(!results||!results.length)return '';
   let ctx='\n\n[KONTEKS HASIL PENCARIAN WEB]\n';
-  results.forEach((r,i)=>{
-    ctx+=`\n[${i+1}] ${r.title}\nURL: ${r.url}\n${r.snippet}\n`;
-  });
+  results.forEach((r,i)=>{ctx+=`\n[${i+1}] ${r.title}\nURL: ${r.url}\n${r.snippet}\n`;});
   ctx+='\n[AKHIR KONTEKS]\nGunakan informasi di atas untuk menjawab. Sebutkan sumber dengan [1], [2] sesuai nomor. Kalau info tidak relevan atau tidak ada, katakan tidak tahu.\n';
   return ctx;
 }
 
-/* ============ BUILD MESSAGES ============ */
+/* ===== SMART HISTORY TRIM (OPTIMIZED) ===== */
 function buildMessages(chat,forVision,extraContext){
   const s=currentSettings();const msgs=[];
   let sys=s.systemPrompt||'';
   if(state.thinkingMode){
     sys+='\n\nINSTRUKSI MODE BERPIKIR: Sebelum memberikan jawaban final, tuliskan proses berpikirmu secara detail di dalam tag <thinking>...</thinking>. Jelaskan langkah-langkah analisis, pertimbangan, dan penalaranmu. Setelah tag penutup </thinking>, berikan jawaban final yang rapi dan ringkas.';
   }
-  if(extraContext){
-    sys+='\n\n'+extraContext;
-  }
+  if(extraContext){ sys+='\n\n'+extraContext; }
   if(sys)msgs.push({role:'system',content:sys});
-  const history=chat.messages.slice(-20);
-  for(const m of history){
+
+  // Smart trim: max 12 pesan, max ~6000 karakter
+  const MAX_CHARS = 6000;
+  const MAX_MSGS = 12;
+  let totalChars = 0;
+  const trimmed = [];
+  for(let i=chat.messages.length-1; i>=0; i--){
+    const m = chat.messages[i];
+    const content = m.content || '';
+    const len = String(content).length;
+    if(trimmed.length >= 4 && (totalChars + len > MAX_CHARS || trimmed.length >= MAX_MSGS)) break;
+    trimmed.unshift(m);
+    totalChars += len;
+  }
+
+  for(const m of trimmed){
     if(m.role==='user'){
       const images=(m.attachments||[]).filter(a=>a.type==='image');
       if(images.length&&forVision){
@@ -1053,7 +1033,8 @@ function buildMessages(chat,forVision,extraContext){
       } else msgs.push({role:'user',content:m.content||''});
     } else if(m.role==='assistant'){
       if(!m.content||!m.content.trim())continue;
-      msgs.push({role:'assistant',content:m.content});
+      const clean = m.content.replace(/<thinking>[\s\S]*?<\/thinking>/gi,'').trim();
+      if(clean) msgs.push({role:'assistant',content:clean});
     }
   }
   return msgs;
@@ -1072,7 +1053,6 @@ async function fetchWithRetry(url,options,retries=1){
   throw lastErr;
 }
 
-/* ============ OPENAI-COMPATIBLE (dengan reasoning support) ============ */
 async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,onReasoning,signal){
   const s=currentSettings();
   const headers={'Content-Type':'application/json'};
@@ -1114,10 +1094,8 @@ async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,onRea
         const j=JSON.parse(data);
         const delta=j.choices?.[0]?.delta;
         if(!delta)continue;
-        // Reasoning content (DeepSeek R1, dll)
         const reasoning=delta.reasoning_content||delta.reasoning||'';
         if(reasoning&&onReasoning)onReasoning(reasoning);
-        // Main content
         const content=delta.content||'';
         if(content)onDelta(content);
       }catch(e){}
@@ -1125,7 +1103,6 @@ async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,onRea
   }
 }
 
-/* ============ GEMINI ============ */
 async function callGemini(apiKey,model,messages,onDelta,onReasoning,signal){
   const s=currentSettings();
   const contents=[];let systemText='';
@@ -1187,43 +1164,60 @@ async function callGemini(apiKey,model,messages,onDelta,onReasoning,signal){
   }
 }
 
-/* ============ GEMINI SMART RETRY ============ */
-const GEMINI_FALLBACKS=['gemini-2.0-flash','gemini-1.5-flash-latest','gemini-1.5-flash-8b-latest','gemini-1.5-pro-latest'];
+/* ===== OPTIMIZED GEMINI FALLBACKS ===== */
+const GEMINI_FALLBACKS=['gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash-latest','gemini-1.5-flash-8b-latest'];
 
+/* ===== OPTIMIZED callGeminiSmart with exponential backoff ===== */
 async function callGeminiSmart(key,model,messages,onDelta,onReasoning,signal,attempt=1,modelIndex=0){
   try{
     return await callGemini(key,model,messages,onDelta,onReasoning,signal);
   }catch(err){
+    if(signal&&signal.aborted)throw err;
     const msg=String(err.message||'').toLowerCase();
     const originalMsg=String(err.message||'');
-    const isServerBusy=msg.includes('503')||msg.includes('429')||msg.includes('500')||msg.includes('high demand')||msg.includes('unavailable')||msg.includes('overloaded')||msg.includes('try again');
-    const isDeprecated=msg.includes('404')||msg.includes('no longer available')||msg.includes('not found');
 
-    if(isServerBusy&&attempt<=2){
-      toast('Server sibuk, coba lagi ('+attempt+'/2)...');
-      await new Promise(r=>setTimeout(r,attempt*1500));
+    const isQuota = msg.includes('quota')||msg.includes('resource_exhausted')||msg.includes('429');
+    const isRateLimit = msg.includes('rate limit')||msg.includes('too many requests');
+    const isServerBusy = msg.includes('503')||msg.includes('500')||msg.includes('high demand')||msg.includes('unavailable')||msg.includes('overloaded')||msg.includes('try again')||msg.includes('internal');
+    const isDeprecated = msg.includes('404')||msg.includes('no longer available')||msg.includes('not found')||msg.includes('not supported')||msg.includes('is not found');
+    const isAuthError = msg.includes('401')||msg.includes('403')||msg.includes('api key not valid')||msg.includes('permission denied')||msg.includes('api_key_invalid');
+    const isSafety = msg.includes('safety')||msg.includes('blocked')||msg.includes('recitation');
+
+    if(isAuthError){
+      throw new Error('API key Gemini tidak valid. Ambil di aistudio.google.com/apikey');
+    }
+    if(isSafety){
+      throw new Error('Konten diblokir safety filter Gemini. Coba ubah pertanyaan.');
+    }
+    if((isQuota||isRateLimit||isServerBusy) && attempt<=3){
+      const delay=Math.min(1000*Math.pow(2,attempt-1),8000);
+      const label=isQuota?'📊 Kuota penuh':isRateLimit?'🚦 Rate limit':'⏳ Server sibuk';
+      toast(`${label} (${attempt}/3) — tunggu ${delay/1000}s...`);
+      await new Promise(r=>setTimeout(r,delay));
       if(signal&&signal.aborted)throw err;
       return callGeminiSmart(key,model,messages,onDelta,onReasoning,signal,attempt+1,modelIndex);
     }
-    const suggested=parseModelSuggestion(originalMsg);
-    if(isDeprecated&&suggested&&suggested!==model){
-      toast('Pindah ke '+suggested);
-      const s=currentSettings();s.model=suggested;saveAll();updateTopbar();
-      return callGeminiSmart(key,suggested,messages,onDelta,onReasoning,signal,1,0);
-    }
-    if((isServerBusy||isDeprecated)&&modelIndex<GEMINI_FALLBACKS.length){
-      const fallback=GEMINI_FALLBACKS[modelIndex];
-      if(fallback!==model){
-        toast('Coba model '+fallback);
-        const s=currentSettings();s.model=fallback;saveAll();updateTopbar();
-        return callGeminiSmart(key,fallback,messages,onDelta,onReasoning,signal,1,modelIndex+1);
+    if(isDeprecated){
+      const suggested=parseModelSuggestion(originalMsg);
+      if(suggested && suggested!==model){
+        toast('⚠️ Model deprecated → pindah ke '+suggested);
+        const s=currentSettings();s.model=suggested;saveAll();updateTopbar();
+        return callGeminiSmart(key,suggested,messages,onDelta,onReasoning,signal,1,0);
       }
+      if(modelIndex<GEMINI_FALLBACKS.length){
+        const fallback=GEMINI_FALLBACKS[modelIndex];
+        if(fallback!==model){
+          toast('⚠️ Coba model '+fallback);
+          const s=currentSettings();s.model=fallback;saveAll();updateTopbar();
+          return callGeminiSmart(key,fallback,messages,onDelta,onReasoning,signal,1,modelIndex+1);
+        }
+      }
+      throw new Error('Semua model Gemini tidak tersedia. Cek daftar model di aistudio.google.com');
     }
     throw err;
   }
 }
 
-/* ============ ANTHROPIC ============ */
 async function callAnthropic(apiKey,model,messages,onDelta,onReasoning,signal){
   const s=currentSettings();let system='';const msgs=[];
   for(const m of messages){
@@ -1268,7 +1262,6 @@ async function callAnthropic(apiKey,model,messages,onDelta,onReasoning,signal){
   }
 }
 
-/* ============ STREAM CHAT ============ */
 async function streamChat(onDelta,onReasoning,signal){
   const s=currentSettings();const p=s.provider;const cfg=PROVIDERS[p];
   if(cfg.type==='syonbot'){
@@ -1287,9 +1280,7 @@ async function streamChat(onDelta,onReasoning,signal){
   if(p==='custom'&&!s.customUrl)throw new Error('URL endpoint custom belum diisi');
   const chat=getActiveChat();
 
-  // Web search kalau mode aktif
-  let searchContext='';
-  let searchResults=[];
+  let searchContext='';let searchResults=[];
   if(state.searchMode){
     const lastUser=[...chat.messages].reverse().find(m=>m.role==='user');
     if(lastUser&&lastUser.content){
@@ -1311,7 +1302,6 @@ async function streamChat(onDelta,onReasoning,signal){
   return callOpenAICompatible(providerCfg,key||'none',finalModel,messages,onDelta,onReasoning,signal);
 }
 
-/* ============ AUTO-DETECT ============ */
 function parseModels(j,parser){
   if(!j)return[];
   if(parser==='gemini')return (j.models||[]).filter(m=>(m.supportedGenerationMethods||[]).includes('generateContent')).map(m=>m.name.replace('models/','')).filter(isChatModel);
@@ -1395,7 +1385,6 @@ async function detectProviderFromKey(apiKey){
 
   const priority=[];
   const byPrefix=(prefix,id,score)=>{if(trimmed.startsWith(prefix))priority.push({id,score});};
-
   byPrefix('sk-harbor-','tokenharbor',100);
   byPrefix('gsk_','groq',100);
   byPrefix('AIza','gemini',100);
@@ -1413,13 +1402,10 @@ async function detectProviderFromKey(apiKey){
   byPrefix('sk_','novita',90);
 
   if(priority.length===0){
-    ['tokenharbor','gemini','groq','openrouter','cohere','cerebras','sambanova','hyperbolic','novita','nvidia','zhipu','qwen','huggingface','aerolink',
-     'openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','github','moonshot',
-     'deepinfra','siliconflow'].forEach((id,i)=>{
+    ['tokenharbor','gemini','groq','openrouter','cohere','cerebras','sambanova','hyperbolic','novita','nvidia','zhipu','qwen','huggingface','aerolink','openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','github','moonshot','deepinfra','siliconflow'].forEach((id,i)=>{
       priority.push({id,score:60-i});
     });
   }
-
   priority.sort((a,b)=>b.score-a.score);
 
   for(const cand of priority){
@@ -1473,7 +1459,6 @@ async function handleAutoDetect(){
       s.keyStatus[result.provider]='ok';
       s.fetchedModels[result.provider]=result.models;
       s.provider=result.provider;
-      // Pilih model default pintar
       if(result.models.includes('deepseek-reasoner'))s.model='deepseek-reasoner';
       else if(result.models.includes('deepseek-chat'))s.model='deepseek-chat';
       else s.model=result.models[0];
@@ -1489,7 +1474,6 @@ async function handleAutoDetect(){
   finally{btn.disabled=false;btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Deteksi & Tambah';}
 }
 
-/* ============ DIAGNOSTIC ============ */
 async function diagnoseProvider(pid,apiKey){
   const cfg=PROVIDERS[pid];
   const result={provider:pid,name:cfg.name,models:'pending',chat:'pending',note:'',modelCount:0};
@@ -1589,14 +1573,13 @@ async function runDiagnoseAll(){
   btn.disabled=false;btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Cek Semua AI (Full Diagnostic)';
   toast('Diagnostic selesai');
 }
-     </script>
+</script>
 
 <script>
 /* ============================================================
-   SYON AI v21 — Part 4/4: Chat, Auth, Init
+   SYON AI v22 — Part 3/4: Chat, Auth, Init (OPTIMIZED)
    ============================================================ */
 
-/* ============ CHAT LOGIC ============ */
 function createChat(){
   const chat={id:uid(),title:'Obrolan Baru',messages:[],createdAt:Date.now()};
   currentChats().unshift(chat);setCurrentChatId(chat.id);
@@ -1723,7 +1706,13 @@ function renderChat(){
       if(m.attachments?.length)m.attachments.forEach(a=>{if(a.type==='image')html+='<img class="media-thumb" src="'+a.dataUrl+'">';});
     } else {
       html=renderMarkdown(m.content);
-      // Add sources kalau ada
+      // FIX: tombol retry saat error
+      if(m.hasError){
+        html += '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">'+
+          '<button class="btn-primary" style="max-width:200px;padding:9px 16px;font-size:13px" onclick="retryLastMessage()">🔄 Coba Lagi</button>'+
+          '<button class="btn-secondary" style="max-width:200px;padding:9px 16px;font-size:13px;margin-top:0" onclick="document.getElementById(\'settingsBtn\').click()">⚙️ Ganti Model</button>'+
+          '</div>';
+      }
       if(m.sources&&m.sources.length){
         html+='<div class="sources"><div class="sources-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Sumber:</div>';
         m.sources.forEach((s,i)=>{
@@ -1799,11 +1788,16 @@ async function regenerateFrom(userIdx){
       },
       controller.signal
     );
+    delete chat.messages[botIdx].hasError;
     chat.messages[botIdx].content=acc;saveAll();renderChat();
     if(state.voice.enabled)speak(acc);
   }catch(err){
     if(err.name==='AbortError')chat.messages[botIdx].content=acc+'\n\n_[Dihentikan]_';
-    else{chat.messages[botIdx].content=acc+'\n\n**Error:** '+esc(err.message||'Gagal');toast('Gagal: '+(err.message||'').slice(0,60),true);}
+    else{
+      chat.messages[botIdx].content=acc+'\n\n**❌ Error:** '+esc(err.message||'Gagal');
+      chat.messages[botIdx].hasError=true;
+      toast('Gagal: '+(err.message||'').slice(0,60),true);
+    }
     saveAll();renderChat();
   }finally{state.generating=false;currentAbort=null;updateSendBtn();}
 }
@@ -1847,10 +1841,8 @@ async function sendMessage(){
     const controller=new AbortController();currentAbort=controller;let acc='';
     let reasoningBuf='';
 
-    // Tampilkan loading keren
     updateStreamingBot('');
 
-    // Kalau search mode, kasih indikator
     if(state.searchMode){
       const c=$('#chatInner').querySelector('.msg.bot:last-child .content');
       if(c)c.innerHTML='<div class="searching-indicator"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="shimmer-text">Mencari di web</span></div>';
@@ -1861,7 +1853,6 @@ async function sendMessage(){
         delta=>{
           acc+=delta;
           chat.messages[botIdx].content=acc;
-          // Kalau ada reasoning buffer, tampilkan di atas
           let finalHtml='';
           if(reasoningBuf){
             finalHtml='<details class="thinking-block" open><summary><span class="brain-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/></svg></span> Proses Berpikir Syon</summary><div class="think-body">'+esc(reasoningBuf)+'</div></details>';
@@ -1876,32 +1867,55 @@ async function sendMessage(){
         },
         controller.signal
       );
+      delete chat.messages[botIdx].hasError;
       chat.messages[botIdx].content=acc;saveAll();renderChat();
       if(state.voice.enabled)speak(acc);
     }catch(err){
-      if(err.name==='AbortError')chat.messages[botIdx].content=acc+'\n\n_[Dihentikan]_';
-      else{
+      if(err.name==='AbortError'){
+        chat.messages[botIdx].content=acc+'\n\n_[Dihentikan]_';
+      } else {
         const errMsg=err.message||'Gagal';
-        const isRetryable=errMsg.includes('503')||errMsg.toLowerCase().includes('high demand')||errMsg.toLowerCase().includes('unavailable')||errMsg.toLowerCase().includes('cors')||errMsg.toLowerCase().includes('failed to fetch');
-        if(isRetryable){
-          toast('Server sibuk, coba lagi...');
-          await new Promise(r=>setTimeout(r,2000));
-          try{
-            await streamChat(delta=>{
-              acc+=delta;chat.messages[botIdx].content=acc;
-              updateStreamingBot(renderMarkdown(acc));
-            },null,controller.signal);
-            chat.messages[botIdx].content=acc;saveAll();renderChat();
-            return;
-          }catch(e2){/* fallthrough */}
-        }
-        chat.messages[botIdx].content=acc+'\n\n**Error:** '+esc(errMsg)+'\n\n_Coba lagi atau ganti model._';
+        chat.messages[botIdx].content=acc+'\n\n**❌ Error:** '+esc(errMsg);
+        chat.messages[botIdx].hasError=true;
         toast('Gagal: '+errMsg.slice(0,60),true);
       }
       saveAll();renderChat();
     }finally{state.generating=false;currentAbort=null;updateSendBtn();}
   }catch(err){toast('Error: '+err.message,true);state.generating=false;updateSendBtn();}
 }
+
+/* ===== RETRY FUNCTION ===== */
+window.retryLastMessage=async function(){
+  const chat=getActiveChat();if(!chat)return;
+  let lastUserIdx=-1;
+  for(let i=chat.messages.length-1;i>=0;i--){
+    if(chat.messages[i].role==='user'){lastUserIdx=i;break;}
+  }
+  if(lastUserIdx<0)return;
+  chat.messages=chat.messages.slice(0,lastUserIdx+1);
+  saveAll();renderChat();
+  if(state.generating)return;
+  state.generating=true;updateSendBtn();
+  const controller=new AbortController();currentAbort=controller;
+  chat.messages.push({role:'assistant',content:'',sources:[]});
+  const botIdx=chat.messages.length-1;
+  let acc='',reasoningBuf='';
+  updateStreamingBot('');
+  try{
+    await streamChat(
+      delta=>{acc+=delta;chat.messages[botIdx].content=acc;updateStreamingBot(renderMarkdown(acc));},
+      r=>{reasoningBuf+=(reasoningBuf?'\n':'')+r;},
+      controller.signal
+    );
+    delete chat.messages[botIdx].hasError;
+    chat.messages[botIdx].content=acc;saveAll();renderChat();
+    toast('Berhasil! ✓');
+  }catch(err){
+    chat.messages[botIdx].content=(acc||'')+'\n\n**❌ Error:** '+esc(err.message||'Gagal');
+    chat.messages[botIdx].hasError=true;
+    saveAll();renderChat();
+  }finally{state.generating=false;currentAbort=null;updateSendBtn();}
+};
 
 function updateSendBtn(){
   const btn=$('#sendBtn');if(!btn)return;
@@ -1934,7 +1948,6 @@ function handleFiles(files){
   });
 }
 
-/* ============ PROFILE ============ */
 function renderProfileHeader(){
   const p=currentProfile();if(!p)return;
   const av=$('#headerAvatar');const nm=$('#headerName');
@@ -1947,7 +1960,6 @@ function renderProfileList(){
   list.innerHTML='<div class="profile-row active"><div class="profile-avatar lg" style="background:var(--accent)">'+((u.name[0]||'S').toUpperCase())+'</div><div class="profile-info"><div class="pname">'+esc(u.name||'User')+'</div><div class="pmeta">'+esc(u.email||'Mode Tamu')+'</div></div></div>';
 }
 
-/* ============ SETTINGS ============ */
 function captureCurrentInputs(){
   const s=currentSettings();
   const sp=$('#systemPrompt');if(sp)s.systemPrompt=sp.value.trim();
@@ -2098,7 +2110,6 @@ function updateTopbar(){
   const sbtn=$('#searchModeBtn');if(sbtn)sbtn.classList.toggle('search-active',!!state.searchMode);
 }
 
-/* ============ MISC ============ */
 function exportChat(){
   const chat=getActiveChat();if(!chat){toast('Tidak ada chat',true);return;}
   const md=chat.messages.map(m=>{const who=m.role==='user'?'## Kamu':'## Syon';return who+'\n\n'+m.content;}).join('\n\n---\n\n');
@@ -2180,7 +2191,6 @@ function toggleSearchMode(){
   toast(state.searchMode?'🔍 Mode Cari Web AKTIF':'Mode Cari Web nonaktif');
 }
 
-/* ============ AUTH ============ */
 function showPanel(id){
   $$('.auth-panel').forEach(p=>p.classList.remove('active'));
   const el=$('#'+id);if(el)el.classList.add('active');
@@ -2298,7 +2308,7 @@ function initAuthScreen(){
   }
 }
 
-/* ⚡ PERUBAHAN UTAMA: verify Google JWT di backend */
+/* ===== Google Credential — Verify JWT di backend ===== */
 async function handleGoogleCredential(resp){
   try{
     const data = await apiCall('google-sync', { credential: resp.credential });
@@ -2334,6 +2344,24 @@ async function init(){
       enterApp();
     }
 
+    /* --- Network Status --- */
+    const netEl=$('#netStatus');
+    function updateNet(initial){
+      if(!netEl)return;
+      if(navigator.onLine){
+        netEl.className='net-status online show';
+        netEl.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg> Online';
+        if(!initial)setTimeout(()=>netEl.classList.remove('show'),2000);
+        else netEl.classList.remove('show');
+      } else {
+        netEl.className='net-status show';
+        netEl.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg> Offline';
+      }
+    }
+    updateNet(true);
+    window.addEventListener('online',()=>{updateNet(false);toast('Koneksi kembali online ✓');});
+    window.addEventListener('offline',()=>{updateNet(false);toast('Koneksi terputus ✗',true);});
+
     /* --- Chat --- */
     $('#newChatBtn')?.addEventListener('click',()=>{createChat();closeSidebarMobile();});
     $('#menuBtn')?.addEventListener('click',openSidebarMobile);
@@ -2358,34 +2386,18 @@ async function init(){
     $('#themeBtn')?.addEventListener('click',toggleTheme);
     $('#logoutBtn')?.addEventListener('click',doLogout);
 
-    /* --- Think & Search Mode --- */
     $('#thinkModeBtn')?.addEventListener('click',toggleThinkingMode);
     $('#searchModeBtn')?.addEventListener('click',toggleSearchMode);
 
-    /* --- Backup --- */
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={
-        version:'v21',
-        exportedAt:new Date().toISOString(),
-        state:{
-          profiles:state.profiles,
-          chatsByUser:state.chatsByUser,
-          settingsByUser:state.settingsByUser,
-          pinnedChats:state.pinnedChats,
-          theme:state.theme,
-          voice:state.voice
-        }
-      };
+      const data={version:'v22',exportedAt:new Date().toISOString(),state:{profiles:state.profiles,chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
-      const a=document.createElement('a');
-      a.href=url;
-      a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
+      const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
       a.click();URL.revokeObjectURL(url);
       toast('Backup berhasil!');
     });
 
-    /* --- Scroll Button --- */
     const chatScrollEl=$('#chatScroll');
     const scrollBtn=$('#scrollBottomBtn');
     if(chatScrollEl&&scrollBtn){
@@ -2396,12 +2408,10 @@ async function init(){
       scrollBtn.addEventListener('click',()=>{chatScrollEl.scrollTop=chatScrollEl.scrollHeight;});
     }
 
-    /* --- Profile --- */
     $('#profileHeader')?.addEventListener('click',()=>{renderProfileList();$('#profileModal').classList.add('show');});
     $('#closeProfile')?.addEventListener('click',()=>$('#profileModal').classList.remove('show'));
     $('#profileModal')?.addEventListener('click',e=>{if(e.target.id==='profileModal')e.currentTarget.classList.remove('show');});
 
-    /* --- Voice --- */
     $('#voiceToggleBtn')?.addEventListener('click',()=>{renderVoiceModal();$('#voiceModal').classList.add('show');});
     $('#closeVoice')?.addEventListener('click',()=>$('#voiceModal').classList.remove('show'));
     $('#voiceModal')?.addEventListener('click',e=>{if(e.target.id==='voiceModal')e.currentTarget.classList.remove('show');});
@@ -2413,12 +2423,10 @@ async function init(){
     $('#testVoiceBtn')?.addEventListener('click',()=>{speak('Halo, aku Syon.');});
     $('#saveVoice')?.addEventListener('click',()=>{saveAll();toast('Tersimpan');$('#voiceModal').classList.remove('show');});
 
-    /* --- Settings --- */
     $('#settingsBtn')?.addEventListener('click',()=>{renderSettingsModal();$('#settingsModal').classList.add('show');});
     $('#closeSettings')?.addEventListener('click',()=>{captureCurrentInputs();updateTopbar();$('#settingsModal').classList.remove('show');});
     $('#settingsModal')?.addEventListener('click',e=>{if(e.target.id==='settingsModal'){captureCurrentInputs();updateTopbar();e.currentTarget.classList.remove('show');}});
 
-    /* --- Add AI --- */
     $('#openAddAiBtn')?.addEventListener('click',()=>$('#addAiModal').classList.add('show'));
     $('#closeAddAi')?.addEventListener('click',()=>$('#addAiModal').classList.remove('show'));
     $('#addAiModal')?.addEventListener('click',e=>{if(e.target.id==='addAiModal')e.currentTarget.classList.remove('show');});
@@ -2440,7 +2448,6 @@ async function init(){
 
     $('#diagnoseAllBtn')?.addEventListener('click',runDiagnoseAll);
 
-    /* --- Provider / Model --- */
     $('#activeProvider')?.addEventListener('change',e=>{
       captureCurrentInputs();const s=currentSettings();
       s.provider=e.target.value;
@@ -2452,21 +2459,17 @@ async function init(){
     $('#modelSelect')?.addEventListener('change',e=>{currentSettings().model=e.target.value;saveAll();updateTopbar();});
     $('#saveSettings')?.addEventListener('click',()=>{captureCurrentInputs();updateTopbar();toast('Tersimpan');$('#settingsModal').classList.remove('show');});
 
-    /* --- Prompts --- */
     $('#promptsBtn')?.addEventListener('click',()=>{renderPrompts();$('#promptsModal').classList.add('show');});
     $('#closePrompts')?.addEventListener('click',()=>$('#promptsModal').classList.remove('show'));
     $('#promptsModal')?.addEventListener('click',e=>{if(e.target.id==='promptsModal')e.currentTarget.classList.remove('show');});
 
-    /* --- Shortcuts --- */
     $('#shortcutsBtn')?.addEventListener('click',()=>{renderShortcuts();$('#shortcutsModal').classList.add('show');});
     $('#closeShortcuts')?.addEventListener('click',()=>$('#shortcutsModal').classList.remove('show'));
     $('#shortcutsModal')?.addEventListener('click',e=>{if(e.target.id==='shortcutsModal')e.currentTarget.classList.remove('show');});
 
-    /* --- Artifact --- */
     $('#closeArtifact')?.addEventListener('click',()=>{$('#artifactModal').classList.remove('show');const f=$('#artifactFrame');if(f)f.srcdoc='';});
     $('#artifactModal')?.addEventListener('click',e=>{if(e.target.id==='artifactModal'){e.currentTarget.classList.remove('show');const f=$('#artifactFrame');if(f)f.srcdoc='';}});
 
-    /* --- Model Picker --- */
     $('#modelPill')?.addEventListener('click',openModelModal);
     $('#closeModel')?.addEventListener('click',()=>$('#modelModal').classList.remove('show'));
     $('#modelModal')?.addEventListener('click',e=>{if(e.target.id==='modelModal')e.currentTarget.classList.remove('show');});
@@ -2481,7 +2484,6 @@ async function init(){
       saveAll();updateTopbar();toast(s.model);$('#modelModal').classList.remove('show');
     });
 
-    /* --- Favorit Model --- */
     $('#favModelBtn')?.addEventListener('click',()=>{
       const s=currentSettings();
       const m=$('#quickModel').value;
@@ -2493,7 +2495,6 @@ async function init(){
       saveAll();renderModelSelect('#quickModel',$('#quickProvider').value,m);
     });
 
-    /* --- Keyboard --- */
     document.addEventListener('keydown',e=>{
       const cmd=e.ctrlKey||e.metaKey;
       if(cmd&&e.key==='k'){e.preventDefault();$('#searchChats').focus();}
@@ -2511,13 +2512,12 @@ async function init(){
 
     window.addEventListener('resize',()=>setTimeout(()=>scrollToBottom(),150));
 
-    /* --- Auto-save --- */
     setInterval(()=>{if(state.initialized)saveAll();},30000);
     window.addEventListener('beforeunload',()=>saveAll());
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v21 — Thinking + Search ready');
+    console.log('✅ Syon AI v22 — Optimized: Gemini retry + backoff + retry button + net status');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
