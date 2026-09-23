@@ -1269,7 +1269,8 @@ async function callAnthropic(apiKey,model,messages,onDelta,onReasoning,signal){
 async function streamChat(onDelta,onReasoning,signal){
   const s=currentSettings();const p=s.provider;const cfg=PROVIDERS[p];
   if(cfg.type==='syonbot'){
-    const chat=getActiveChat();
+    
+=getActiveChat();
     const lastUser=[...chat.messages].reverse().find(m=>m.role==='user');
     const reply=syonBotReply(lastUser?.content||'');
     for(let i=0;i<reply.length;i++){
@@ -1715,7 +1716,7 @@ function renderChat(){
       b.addEventListener('click',()=>handleMessageAction(b.dataset.act,parseInt(b.dataset.idx),b));
     });
   });
-  scrollToBottom();
+  scrollToBottom(true);
 }
 
 function handleMessageAction(act,idx,btnEl){
@@ -1784,9 +1785,30 @@ async function regenerateFrom(userIdx){
     saveAll();renderChat();
   }finally{state.generating=false;currentAbort=null;updateSendBtn();}
 }
-function scrollToBottom(){const el=$('#chatScroll');if(el)el.scrollTop=el.scrollHeight;}
+let autoScroll=true;
+function isNearBottom(el,threshold=80){
+  if(!el)return true;
+  return (el.scrollHeight-el.scrollTop-el.clientHeight) < threshold;
+}
+function scrollToBottom(force){
+  const el=$('#chatScroll');if(!el)return;
+  if(force===true){autoScroll=true;el.scrollTop=el.scrollHeight;return;}
+  if(!autoScroll)return;
+  el.scrollTop=el.scrollHeight;
+}
 
+
+let _streamRAF=null;
+let _streamPendingHtml=null;
 function updateStreamingBot(html){
+  _streamPendingHtml=html;
+  if(_streamRAF)return;
+  _streamRAF=requestAnimationFrame(()=>{
+    _streamRAF=null;
+    _doUpdateStreamingBot(_streamPendingHtml);
+  });
+}
+function _doUpdateStreamingBot(html){
   const inner=$('#chatInner');if(!inner)return;
   let last=inner.querySelector('.msg.bot:last-child');
   if(!last||last.dataset.streaming!=='1'){
@@ -2373,14 +2395,23 @@ async function init(){
     });
 
     const chatScrollEl=$('#chatScroll');
-    const scrollBtn=$('#scrollBottomBtn');
-    if(chatScrollEl&&scrollBtn){
-      chatScrollEl.addEventListener('scroll',()=>{
-        const dist=chatScrollEl.scrollHeight-chatScrollEl.scrollTop-chatScrollEl.clientHeight;
-        if(dist>200)scrollBtn.classList.add('show');else scrollBtn.classList.remove('show');
-      });
-      scrollBtn.addEventListener('click',()=>{chatScrollEl.scrollTop=chatScrollEl.scrollHeight;});
-    }
+const scrollBtn=$('#scrollBottomBtn');
+if(chatScrollEl&&scrollBtn){
+  let _scrollDebounce;
+  chatScrollEl.addEventListener('scroll',()=>{
+    clearTimeout(_scrollDebounce);
+    _scrollDebounce=setTimeout(()=>{
+      const dist=chatScrollEl.scrollHeight-chatScrollEl.scrollTop-chatScrollEl.clientHeight;
+      if(dist>200){scrollBtn.classList.add('show');autoScroll=false;}
+      else{scrollBtn.classList.remove('show');autoScroll=true;}
+    },60);
+  },{passive:true});
+  scrollBtn.addEventListener('click',()=>{
+    autoScroll=true;
+    chatScrollEl.scrollTo({top:chatScrollEl.scrollHeight,behavior:'smooth'});
+    scrollBtn.classList.remove('show');
+  });
+}
 
     $('#profileHeader')?.addEventListener('click',()=>{renderProfileList();$('#profileModal').classList.add('show');});
     $('#closeProfile')?.addEventListener('click',()=>$('#profileModal').classList.remove('show'));
@@ -2503,4 +2534,4 @@ async function init(){
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-                                                                                                                             </html>
+                           </html>
