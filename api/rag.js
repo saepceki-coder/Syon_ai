@@ -3,7 +3,7 @@ import { neon } from '@neondatabase/serverless';
 export const config = { maxDuration: 30 };
 
 const DB_URL = process.env.POSTGRES_URL || process.env.DATABASE_URL;
-if (!DB_URL) console.error('[rag] ❌ POSTGRES_URL / DATABASE_URL belum di-set!');
+if (!DB_URL) console.error('[rag] POSTGRES_URL / DATABASE_URL belum di-set!');
 const sql = neon(DB_URL);
 
 const EMBED_DIM = 384;
@@ -32,7 +32,7 @@ async function ensureSchema() {
   try {
     await sql`CREATE INDEX IF NOT EXISTS idx_chunks_embedding ON document_chunks USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100)`;
   } catch (e) {
-    console.warn('[rag] ivfflat index skip:', e.message);
+    console.warn('[rag] ivfflat skip:', e.message);
   }
   schemaReady = true;
 }
