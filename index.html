@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -622,7 +621,7 @@ Simpan & Embed</button>
 
 <script>
 /* ============================================================
-   SYON AI v26 — Part 1/4: Constants & State
+   SYON AI v27 — Part 1/4: Constants & State
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
@@ -631,7 +630,7 @@ const RAG_BASE = '/api/rag';
 const EMBED_DIM = 384;
 
 const LS='syon_data';
-const OLD_LS_KEYS=['syon_v25','syon_v24','syon_v23','syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
+const OLD_LS_KEYS=['syon_v26','syon_v25','syon_v24','syon_v23','syon_v20','syon_v19','syon_v18','syon_v17','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
@@ -643,8 +642,7 @@ const KB = [
   {q:['apa itu coding','pengertian coding'],a:'**Coding** = nulis instruksi ke komputer. 💻'},
   {q:['apa itu python'],a:'**Python** bahasa pemrograman populer. 🐍'},
   {q:['apa itu javascript'],a:'**JavaScript** = bahasa yang jalan di browser. ⚡'},
-  {q:['apa itu html'],a:'**HTML** = struktur halaman web. 🏠'},
-  {q:['ibu kota indonesia'],a:'Ibu kota Indonesia: **Jakarta**. 🏙️ IKN Nusantara sedang dibangun.'},
+  {q:['ibu kota indonesia'],a:'Ibu kota Indonesia: **Jakarta**. 🏙️'},
   {q:['siapa presiden indonesia'],a:'Presiden Indonesia (2024–2029): **Prabowo Subianto**, wakil **Gibran Rakabuming Raka**. 🇮🇩'},
 ];
 
@@ -674,8 +672,7 @@ const SHORTCUTS = [
 
 const PROVIDERS = {
   syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2'],modelsEndpoint:null,modelsParser:null,keyPrefix:null},
-  tokenharbor:{name:'TokenHarbor',type:'openai',url:'https://tokenharbor.ai/v1/chat/completions',keyUrl:'https://tokenharbor.ai/dashboard/api-keys',free:true,vision:false,models:[],modelsEndpoint:'https://tokenharbor.ai/v1/models',modelsParser:'openai',keyPrefix:'sk-harbor-'},
-  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.5-flash','gemini-2.5-pro','gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash-latest','gemini-1.5-pro-latest','gemini-1.5-flash-8b-latest'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
+  gemini:{name:'Google Gemini',type:'gemini',url:'https://generativelanguage.googleapis.com/v1beta',keyUrl:'https://aistudio.google.com/apikey',free:true,vision:true,models:['gemini-2.5-flash','gemini-2.5-pro','gemini-2.0-flash','gemini-2.0-flash-lite','gemini-1.5-flash-latest','gemini-1.5-pro-latest'],modelsEndpoint:'https://generativelanguage.googleapis.com/v1beta/models',modelsParser:'gemini',keyPrefix:'AIza'},
   groq:{name:'Groq',type:'openai',url:'https://api.groq.com/openai/v1/chat/completions',keyUrl:'https://console.groq.com/keys',free:true,vision:false,models:[],modelsEndpoint:'https://api.groq.com/openai/v1/models',modelsParser:'openai',keyPrefix:'gsk_'},
   openrouter:{name:'OpenRouter',type:'openai',url:'https://openrouter.ai/api/v1/chat/completions',keyUrl:'https://openrouter.ai/keys',free:true,vision:true,models:[],modelsEndpoint:'https://openrouter.ai/api/v1/models',modelsParser:'openrouter',keyPrefix:'sk-or-'},
   openai:{name:'OpenAI',type:'openai',url:'https://api.openai.com/v1/chat/completions',keyUrl:'https://platform.openai.com/api-keys',free:false,vision:true,models:[],modelsEndpoint:'https://api.openai.com/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
@@ -683,20 +680,13 @@ const PROVIDERS = {
   deepseek:{name:'DeepSeek',type:'openai',url:'https://api.deepseek.com/v1/chat/completions',keyUrl:'https://platform.deepseek.com/api_keys',free:false,vision:false,models:['deepseek-chat','deepseek-reasoner'],modelsEndpoint:'https://api.deepseek.com/v1/models',modelsParser:'openai',keyPrefix:'sk-',reasoning:true},
   mistral:{name:'Mistral AI',type:'openai',url:'https://api.mistral.ai/v1/chat/completions',keyUrl:'https://console.mistral.ai/api-keys',free:false,vision:false,models:[],modelsEndpoint:'https://api.mistral.ai/v1/models',modelsParser:'openai',keyPrefix:null},
   xai:{name:'xAI Grok',type:'openai',url:'https://api.x.ai/v1/chat/completions',keyUrl:'https://console.x.ai',free:false,vision:false,models:[],modelsEndpoint:'https://api.x.ai/v1/models',modelsParser:'openai',keyPrefix:'xai-'},
-  together:{name:'Together AI',type:'openai',url:'https://api.together.xyz/v1/chat/completions',keyUrl:'https://api.together.xyz/settings/api-keys',free:false,vision:false,models:[],modelsEndpoint:'https://api.together.xyz/v1/models',modelsParser:'openai',keyPrefix:null},
-  fireworks:{name:'Fireworks AI',type:'openai',url:'https://api.fireworks.ai/inference/v1/chat/completions',keyUrl:'https://fireworks.ai/account/api-keys',free:false,vision:false,models:[],modelsEndpoint:'https://api.fireworks.ai/inference/v1/models',modelsParser:'openai',keyPrefix:'fw_'},
-  perplexity:{name:'Perplexity',type:'openai',url:'https://api.perplexity.ai/chat/completions',keyUrl:'https://www.perplexity.ai/settings/api',free:false,vision:false,models:[],modelsEndpoint:'https://api.perplexity.ai/models',modelsParser:'openai',keyPrefix:'pplx-'},
+  tokenharbor:{name:'TokenHarbor',type:'openai',url:'https://tokenharbor.ai/v1/chat/completions',keyUrl:'https://tokenharbor.ai/dashboard/api-keys',free:true,vision:false,models:[],modelsEndpoint:'https://tokenharbor.ai/v1/models',modelsParser:'openai',keyPrefix:'sk-harbor-'},
   cohere:{name:'Cohere',type:'openai',url:'https://api.cohere.ai/compatibility/v1/chat/completions',keyUrl:'https://dashboard.cohere.com/api-keys',free:true,vision:false,models:[],modelsEndpoint:'https://api.cohere.ai/compatibility/v1/models',modelsParser:'openai',keyPrefix:null},
   aerolink:{name:'Aerolink',type:'openai',url:'https://cgapi.aerolink.lat/v1/chat/completions',keyUrl:'https://aerolink.lat/dashboard',free:true,vision:false,models:[],modelsEndpoint:'https://cgapi.aerolink.lat/v1/models',modelsParser:'openai',keyPrefix:'aero_live_'},
   cerebras:{name:'Cerebras',type:'openai',url:'https://api.cerebras.ai/v1/chat/completions',keyUrl:'https://cloud.cerebras.ai',free:true,vision:false,models:[],modelsEndpoint:'https://api.cerebras.ai/v1/models',modelsParser:'openai',keyPrefix:'csk-'},
-  sambanova:{name:'SambaNova',type:'openai',url:'https://api.sambanova.ai/v1/chat/completions',keyUrl:'https://cloud.sambanova.ai',free:true,vision:false,models:[],modelsEndpoint:'https://api.sambanova.ai/v1/models',modelsParser:'openai',keyPrefix:null},
-  hyperbolic:{name:'Hyperbolic',type:'openai',url:'https://api.hyperbolic.xyz/v1/chat/completions',keyUrl:'https://app.hyperbolic.xyz',free:true,vision:false,models:[],modelsEndpoint:'https://api.hyperbolic.xyz/v1/models',modelsParser:'openai',keyPrefix:null},
-  novita:{name:'Novita AI',type:'openai',url:'https://api.novita.ai/v3/openai/chat/completions',keyUrl:'https://novita.ai',free:true,vision:false,models:[],modelsEndpoint:'https://api.novita.ai/v3/openai/models',modelsParser:'openai',keyPrefix:'sk_'},
   nvidia:{name:'NVIDIA NIM',type:'openai',url:'https://integrate.api.nvidia.com/v1/chat/completions',keyUrl:'https://build.nvidia.com',free:true,vision:false,models:[],modelsEndpoint:'https://integrate.api.nvidia.com/v1/models',modelsParser:'openai',keyPrefix:'nvapi-'},
   github:{name:'GitHub Models',type:'openai',url:'https://models.inference.ai.azure.com/chat/completions',keyUrl:'https://github.com/settings/tokens',free:true,vision:false,models:[],modelsEndpoint:'https://models.inference.ai.azure.com/models',modelsParser:'openai',keyPrefix:'ghp_'},
   huggingface:{name:'HuggingFace',type:'openai',url:'https://api-inference.huggingface.co/v1/chat/completions',keyUrl:'https://huggingface.co/settings/tokens',free:true,vision:false,models:[],modelsEndpoint:'https://api-inference.huggingface.co/v1/models',modelsParser:'openai',keyPrefix:'hf_'},
-  moonshot:{name:'Moonshot Kimi',type:'openai',url:'https://api.moonshot.cn/v1/chat/completions',keyUrl:'https://platform.moonshot.cn',free:false,vision:false,models:[],modelsEndpoint:'https://api.moonshot.cn/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
-  zhipu:{name:'Zhipu GLM',type:'openai',url:'https://open.bigmodel.cn/api/paas/v4/chat/completions',keyUrl:'https://open.bigmodel.cn',free:true,vision:false,models:[],modelsEndpoint:'https://open.bigmodel.cn/api/paas/v4/models',modelsParser:'openai',keyPrefix:null},
   qwen:{name:'Qwen (DashScope)',type:'openai',url:'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',keyUrl:'https://dashscope.console.aliyun.com',free:true,vision:true,models:[],modelsEndpoint:'https://dashscope.aliyuncs.com/compatible-mode/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
   deepinfra:{name:'DeepInfra',type:'openai',url:'https://api.deepinfra.com/v1/openai/chat/completions',keyUrl:'https://deepinfra.com/dash/api_keys',free:true,vision:false,models:[],modelsEndpoint:'https://api.deepinfra.com/v1/openai/models',modelsParser:'openai',keyPrefix:null},
   siliconflow:{name:'SiliconFlow',type:'openai',url:'https://api.siliconflow.cn/v1/chat/completions',keyUrl:'https://siliconflow.cn',free:true,vision:false,models:[],modelsEndpoint:'https://api.siliconflow.cn/v1/models',modelsParser:'openai',keyPrefix:'sk-'},
@@ -720,7 +710,7 @@ function defaultSettings(){
   return {
     provider:'syonbot',model:'syon-v2',
     keys:{},keyStatus:{},fetchedModels:{},
-    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap. Kalau ada konteks [TOOL: X] di atas, pakai data itu untuk menjawab.',
+    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap.',
     customUrl:'',customModels:'',
     thinking:false,temperature:0.7,maxTokens:2048,
     favModels:[]
@@ -924,7 +914,7 @@ function syonBotReply(t){
   const math=tryMath(t);
   if(math)return '**'+math.expr+' = '+math.result+'**';
   const kb=findInKB(t);if(kb)return kb;
-  return 'Hmm, aku belum punya jawaban itu. 🤔\n\n**Coba:**\n- 🧮 Matematika: `12*8+5`\n- 💻 Coding: `contoh python`\n- 🌤️ Cuaca: `cuaca di Jakarta`\n- 🎨 Gambar: `gambar kucing`\n\n**Mau jawaban lebih luas?** Klik **Tambah AI dengan API Key** di atas! ✨';
+  return 'Hmm, aku belum punya jawaban itu. 🤔\n\n**Coba:**\n- 🌤️ Cuaca: `cuaca`\n- 🎨 Gambar: `gambar kucing`\n- 🕐 Waktu: `jam berapa`\n- 💱 Kurs: `100 USD berapa`\n- 🧮 Hitung: `25*4`';
 }
 
 let voicesList=[];
@@ -969,10 +959,52 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 
 <script>
 /* ============================================================
-   SYON AI v26 — Part 2/4: RAG, Tools, API
+   SYON AI v27 — Part 2/4: Tools, RAG, API
    ============================================================ */
 
-/* ============ TOOLS TIER 1 ============ */
+/* ============ GEOLOCATION ============ */
+let _geoCache = null;
+let _geoPromise = null;
+
+function getCurrentLocation() {
+  if (_geoCache) return Promise.resolve(_geoCache);
+  if (_geoPromise) return _geoPromise;
+  _geoPromise = new Promise((resolve, reject) => {
+    if (!navigator.geolocation) { reject(new Error('Browser nggak support GPS')); return; }
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        _geoCache = { lat: pos.coords.latitude, lon: pos.coords.longitude, accuracy: pos.coords.accuracy };
+        resolve(_geoCache);
+      },
+      (err) => { _geoPromise = null; reject(new Error('Izin lokasi ditolak')); },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 }
+    );
+  });
+  return _geoPromise;
+}
+
+async function reverseGeocode(lat, lon) {
+  try {
+    const r = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10&accept-language=id`);
+    if (!r.ok) return null;
+    const j = await r.json();
+    const addr = j.address || {};
+    const city = addr.city || addr.town || addr.village || addr.county || addr.state || j.name || 'Lokasi kamu';
+    const prov = addr.state || addr.region || '';
+    return { city, prov, full: j.display_name || city };
+  } catch (e) { return null; }
+}
+
+async function toolWeatherByCoord(lat, lon, label) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('Gagal ambil cuaca');
+  const j = await r.json();
+  const c = j.current;
+  return { city: label || 'Lokasi kamu', temp: c.temperature_2m, humidity: c.relative_humidity_2m, wind: c.wind_speed_10m, desc: weatherCodeToText(c.weather_code) };
+}
+
+/* ============ CITY DATABASE ============ */
 const CITY_COORDS = {
   jakarta:{lat:-6.2088,lon:106.8456,name:'Jakarta'},
   surabaya:{lat:-7.2575,lon:112.7521,name:'Surabaya'},
@@ -1080,6 +1112,33 @@ function toolCalc(expr) {
 
 let _lastToolImage = null;
 
+function formatToolOutput(toolContext){
+  if (!toolContext || !toolContext.trim()) return '';
+  let out = '';
+  if (/\[TOOL: GAMBAR\]/.test(toolContext)) {
+    const pm = toolContext.match(/Prompt: (.+)/);
+    const um = toolContext.match(/URL_GAMBAR: (.+)/);
+    if (um) out += `🎨 **Gambar: ${pm ? pm[1] : ''}**\n\n![${pm ? pm[1] : 'gambar'}](${um[1].trim()})\n\n_Mohon tunggu 5-15 detik jika gambar belum muncul._\n\n`;
+  }
+  if (/\[TOOL: CUACA\]/.test(toolContext)) {
+    const m = toolContext.match(/Kota: (.+?)\nSuhu: (.+?)\nKondisi: (.+?)\nKelembaban: (.+?)\nAngin: (.+)/);
+    if (m) out += `🌤️ **Cuaca ${m[1]}**\n\n🌡️ Suhu: **${m[2]}**\n☁️ Kondisi: **${m[3]}**\n💧 Kelembaban: ${m[4]}\n💨 Angin: ${m[5]}\n\n`;
+  }
+  if (/\[TOOL: WAKTU\]/.test(toolContext)) {
+    const m = toolContext.match(/Sekarang: (.+)\nJam: (.+)\nHari: (.+)/);
+    if (m) out += `🕐 **${m[3]}**\n${m[1]}\n\n`;
+  }
+  if (/\[TOOL: KURS\]/.test(toolContext)) {
+    const m = toolContext.match(/(\d+(?:[.,]\d+)?)\s+([A-Z]{3})\s+=\s+([\d.]+)\s+([A-Z]{3})/);
+    if (m) out += `💱 **${m[1]} ${m[2]} = ${m[3]} ${m[4]}**\n\n`;
+  }
+  if (/\[TOOL: KALKULATOR\]/.test(toolContext)) {
+    const m = toolContext.match(/([^\n]+?) = ([^\n]+)/);
+    if (m) out += `🧮 **${m[1].trim()} = ${m[2].trim()}**\n\n`;
+  }
+  return out.trim();
+}
+
 async function detectAndRunTools(userMessage) {
   _lastToolImage = null;
   if (!userMessage || !userMessage.trim()) return '';
@@ -1094,6 +1153,16 @@ async function detectAndRunTools(userMessage) {
         const w = await toolWeather(city);
         ctx += `\n[TOOL: CUACA]\nKota: ${w.city}\nSuhu: ${w.temp}°C\nKondisi: ${w.desc}\nKelembaban: ${w.humidity}%\nAngin: ${w.wind} km/h\n`;
       } catch (e) {}
+    } else {
+      try {
+        const geo = await getCurrentLocation();
+        const info = await reverseGeocode(geo.lat, geo.lon);
+        const label = info ? (info.city + (info.prov ? ', ' + info.prov : '')) : 'Lokasi kamu';
+        const w = await toolWeatherByCoord(geo.lat, geo.lon, label);
+        ctx += `\n[TOOL: CUACA]\nKota: ${w.city}\nSuhu: ${w.temp}°C\nKondisi: ${w.desc}\nKelembaban: ${w.humidity}%\nAngin: ${w.wind} km/h\n`;
+      } catch (e) {
+        ctx += `\n[TOOL: CUACA] Gagal deteksi lokasi: ${e.message}\n`;
+      }
     }
   }
 
@@ -1189,15 +1258,11 @@ function chunkDoc(text, maxLen = 900, overlap = 150){
   const chunks = [];
   let buf = '';
   for (const p of paragraphs) {
-    if ((buf + '\n\n' + p).length <= maxLen) {
-      buf = buf ? buf + '\n\n' + p : p;
-    } else {
+    if ((buf + '\n\n' + p).length <= maxLen) { buf = buf ? buf + '\n\n' + p : p; }
+    else {
       if (buf) chunks.push(buf);
       if (p.length <= maxLen) { buf = p; }
-      else {
-        for (let i = 0; i < p.length; i += maxLen - overlap) chunks.push(p.slice(i, i + maxLen));
-        buf = '';
-      }
+      else { for (let i = 0; i < p.length; i += maxLen - overlap) chunks.push(p.slice(i, i + maxLen)); buf = ''; }
     }
   }
   if (buf) chunks.push(buf);
@@ -1212,8 +1277,7 @@ async function kbUpload(title, content){
     if (btn) btn.innerHTML = '⏳ Embedding ' + i + '/' + n + '...';
   });
   const payload = {
-    userKey: ragUserKey(),
-    title, content,
+    userKey: ragUserKey(), title, content,
     chunks: chunks.map((t, i) => ({ text: t, embedding: embeddings[i] }))
   };
   const res = await fetch(RAG_BASE + '?action=upload', {
@@ -1337,7 +1401,6 @@ function buildMessages(chat,forVision,extraContext){
   }
   if(extraContext){ sys+='\n\n'+extraContext; }
   if(sys)msgs.push({role:'system',content:sys});
-
   const MAX_CHARS = 6000;
   const MAX_MSGS = 12;
   let totalChars = 0;
@@ -1350,7 +1413,6 @@ function buildMessages(chat,forVision,extraContext){
     trimmed.unshift(m);
     totalChars += len;
   }
-
   for(const m of trimmed){
     if(m.role==='user'){
       const images=(m.attachments||[]).filter(a=>a.type==='image');
@@ -1585,55 +1647,22 @@ async function streamChat(onDelta,onReasoning,signal){
   const chatEarly=getActiveChat();
   const lastUserEarly = [...chatEarly.messages].reverse().find(m=>m.role==='user');
 
-  // ============ TOOLS (dijalankan buat semua provider) ============
   let toolContext = '';
   if (lastUserEarly && lastUserEarly.content) {
-    try {
-      toolContext = await detectAndRunTools(lastUserEarly.content);
-    } catch (e) {
-      console.warn('[tools] error:', e.message);
+    try { toolContext = await detectAndRunTools(lastUserEarly.content); } catch (e) {}
+  }
+
+  const _toolFormatted = formatToolOutput(toolContext);
+  if (_toolFormatted) {
+    for (let i = 0; i < _toolFormatted.length; i++) {
+      if (signal && signal.aborted) break;
+      onDelta(_toolFormatted[i]);
+      if (i % 5 === 0) await new Promise(r => setTimeout(r, 4));
     }
+    return;
   }
 
   if(cfg.type==='syonbot'){
-    // Bypass gambar untuk SyonBot
-    if (_lastToolImage) {
-      const imgUrl = _lastToolImage.url;
-      const imgPrompt = _lastToolImage.prompt;
-      const imgMd = `🎨 **Gambar: ${imgPrompt}**\n\n![${imgPrompt}](${imgUrl})\n\n_Mohon tunggu 5-15 detik jika gambar belum muncul, lalu refresh._\n`;
-      for (let i = 0; i < imgMd.length; i++) {
-        if (signal && signal.aborted) break;
-        onDelta(imgMd[i]);
-        if (i % 5 === 0) await new Promise(r => setTimeout(r, 4));
-      }
-      _lastToolImage = null;
-      return;
-    }
-    // Kalau ada data tool lain, tampilkan langsung
-    if (toolContext && toolContext.trim()) {
-      let out = '';
-      if (/\[TOOL: CUACA\]/.test(toolContext)) {
-        const m = toolContext.match(/Kota: (.+?)\nSuhu: (.+?)\nKondisi: (.+?)\nKelembaban: (.+?)\nAngin: (.+)/);
-        if (m) out = `**Cuaca ${m[1]}**\n\n🌡️ Suhu: ${m[2]}\n☁️ Kondisi: ${m[3]}\n💧 Kelembaban: ${m[4]}\n💨 Angin: ${m[5]}`;
-      } else if (/\[TOOL: WAKTU\]/.test(toolContext)) {
-        const m = toolContext.match(/Sekarang: (.+)\nJam: (.+)\nHari: (.+)/);
-        if (m) out = `🕐 **${m[3]}**\n${m[1]}`;
-      } else if (/\[TOOL: KALKULATOR\]/.test(toolContext)) {
-        const m = toolContext.match(/(.+?) = (.+)/);
-        if (m) out = `🧮 **${m[1].trim()} = ${m[2].trim()}**`;
-      } else if (/\[TOOL: KURS\]/.test(toolContext)) {
-        const m = toolContext.match(/(\d+.*?) = (.+)/);
-        if (m) out = `💱 **${m[1].trim()} = ${m[2].trim()}**`;
-      }
-      if (out) {
-        for(let i=0;i<out.length;i++){
-          if(signal&&signal.aborted)break;
-          onDelta(out[i]);
-          if(i%3===0)await new Promise(r=>setTimeout(r,6));
-        }
-        return;
-      }
-    }
     const reply=syonBotReply(lastUserEarly?.content||'');
     for(let i=0;i<reply.length;i++){
       if(signal&&signal.aborted)break;
@@ -1662,23 +1691,7 @@ async function streamChat(onDelta,onReasoning,signal){
     try {
       const kbResults = await kbSearch(lastUser.content, 3);
       if (kbResults.length) kbContext = buildKbContext(kbResults);
-    } catch (e) {
-      console.warn('[KB] search gagal:', e.message);
-    }
-  }
-
-  // Bypass AI untuk gambar
-  if (_lastToolImage) {
-    const imgUrl = _lastToolImage.url;
-    const imgPrompt = _lastToolImage.prompt;
-    const imgMd = `🎨 **Gambar: ${imgPrompt}**\n\n![${imgPrompt}](${imgUrl})\n\n_Mohon tunggu 5-15 detik jika gambar belum muncul, lalu refresh._\n`;
-    for (let i = 0; i < imgMd.length; i++) {
-      if (signal && signal.aborted) break;
-      onDelta(imgMd[i]);
-      if (i % 5 === 0) await new Promise(r => setTimeout(r, 4));
-    }
-    _lastToolImage = null;
-    toolContext = toolContext.replace(/\[TOOL: GAMBAR\][\s\S]*?(?=\n\[TOOL:|$)/, '').trim();
+    } catch (e) {}
   }
 
   const messages=buildMessages(chat,cfg.vision,searchContext + kbContext + toolContext);
@@ -1767,7 +1780,6 @@ async function detectProviderFromKey(apiKey){
   };
   const trimmed=apiKey.trim();
   if(!trimmed){log('bad','API key kosong');return null;}
-  log('info','Panjang: '+trimmed.length+' karakter');
   const priority=[];
   const byPrefix=(prefix,id,score)=>{if(trimmed.startsWith(prefix))priority.push({id,score});};
   byPrefix('sk-harbor-','tokenharbor',100);
@@ -1777,16 +1789,12 @@ async function detectProviderFromKey(apiKey){
   byPrefix('sk-or-','openrouter',100);
   byPrefix('sk-ant-','anthropic',100);
   byPrefix('xai-','xai',100);
-  byPrefix('fw_','fireworks',100);
-  byPrefix('pplx-','perplexity',100);
-  byPrefix('aero_live_','aerolink',100);
   byPrefix('csk-','cerebras',100);
   byPrefix('nvapi-','nvidia',100);
   byPrefix('ghp_','github',100);
   byPrefix('hf_','huggingface',100);
-  byPrefix('sk_','novita',90);
   if(priority.length===0){
-    ['tokenharbor','gemini','groq','openrouter','cohere','cerebras','sambanova','hyperbolic','novita','nvidia','zhipu','qwen','huggingface','aerolink','openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','github','moonshot','deepinfra','siliconflow'].forEach((id,i)=>{
+    ['tokenharbor','gemini','groq','openrouter','cohere','cerebras','novita','nvidia','qwen','huggingface','aerolink','openai','anthropic','deepseek','mistral','xai','github','deepinfra','siliconflow'].forEach((id,i)=>{
       priority.push({id,score:60-i});
     });
   }
@@ -1800,15 +1808,11 @@ async function detectProviderFromKey(apiKey){
     try{
       const result=await tryFetchModels(pid,trimmed);
       if(result&&result.models&&result.models.length){
-        log('ok',cfg.name+' — '+result.models.length+' model chat');
+        log('ok',cfg.name+' — '+result.models.length+' model');
         return{provider:pid,models:result.models,key:trimmed};
       }
-      log('bad',cfg.name+' — tidak cocok');
-    }catch(e){
-      log('bad',cfg.name+' — '+(e.message||'gagal').slice(0,50));
-    }
+    }catch(e){}
   }
-  log('warn','Tidak ada provider yang cocok.');
   return null;
 }
 
@@ -1857,88 +1861,37 @@ async function handleAutoDetect(){
   finally{btn.disabled=false;btn.innerHTML='Deteksi & Tambah';}
 }
 
-async function diagnoseProvider(pid,apiKey){
-  const cfg=PROVIDERS[pid];
-  const result={provider:pid,name:cfg.name,models:'pending',chat:'pending',note:'',modelCount:0};
-  if(!cfg.modelsEndpoint&&cfg.type!=='anthropic'){
-    result.models='skip';result.chat='skip';result.note='Tidak ada endpoint models';
-    return result;
-  }
-  try{
-    const r=await tryFetchModels(pid,apiKey);
-    if(r&&r.models&&r.models.length){result.models='ok';result.modelCount=r.models.length;}
-    else result.models='empty';
-  }catch(e){result.models='fail';result.note=e.message||'Gagal';}
-  try{
-    const model=(cfg._chatModels&&cfg._chatModels[0])||cfg.models[0]||'default';
-    const headers={'Content-Type':'application/json'};
-    if(pid==='gemini')headers['x-goog-api-key']=apiKey;
-    else if(pid==='anthropic'){headers['x-api-key']=apiKey;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
-    else headers['Authorization']='Bearer '+apiKey;
-    let chatUrl,chatBody;
-    if(pid==='gemini'){
-      chatUrl=cfg.url+'/models/'+model+':generateContent';
-      chatBody={contents:[{role:'user',parts:[{text:'hi'}]}],generationConfig:{maxOutputTokens:5}};
-    } else if(pid==='anthropic'){
-      chatUrl=cfg.url;chatBody={model,max_tokens:5,messages:[{role:'user',content:'hi'}]};
-    } else {
-      chatUrl=cfg.url;chatBody={model,messages:[{role:'user',content:'hi'}],max_tokens:5};
-    }
-    const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),12000);
-    let chatRes;
-    try{chatRes=await fetch(chatUrl,{method:'POST',headers,signal:ctrl.signal,body:JSON.stringify(chatBody)});}
-    catch(ce){
-      try{
-        const proxy='https://corsproxy.io/?'+encodeURIComponent(chatUrl);
-        chatRes=await fetch(proxy,{method:'POST',headers,signal:ctrl.signal,body:JSON.stringify(chatBody)});
-        result.note=(result.note?' | ':'')+'Chat via proxy';
-      }catch(e2){clearTimeout(t);result.chat='cors';result.note=(result.note?' | ':'')+'CORS block';return result;}
-    }
-    clearTimeout(t);
-    if(chatRes.ok)result.chat='ok';
-    else if(chatRes.status===401||chatRes.status===403){result.chat='auth';result.note=(result.note?' | ':'')+'Auth gagal';}
-    else if(chatRes.status===404){result.chat='model';result.note=(result.note?' | ':'')+'Model invalid';}
-    else{result.chat='error';result.note=(result.note?' | ':'')+'HTTP '+chatRes.status;}
-  }catch(e){result.chat='error';result.note=(result.note?' | ':'')+(e.message||'Error');}
-  return result;
-}
-
 async function runDiagnoseAll(){
   const btn=$('#diagnoseAllBtn');
   const resultEl=$('#diagnoseResult');
   const s=currentSettings();
   const providers=Object.keys(s.keys).filter(k=>s.keys[k]);
   if(!providers.length){toast('Belum ada API key',true);return;}
-  btn.disabled=true;btn.innerHTML='Menguji '+providers.length+'...';
+  btn.disabled=true;btn.innerHTML='Menguji...';
   resultEl.style.display='block';
   resultEl.innerHTML='<div class="diagnose-summary">Menguji '+providers.length+' provider...</div>';
   const results=[];
   for(const pid of providers){
-    if(pid==='syonbot')continue;
-    if(pid==='custom'){results.push({provider:'custom',name:'Custom',models:'skip',chat:'skip',note:'Cek manual'});continue;}
-    try{results.push(await diagnoseProvider(pid,s.keys[pid]));}
-    catch(e){results.push({provider:pid,name:PROVIDERS[pid].name,models:'fail',chat:'fail',note:e.message});}
+    if(pid==='syonbot'||pid==='custom')continue;
+    const cfg=PROVIDERS[pid];
+    if(!cfg)continue;
+    const res={provider:pid,name:cfg.name,models:'fail',chat:'fail',note:'',modelCount:0};
+    try{
+      const r=await tryFetchModels(pid,s.keys[pid]);
+      if(r&&r.models&&r.models.length){res.models='ok';res.modelCount=r.models.length;}
+    }catch(e){res.note=e.message||'Gagal';}
+    results.push(res);
   }
   const badge=(st)=>{
     if(st==='ok')return '<span class="badge-ok">OK</span>';
-    if(st==='empty')return '<span class="badge-fail">KOSONG</span>';
-    if(st==='auth')return '<span class="badge-fail">AUTH</span>';
-    if(st==='cors')return '<span class="badge-partial">CORS</span>';
-    if(st==='model')return '<span class="badge-partial">MODEL</span>';
-    if(st==='skip')return '<span style="color:var(--text-2)">-</span>';
-    if(st==='fail')return '<span class="badge-fail">GAGAL</span>';
-    return '<span style="color:var(--text-2)">?</span>';
+    return '<span class="badge-fail">GAGAL</span>';
   };
-  let okCount=0,partialCount=0,failCount=0;
+  let okCount=0;
+  results.forEach(r=>{if(r.models==='ok')okCount++;});
+  let html='<div class="diagnose-summary"><b>'+results.length+' provider:</b> <b style="color:var(--success)">'+okCount+' OK</b></div>';
+  html+='<table class="diagnose-table"><thead><tr><th>Provider</th><th>Status</th></tr></thead><tbody>';
   results.forEach(r=>{
-    if(r.models==='ok'&&r.chat==='ok')okCount++;
-    else if(r.models==='fail'||r.chat==='fail')failCount++;
-    else partialCount++;
-  });
-  let html='<div class="diagnose-summary"><b>'+results.length+' provider:</b> <b style="color:var(--success)">'+okCount+' OK</b>, <b style="color:#b45309">'+partialCount+' Partial</b>, <b style="color:var(--danger)">'+failCount+' Gagal</b></div>';
-  html+='<table class="diagnose-table"><thead><tr><th>Provider</th><th>Models</th><th>Chat</th></tr></thead><tbody>';
-  results.forEach(r=>{
-    html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+badge(r.models)+(r.modelCount?'<div class="note">'+r.modelCount+'</div>':'')+'</td><td>'+badge(r.chat)+'</td></tr>';
+    html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+badge(r.models)+(r.modelCount?' '+r.modelCount+' model':'')+'</td></tr>';
   });
   html+='</tbody></table>';
   resultEl.innerHTML=html;
@@ -1949,7 +1902,7 @@ async function runDiagnoseAll(){
 
 <script>
 /* ============================================================
-   SYON AI v26 — Part 3/4: Chat, Auth, Init
+   SYON AI v27 — Part 3/4: Chat, Auth, Init
    ============================================================ */
 
 function createChat(){
@@ -2044,6 +1997,8 @@ function messageToolbar(role,idx){
   return '<div class="msg-toolbar"><button data-act="copy" data-idx="'+idx+'">'+svgCopy+' Copy</button><button data-act="speak" data-idx="'+idx+'">'+svgSpeak+' Baca</button><button data-act="regen" data-idx="'+idx+'">'+svgRegen+' Ulangi</button><button data-act="del" data-idx="'+idx+'">'+svgDel+' Hapus</button></div>';
 }
 
+let _lastRenderedChatId = null;
+
 function renderChat(){
   const inner=$('#chatInner');if(!inner)return;
   const chat=getActiveChat();inner.innerHTML='';
@@ -2053,10 +2008,10 @@ function renderChat(){
     inner.innerHTML='<div class="welcome">'+
       '<img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon">'+
       '<h1>Halo, <span>'+esc(pname)+'</span></h1>'+
-      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode. Coba juga tools: cuaca, gambar, kurs, jam.</p>'+
+      '<p>Aku Syon. Tanya apa aja, atau coba tools: cuaca, gambar, kurs, jam, hitung.</p>'+
       '<button class="welcome-add-ai" id="welcomeAddAiBtn">Tambah AI dengan API Key</button>'+
       '<div class="suggestions">'+
-      '<div class="suggestion" data-p="cuaca di Jakarta"><b>🌤️ Cuaca</b>Cek cuaca Jakarta</div>'+
+      '<div class="suggestion" data-p="cuaca"><b>🌤️ Cuaca</b>Cuaca di lokasi kamu</div>'+
       '<div class="suggestion" data-p="gambar kucing lucu"><b>🎨 Gambar</b>Generate gambar</div>'+
       '<div class="suggestion" data-p="sekarang jam berapa?"><b>⏰ Waktu</b>Sekarang jam berapa?</div>'+
       '<div class="suggestion" data-p="100 USD berapa rupiah?"><b>💱 Kurs</b>Konversi mata uang</div>'+
@@ -2096,7 +2051,11 @@ function renderChat(){
       b.addEventListener('click',()=>handleMessageAction(b.dataset.act,parseInt(b.dataset.idx),b));
     });
   });
-  scrollToBottom(true);
+  const curId = chat ? chat.id : null;
+  if (_lastRenderedChatId !== curId) {
+    _lastRenderedChatId = curId;
+    scrollToBottom(true);
+  }
 }
 
 function handleMessageAction(act,idx,btnEl){
@@ -2447,8 +2406,7 @@ function openModelModal(){
     listEl.innerHTML = '';
     const q = String(filter || '').toLowerCase().trim();
     const filtered = q ? allModels.filter(x =>
-      x.model.toLowerCase().includes(q) ||
-      x.providerName.toLowerCase().includes(q)
+      x.model.toLowerCase().includes(q) || x.providerName.toLowerCase().includes(q)
     ) : allModels;
 
     if (!filtered.length) {
@@ -2460,10 +2418,7 @@ function openModelModal(){
     filtered.forEach(item => {
       const el = document.createElement('div');
       el.style.cssText = 'padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--bg-1);transition:all .15s';
-      if (item.active) {
-        el.style.borderColor = 'var(--accent)';
-        el.style.background = 'var(--accent-soft)';
-      }
+      if (item.active) { el.style.borderColor='var(--accent)'; el.style.background='var(--accent-soft)'; }
       el.innerHTML = '<div style="min-width:0;flex:1">' +
         '<div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
         (item.favorite ? '★ ' : '') + esc(item.model) + '</div>' +
@@ -2472,12 +2427,8 @@ function openModelModal(){
         (item.active ? '<div style="color:var(--accent);font-size:16px;flex-shrink:0">✓</div>' : '');
       el.addEventListener('click', () => {
         _selectedModelItem = item;
-        listEl.querySelectorAll('[data-mcard]').forEach(x => {
-          x.style.borderColor = 'var(--border)';
-          x.style.background = 'var(--bg-1)';
-        });
-        el.style.borderColor = 'var(--accent)';
-        el.style.background = 'var(--accent-soft)';
+        listEl.querySelectorAll('[data-mcard]').forEach(x => { x.style.borderColor='var(--border)'; x.style.background='var(--bg-1)'; });
+        el.style.borderColor='var(--accent)'; el.style.background='var(--accent-soft)';
       });
       el.dataset.mcard = '1';
       if (item.active) _selectedModelItem = item;
@@ -2486,11 +2437,7 @@ function openModelModal(){
   }
 
   render('');
-  if (searchEl) {
-    searchEl.value = '';
-    searchEl.oninput = () => render(searchEl.value);
-  }
-
+  if (searchEl) { searchEl.value = ''; searchEl.oninput = () => render(searchEl.value); }
   $('#modelModal').classList.add('show');
   if (searchEl) setTimeout(() => searchEl.focus(), 100);
 }
@@ -2895,7 +2842,7 @@ async function init(){
     });
 
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v26',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v27',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -3015,13 +2962,12 @@ async function init(){
     });
 
     window.addEventListener('resize',()=>setTimeout(()=>scrollToBottom(),150));
-
     setInterval(()=>{if(state.initialized)saveAll();},30000);
     window.addEventListener('beforeunload',()=>saveAll());
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v26 — Tools Tier 1 + RAG + Unified Model Picker');
+    console.log('✅ Syon AI v27 — GPS weather + Tools bypass + Fix scroll');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
