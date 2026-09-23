@@ -6,7 +6,7 @@ const DB_URL = process.env.POSTGRES_URL || process.env.DATABASE_URL;
 if (!DB_URL) console.error('[rag] ❌ POSTGRES_URL / DATABASE_URL belum di-set!');
 const sql = neon(DB_URL);
 
-const EMBED_DIM = 384; // all-MiniLM-L6-v2 / paraphrase-multilingual-MiniLM-L12-v2
+const EMBED_DIM = 384;
 
 let schemaReady = false;
 async function ensureSchema() {
@@ -44,15 +44,15 @@ function vecStr(emb) {
   return '[' + emb.map(n => Number(n).toFixed(6)).join(',') + ']';
 }
 
-/* ============ HANDLERS ============ */
 async function handleUpload(req, res) {
   const { userKey, title, content, chunks } = req.body || {};
   if (!userKey) return res.status(400).json({ error: 'userKey wajib' });
   if (!title || !Array.isArray(chunks) || !chunks.length) {
-    return res.status(400).json({ error: 'title & chunks wajib (chunks: [{text, embedding}])' });
+    return res.status(400).json({ error: 'title & chunks wajib' });
   }
-  if (chunks.length > 200) return res.status(400).json({ error: 'Dokumen terlalu panjang (max 200 chunk)' });
-
+  if (chunks.length > 200) {
+    return res.status(400).json({ error: 'Dokumen terlalu panjang (max 200 chunk)' });
+  }
   for (const c of chunks) {
     if (!c || typeof c.text !== 'string' || !Array.isArray(c.embedding)) {
       return res.status(400).json({ error: 'Format chunk salah' });
@@ -61,14 +61,12 @@ async function handleUpload(req, res) {
       return res.status(400).json({ error: `Embedding harus ${EMBED_DIM} dimensi` });
     }
   }
-
   const inserted = await sql`
     INSERT INTO documents (user_key, title, content_length)
     VALUES (${userKey}, ${String(title).slice(0, 200)}, ${String(content || '').length})
     RETURNING id
   `;
   const docId = inserted[0].id;
-
   for (const c of chunks) {
     const vec = vecStr(c.embedding);
     await sql`
@@ -76,7 +74,6 @@ async function handleUpload(req, res) {
       VALUES (${docId}, ${userKey}, ${String(c.text).slice(0, 2000)}, ${sql.unsafe("'" + vec + "'::vector")})
     `;
   }
-
   return res.status(200).json({ ok: true, documentId: docId, chunks: chunks.length });
 }
 
@@ -110,7 +107,6 @@ async function handleSearch(req, res) {
   }
   const k = Math.min(Math.max(parseInt(topK) || 3, 1), 10);
   const vec = vecStr(embedding);
-
   const rows = await sql`
     SELECT c.content, d.title,
            1 - (c.embedding <=> ${sql.unsafe("'" + vec + "'::vector")}) AS similarity
@@ -120,11 +116,9 @@ async function handleSearch(req, res) {
     ORDER BY c.embedding <=> ${sql.unsafe("'" + vec + "'::vector")}
     LIMIT ${k}
   `;
-
   return res.status(200).json({ ok: true, results: rows });
 }
 
-/* ============ MAIN ============ */
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -151,4 +145,4 @@ export default async function handler(req, res) {
     console.error('[rag] error:', err);
     return res.status(500).json({ error: err.message || 'Server error' });
   }
-    }
+}
