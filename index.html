@@ -45,7 +45,6 @@ body{display:flex;height:100vh;height:100dvh}
 .searching-indicator svg{animation:rotate 1.5s linear infinite}
 @keyframes rotate{to{transform:rotate(360deg)}}
 
-/* THINKING BLOCK */
 .thinking-block{border:1px solid var(--border);border-radius:12px;background:linear-gradient(135deg,rgba(99,102,241,.04),rgba(168,85,247,.04));margin-bottom:14px;overflow:hidden;transition:border-color .2s}
 .thinking-block[open]{border-color:rgba(99,102,241,.3)}
 .thinking-block summary{padding:11px 14px;cursor:pointer;font-size:12.5px;color:var(--text-1);display:flex;align-items:center;gap:8px;list-style:none;font-weight:600;user-select:none}
@@ -57,7 +56,6 @@ body{display:flex;height:100vh;height:100dvh}
 .thinking-block .think-body p{margin-bottom:8px}
 .thinking-block .think-body code{background:var(--bg-2);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:12px}
 
-/* SOURCES */
 .sources{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12.5px}
 .sources-label{color:var(--text-2);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600}
 .source-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;color:var(--text-1)}
@@ -140,10 +138,8 @@ body{display:flex;height:100vh;height:100dvh}
 .icon-top{background:none;border:none;color:var(--text-1);cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s}
 .icon-top:hover{background:var(--bg-2);color:var(--text-0)}
 .icon-top.active{color:var(--accent)}
-.icon-top.think-active{color:var(--accent);background:rgba(77,142,255,.1)}
-.icon-top.search-active{color:var(--success);background:rgba(16,163,127,.1)}
 
-.chat-scroll{flex:1;overflow-y:auto;padding:8px 16px 140px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
+.chat-scroll{flex:1;overflow-y:auto;padding:8px 16px 180px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
 .chat-inner{max-width:740px;margin:0 auto}
 .welcome{text-align:center;padding:60px 20px 40px;display:flex;flex-direction:column;align-items:center;gap:14px}
 .welcome .big-logo{width:60px;height:60px;border-radius:18px;animation:float 3s ease-in-out infinite}
@@ -202,8 +198,19 @@ body{display:flex;height:100vh;height:100dvh}
 .media-thumb{max-width:240px;border-radius:10px;margin:8px 0;border:1px solid var(--border);display:block}
 .edit-area{width:100%;background:var(--bg-2);border:1px solid var(--border);border-radius:8px;padding:10px;color:var(--text-0);font-family:inherit;font-size:14.5px;resize:vertical;min-height:70px;outline:none}
 .input-wrap{position:absolute;bottom:0;left:0;right:0;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg-0) 65%,transparent);pointer-events:none;z-index:10}
-.input-box{max-width:740px;margin:0 auto;background:var(--bg-1);border:1px solid var(--border);border-radius:22px;padding:8px 10px 8px 14px;pointer-events:auto;display:flex;align-items:flex-end;gap:6px}
+.input-box{max-width:740px;margin:0 auto;background:var(--bg-1);border:1px solid var(--border);border-radius:22px;padding:10px 12px;pointer-events:auto;display:flex;flex-direction:column;gap:4px}
 .input-box:focus-within{border-color:var(--accent);box-shadow:0 2px 12px rgba(11,92,255,.1)}
+.input-row-top{display:flex;flex-direction:column}
+.input-row-bottom{display:flex;align-items:center;gap:6px;justify-content:space-between}
+.mode-pills{display:flex;gap:6px;flex-wrap:wrap}
+.mode-pill{display:flex;align-items:center;gap:6px;padding:6px 12px;background:transparent;border:1px solid var(--border);border-radius:99px;color:var(--text-1);font-size:12.5px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
+.mode-pill:hover{background:var(--bg-2);color:var(--text-0)}
+.mode-pill.active{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+[data-theme="dark"] .mode-pill.active{background:rgba(77,142,255,.15);color:var(--accent)}
+.mode-pill svg{flex-shrink:0}
+.input-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
+textarea#input{width:100%;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:6px 4px;max-height:200px;line-height:1.5;min-height:28px}
+textarea#input::placeholder{color:var(--text-2)}
 .attach-preview{position:absolute;bottom:100%;left:0;right:0;margin-bottom:8px;display:none;gap:8px;flex-wrap:wrap}
 .attach-preview.show{display:flex}
 .attach-item{position:relative;width:60px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg-1)}
@@ -213,12 +220,10 @@ body{display:flex;height:100vh;height:100dvh}
 .icon-btn:hover{background:var(--bg-2);color:var(--text-0)}
 .icon-btn.recording{color:var(--danger);background:rgba(239,68,68,.1);animation:pulse 1.2s infinite}
 @keyframes pulse{50%{opacity:.6}}
-textarea#input{flex:1;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:8px 4px;max-height:200px;line-height:1.5;min-height:34px}
-textarea#input::placeholder{color:var(--text-2)}
 .send-btn{width:34px;height:34px;flex-shrink:0;background:var(--accent);border:none;border-radius:50%;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center}
 .send-btn:hover:not(:disabled){opacity:.9}
 .send-btn:disabled{opacity:.35;cursor:not-allowed;background:var(--text-2)}
-.scroll-bottom-btn{position:absolute;bottom:130px;right:24px;width:42px;height:42px;border-radius:50%;background:var(--bg-0);border:1px solid var(--border);color:var(--text-0);cursor:pointer;display:none;align-items:center;justify-content:center;z-index:15;box-shadow:0 4px 16px rgba(0,0,0,.15)}
+.scroll-bottom-btn{position:absolute;bottom:170px;right:24px;width:42px;height:42px;border-radius:50%;background:var(--bg-0);border:1px solid var(--border);color:var(--text-0);cursor:pointer;display:none;align-items:center;justify-content:center;z-index:15;box-shadow:0 4px 16px rgba(0,0,0,.15)}
 .scroll-bottom-btn.show{display:flex}
 
 .modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.4);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:100;padding:16px}
@@ -319,13 +324,13 @@ textarea#input::placeholder{color:var(--text-2)}
 .sidebar.open{transform:translateX(0)}
 .menu-btn{display:flex}
 .input-wrap{padding:10px 12px calc(14px + env(safe-area-inset-bottom,0px))}
-.chat-scroll{padding:8px 12px 130px}
+.chat-scroll{padding:8px 12px 170px}
 .suggestions{grid-template-columns:1fr}
 .welcome h1{font-size:22px}
 .welcome{padding:40px 16px 30px}
 .model-pill .name{max-width:100px}
 .msg.user .body{max-width:88%}
-.scroll-bottom-btn{bottom:100px;right:16px;width:38px;height:38px}
+.scroll-bottom-btn{bottom:150px;right:16px;width:38px;height:38px}
 .modal{max-height:95vh;border-radius:20px 20px 0 0;align-self:flex-end}
 .modal-backdrop{align-items:flex-end;padding:0}
 .modal-body{padding:20px}
@@ -430,12 +435,6 @@ Obrolan Baru</button>
 <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="6 9 12 15 18 9"/></svg>
 </div>
 <div class="spacer"></div>
-<button class="icon-top" id="thinkModeBtn" title="Mode Berpikir">
-<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg>
-</button>
-<button class="icon-top" id="searchModeBtn" title="Cari di Web">
-<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-</button>
 <button class="icon-top" id="voiceToggleBtn" title="Suara AI"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/></svg></button>
 <button class="icon-top" id="themeBtn" title="Tema"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button>
 <button class="icon-top" id="exportBtn" title="Export"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></button>
@@ -447,11 +446,27 @@ Obrolan Baru</button>
 <div style="position:relative;max-width:740px;margin:0 auto">
 <div class="attach-preview" id="attachPreview"></div>
 <div class="input-box">
+<div class="input-row-top">
+<textarea id="input" placeholder="Tanya apa saja..." rows="1"></textarea>
+</div>
+<div class="input-row-bottom">
+<div class="mode-pills">
+<button class="mode-pill" id="thinkModeBtn" title="Mode Berpikir">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg>
+<span>Berpikir</span>
+</button>
+<button class="mode-pill" id="searchModeBtn" title="Cari di Web">
+<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+<span>Cari</span>
+</button>
+</div>
+<div class="input-actions">
 <button class="icon-btn" id="attachBtn"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
 <input type="file" id="fileInput" accept="image/*" multiple hidden />
-<textarea id="input" placeholder="Tanya apa saja..." rows="1"></textarea>
 <button class="icon-btn" id="micBtn"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="22"/></svg></button>
 <button class="send-btn" id="sendBtn"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -582,7 +597,7 @@ Paste dari Clipboard
 
 <script>
 /* ============================================================
-   SYON AI v22 — Part 1/4: Constants & State (OPTIMIZED)
+   SYON AI v23 — Part 1/4: Constants & State
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
@@ -636,7 +651,6 @@ const SHORTCUTS = [
   ['Escape','Tutup modal'],
 ];
 
-/* ============ PROVIDERS ============ */
 const PROVIDERS = {
   syonbot:{name:'Syon Bot',type:'syonbot',url:'',keyUrl:'',free:true,vision:false,models:['syon-v2'],modelsEndpoint:null,modelsParser:null,keyPrefix:null},
   tokenharbor:{name:'TokenHarbor',type:'openai',url:'https://tokenharbor.ai/v1/chat/completions',keyUrl:'https://tokenharbor.ai/dashboard/api-keys',free:true,vision:false,models:[],modelsEndpoint:'https://tokenharbor.ai/v1/models',modelsParser:'openai',keyPrefix:'sk-harbor-'},
@@ -932,7 +946,7 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 
 <script>
 /* ============================================================
-   SYON AI v22 — Part 2/4: API & Auto-Detect & Web Search (OPTIMIZED)
+   SYON AI v23 — Part 2/4: API & Auto-Detect & Web Search
    ============================================================ */
 
 async function apiCall(action,body={},useAuth=false){
@@ -999,7 +1013,6 @@ function buildSearchContext(results){
   return ctx;
 }
 
-/* ===== SMART HISTORY TRIM (OPTIMIZED) ===== */
 function buildMessages(chat,forVision,extraContext){
   const s=currentSettings();const msgs=[];
   let sys=s.systemPrompt||'';
@@ -1009,7 +1022,6 @@ function buildMessages(chat,forVision,extraContext){
   if(extraContext){ sys+='\n\n'+extraContext; }
   if(sys)msgs.push({role:'system',content:sys});
 
-  // Smart trim: max 12 pesan, max ~6000 karakter
   const MAX_CHARS = 6000;
   const MAX_MSGS = 12;
   let totalChars = 0;
@@ -1164,10 +1176,8 @@ async function callGemini(apiKey,model,messages,onDelta,onReasoning,signal){
   }
 }
 
-/* ===== OPTIMIZED GEMINI FALLBACKS ===== */
 const GEMINI_FALLBACKS=['gemini-2.5-flash','gemini-2.0-flash','gemini-1.5-flash-latest','gemini-1.5-flash-8b-latest'];
 
-/* ===== OPTIMIZED callGeminiSmart with exponential backoff ===== */
 async function callGeminiSmart(key,model,messages,onDelta,onReasoning,signal,attempt=1,modelIndex=0){
   try{
     return await callGemini(key,model,messages,onDelta,onReasoning,signal);
@@ -1175,20 +1185,14 @@ async function callGeminiSmart(key,model,messages,onDelta,onReasoning,signal,att
     if(signal&&signal.aborted)throw err;
     const msg=String(err.message||'').toLowerCase();
     const originalMsg=String(err.message||'');
-
     const isQuota = msg.includes('quota')||msg.includes('resource_exhausted')||msg.includes('429');
     const isRateLimit = msg.includes('rate limit')||msg.includes('too many requests');
     const isServerBusy = msg.includes('503')||msg.includes('500')||msg.includes('high demand')||msg.includes('unavailable')||msg.includes('overloaded')||msg.includes('try again')||msg.includes('internal');
     const isDeprecated = msg.includes('404')||msg.includes('no longer available')||msg.includes('not found')||msg.includes('not supported')||msg.includes('is not found');
     const isAuthError = msg.includes('401')||msg.includes('403')||msg.includes('api key not valid')||msg.includes('permission denied')||msg.includes('api_key_invalid');
     const isSafety = msg.includes('safety')||msg.includes('blocked')||msg.includes('recitation');
-
-    if(isAuthError){
-      throw new Error('API key Gemini tidak valid. Ambil di aistudio.google.com/apikey');
-    }
-    if(isSafety){
-      throw new Error('Konten diblokir safety filter Gemini. Coba ubah pertanyaan.');
-    }
+    if(isAuthError){throw new Error('API key Gemini tidak valid. Ambil di aistudio.google.com/apikey');}
+    if(isSafety){throw new Error('Konten diblokir safety filter Gemini. Coba ubah pertanyaan.');}
     if((isQuota||isRateLimit||isServerBusy) && attempt<=3){
       const delay=Math.min(1000*Math.pow(2,attempt-1),8000);
       const label=isQuota?'📊 Kuota penuh':isRateLimit?'🚦 Rate limit':'⏳ Server sibuk';
@@ -1279,7 +1283,6 @@ async function streamChat(onDelta,onReasoning,signal){
   if(!key&&p!=='custom')throw new Error('API key belum diisi untuk '+cfg.name);
   if(p==='custom'&&!s.customUrl)throw new Error('URL endpoint custom belum diisi');
   const chat=getActiveChat();
-
   let searchContext='';let searchResults=[];
   if(state.searchMode){
     const lastUser=[...chat.messages].reverse().find(m=>m.role==='user');
@@ -1288,14 +1291,12 @@ async function streamChat(onDelta,onReasoning,signal){
       if(searchResults.length)searchContext=buildSearchContext(searchResults);
     }
   }
-
   const messages=buildMessages(chat,cfg.vision,searchContext);
   let finalModel=s.model;
   if(!finalModel||finalModel==='gemini-api'||finalModel==='(belum ada model)'){
     finalModel=cfg.models[0];
     s.model=finalModel;saveAll();updateTopbar();
   }
-
   if(cfg.type==='gemini')return await callGeminiSmart(key,finalModel,messages,onDelta,onReasoning,signal);
   if(cfg.type==='anthropic')return callAnthropic(key,finalModel,messages,onDelta,onReasoning,signal);
   const providerCfg=p==='custom'?{...cfg,url:s.customUrl}:cfg;
@@ -1342,7 +1343,6 @@ async function tryFetchModels(pid,apiKey){
   if(pid==='gemini')headers['x-goog-api-key']=apiKey;
   else if(pid==='anthropic'){headers['x-api-key']=apiKey;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
   else headers['Authorization']='Bearer '+apiKey;
-
   try{
     const r=await fetchDirect(cfg.modelsEndpoint,headers,6000);
     if(r.ok){
@@ -1354,7 +1354,6 @@ async function tryFetchModels(pid,apiKey){
   }catch(e){
     if(e.message&&(e.message.includes('Key invalid')||e.message.includes('401')||e.message.includes('403')))throw e;
   }
-
   const r2=await fetchViaProxy(cfg.modelsEndpoint,headers,15000);
   if(!r2.ok)throw new Error('Proxy HTTP '+r2.status);
   const j2=await r2.json();
@@ -1377,12 +1376,10 @@ async function detectProviderFromKey(apiKey){
     line.innerHTML='<span class="ico">'+icoHtml+'</span><span>'+esc(msg)+'</span>';
     logEl.appendChild(line);logEl.scrollTop=logEl.scrollHeight;
   };
-
   const trimmed=apiKey.trim();
   if(!trimmed){log('bad','API key kosong');return null;}
   log('info','Panjang: '+trimmed.length+' karakter');
   log('info','Prefix: '+trimmed.slice(0,12)+'...');
-
   const priority=[];
   const byPrefix=(prefix,id,score)=>{if(trimmed.startsWith(prefix))priority.push({id,score});};
   byPrefix('sk-harbor-','tokenharbor',100);
@@ -1400,14 +1397,12 @@ async function detectProviderFromKey(apiKey){
   byPrefix('ghp_','github',100);
   byPrefix('hf_','huggingface',100);
   byPrefix('sk_','novita',90);
-
   if(priority.length===0){
     ['tokenharbor','gemini','groq','openrouter','cohere','cerebras','sambanova','hyperbolic','novita','nvidia','zhipu','qwen','huggingface','aerolink','openai','anthropic','deepseek','mistral','xai','together','fireworks','perplexity','github','moonshot','deepinfra','siliconflow'].forEach((id,i)=>{
       priority.push({id,score:60-i});
     });
   }
   priority.sort((a,b)=>b.score-a.score);
-
   for(const cand of priority){
     const pid=cand.id;
     if(pid==='syonbot'||pid==='custom')continue;
@@ -1492,7 +1487,6 @@ async function diagnoseProvider(pid,apiKey){
     if(pid==='gemini')headers['x-goog-api-key']=apiKey;
     else if(pid==='anthropic'){headers['x-api-key']=apiKey;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
     else headers['Authorization']='Bearer '+apiKey;
-
     let chatUrl,chatBody;
     if(pid==='gemini'){
       chatUrl=cfg.url+'/models/'+model+':generateContent';
@@ -1502,7 +1496,6 @@ async function diagnoseProvider(pid,apiKey){
     } else {
       chatUrl=cfg.url;chatBody={model,messages:[{role:'user',content:'hi'}],max_tokens:5};
     }
-
     const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),12000);
     let chatRes;
     try{chatRes=await fetch(chatUrl,{method:'POST',headers,signal:ctrl.signal,body:JSON.stringify(chatBody)});}
@@ -1531,7 +1524,6 @@ async function runDiagnoseAll(){
   btn.disabled=true;btn.innerHTML='Menguji '+providers.length+'...';
   resultEl.style.display='block';
   resultEl.innerHTML='<div class="diagnose-summary">Menguji '+providers.length+' provider...</div>';
-
   const results=[];
   for(const pid of providers){
     if(pid==='syonbot')continue;
@@ -1539,7 +1531,6 @@ async function runDiagnoseAll(){
     try{results.push(await diagnoseProvider(pid,s.keys[pid]));}
     catch(e){results.push({provider:pid,name:PROVIDERS[pid].name,models:'fail',chat:'fail',note:e.message});}
   }
-
   const badge=(st)=>{
     if(st==='ok')return '<span class="badge-ok">OK</span>';
     if(st==='empty')return '<span class="badge-fail">KOSONG</span>';
@@ -1550,21 +1541,18 @@ async function runDiagnoseAll(){
     if(st==='fail')return '<span class="badge-fail">GAGAL</span>';
     return '<span style="color:var(--text-2)">?</span>';
   };
-
   let okCount=0,partialCount=0,failCount=0;
   results.forEach(r=>{
     if(r.models==='ok'&&r.chat==='ok')okCount++;
     else if(r.models==='fail'||r.chat==='fail')failCount++;
     else partialCount++;
   });
-
   let html='<div class="diagnose-summary"><b>'+results.length+' provider:</b> <b style="color:var(--success)">'+okCount+' OK</b>, <b style="color:#b45309">'+partialCount+' Partial</b>, <b style="color:var(--danger)">'+failCount+' Gagal</b></div>';
   html+='<table class="diagnose-table"><thead><tr><th>Provider</th><th>Models</th><th>Chat</th></tr></thead><tbody>';
   results.forEach(r=>{
     html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+badge(r.models)+(r.modelCount?'<div class="note">'+r.modelCount+'</div>':'')+'</td><td>'+badge(r.chat)+'</td></tr>';
   });
   html+='</tbody></table>';
-
   const corsBlocked=results.filter(r=>r.chat==='cors');
   if(corsBlocked.length){
     html+='<div class="diagnose-summary" style="border-color:var(--warn)"><b>CORS block:</b> '+corsBlocked.map(r=>r.name).join(', ')+'. Pakai Groq, Gemini, atau OpenRouter.</div>';
@@ -1577,7 +1565,7 @@ async function runDiagnoseAll(){
 
 <script>
 /* ============================================================
-   SYON AI v22 — Part 3/4: Chat, Auth, Init (OPTIMIZED)
+   SYON AI v23 — Part 3/4: Chat, Auth, Init
    ============================================================ */
 
 function createChat(){
@@ -1706,7 +1694,6 @@ function renderChat(){
       if(m.attachments?.length)m.attachments.forEach(a=>{if(a.type==='image')html+='<img class="media-thumb" src="'+a.dataUrl+'">';});
     } else {
       html=renderMarkdown(m.content);
-      // FIX: tombol retry saat error
       if(m.hasError){
         html += '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">'+
           '<button class="btn-primary" style="max-width:200px;padding:9px 16px;font-size:13px" onclick="retryLastMessage()">🔄 Coba Lagi</button>'+
@@ -1775,11 +1762,7 @@ async function regenerateFrom(userIdx){
   renderChat();updateStreamingBot('');
   try{
     await streamChat(
-      delta=>{
-        acc+=delta;
-        chat.messages[botIdx].content=acc;
-        updateStreamingBot(renderMarkdown(acc));
-      },
+      delta=>{acc+=delta;chat.messages[botIdx].content=acc;updateStreamingBot(renderMarkdown(acc));},
       (r)=>{
         if(reasoningBuf)reasoningBuf+='\n'+r;
         else reasoningBuf=r;
@@ -1840,14 +1823,11 @@ async function sendMessage(){
     state.generating=true;updateSendBtn();
     const controller=new AbortController();currentAbort=controller;let acc='';
     let reasoningBuf='';
-
     updateStreamingBot('');
-
     if(state.searchMode){
       const c=$('#chatInner').querySelector('.msg.bot:last-child .content');
       if(c)c.innerHTML='<div class="searching-indicator"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="shimmer-text">Mencari di web</span></div>';
     }
-
     try{
       await streamChat(
         delta=>{
@@ -1884,7 +1864,6 @@ async function sendMessage(){
   }catch(err){toast('Error: '+err.message,true);state.generating=false;updateSendBtn();}
 }
 
-/* ===== RETRY FUNCTION ===== */
 window.retryLastMessage=async function(){
   const chat=getActiveChat();if(!chat)return;
   let lastUserIdx=-1;
@@ -1986,7 +1965,6 @@ function renderSettingsModal(){
   $('#systemPrompt').value=s.systemPrompt||'';
   $('#tempInput').value=s.temperature;
   $('#maxTokenInput').value=s.maxTokens;
-
   const sp=$('#systemPrompt');
   if(sp&&!sp.dataset.bound){
     sp.dataset.bound='1';
@@ -2106,8 +2084,8 @@ function updateTopbar(){
   else{ok=st==='ok';warn=!!hasKey&&!st;}
   if(dot){dot.classList.toggle('on',ok);dot.classList.toggle('warn',warn&&!ok);}
   const vbtn=$('#voiceToggleBtn');if(vbtn)vbtn.classList.toggle('active',!!state.voice.enabled);
-  const tbtn=$('#thinkModeBtn');if(tbtn)tbtn.classList.toggle('think-active',!!state.thinkingMode);
-  const sbtn=$('#searchModeBtn');if(sbtn)sbtn.classList.toggle('search-active',!!state.searchMode);
+  const tbtn=$('#thinkModeBtn');if(tbtn)tbtn.classList.toggle('active',!!state.thinkingMode);
+  const sbtn=$('#searchModeBtn');if(sbtn)sbtn.classList.toggle('active',!!state.searchMode);
 }
 
 function exportChat(){
@@ -2308,7 +2286,6 @@ function initAuthScreen(){
   }
 }
 
-/* ===== Google Credential — Verify JWT di backend ===== */
 async function handleGoogleCredential(resp){
   try{
     const data = await apiCall('google-sync', { credential: resp.credential });
@@ -2326,7 +2303,6 @@ async function doLogout(){
   location.reload();
 }
 
-/* ============ INIT ============ */
 async function init(){
   try{
     loadAll();
@@ -2344,7 +2320,6 @@ async function init(){
       enterApp();
     }
 
-    /* --- Network Status --- */
     const netEl=$('#netStatus');
     function updateNet(initial){
       if(!netEl)return;
@@ -2362,7 +2337,6 @@ async function init(){
     window.addEventListener('online',()=>{updateNet(false);toast('Koneksi kembali online ✓');});
     window.addEventListener('offline',()=>{updateNet(false);toast('Koneksi terputus ✗',true);});
 
-    /* --- Chat --- */
     $('#newChatBtn')?.addEventListener('click',()=>{createChat();closeSidebarMobile();});
     $('#menuBtn')?.addEventListener('click',openSidebarMobile);
     $('#sendBtn')?.addEventListener('click',()=>{
@@ -2390,7 +2364,7 @@ async function init(){
     $('#searchModeBtn')?.addEventListener('click',toggleSearchMode);
 
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v22',exportedAt:new Date().toISOString(),state:{profiles:state.profiles,chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v23',exportedAt:new Date().toISOString(),state:{profiles:state.profiles,chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2517,7 +2491,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v22 — Optimized: Gemini retry + backoff + retry button + net status');
+    console.log('✅ Syon AI v23 — Berpikir & Cari dipindah ke bawah input');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
@@ -2529,4 +2503,4 @@ async function init(){
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-   </html>
+                                                                                                                             </html>
