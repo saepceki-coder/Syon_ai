@@ -10,6 +10,13 @@
 <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/common.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css" id="hljs-theme" />
 <script src="https://accounts.google.com/gsi/client" async defer></script>
+<script type="module">
+  import { pipeline, env } from 'https://cdn.jsdelivr.net/npm/@xenova/transformers@2.17.2';
+  env.allowLocalModels = false;
+  env.useBrowserCache = true;
+  window.__transformers = { pipeline, env, ready: true };
+  window.dispatchEvent(new Event('transformers-ready'));
+</script>
 <style>
 :root{--bg-0:#ffffff;--bg-1:#f9f9f9;--bg-2:#ececf1;--bg-3:#e5e5e5;--border:#e5e5e5;--text-0:#0d0d0d;--text-1:#565869;--text-2:#8e8ea0;--accent:#0b5cff;--accent-soft:#e8f0ff;--success:#10a37f;--danger:#ef4444;--warn:#f59e0b;--radius:14px;--radius-sm:10px;--font-mono:'JetBrains Mono',Consolas,monospace}
 [data-theme="dark"]{--bg-0:#0d0d0d;--bg-1:#171717;--bg-2:#212121;--bg-3:#2f2f2f;--border:#2f2f2f;--text-0:#ececec;--text-1:#b4b4b4;--text-2:#8e8e8e;--accent:#4d8eff;--accent-soft:#1a2740}
@@ -409,6 +416,7 @@ Obrolan Baru</button>
 <div class="chat-list" id="chatList"></div>
 <div class="sidebar-footer">
 <button id="promptsBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Prompt</button>
+<button id="kbBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>Knowledge Base</button>
 <button id="settingsBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Setelan</button>
 <button id="backupBtn"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>Backup</button>
 <button id="logoutBtn" style="color:var(--danger)"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Keluar</button>
@@ -579,18 +587,50 @@ Paste dari Clipboard
 </div>
 </div>
 
+<div class="modal-backdrop" id="kbModal">
+<div class="modal" style="max-width:640px">
+<div class="modal-head"><h2>📚 Knowledge Base</h2><button class="close" id="closeKb">×</button></div>
+<div class="modal-body">
+<div id="kbModelStatus" class="help" style="padding:8px 12px;background:var(--bg-1);border-radius:8px;margin-bottom:14px">⏳ Memuat model embedding (~25MB, sekali saja)...</div>
+<div class="field">
+<label style="font-size:13px;font-weight:600">Tambah Dokumen Baru</label>
+<input type="text" id="kbTitle" placeholder="Judul dokumen" maxlength="200">
+<textarea id="kbContent" placeholder="Paste isi dokumen di sini... (max 100.000 karakter)" style="min-height:140px;margin-top:8px"></textarea>
+<div class="help" id="kbCharCount">0 karakter</div>
+<button class="btn-primary" id="kbUploadBtn" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" disabled>
+<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+Simpan & Embed</button>
+</div>
+<div class="field">
+<label style="font-size:13px;font-weight:600">Dokumen Tersimpan</label>
+<div id="kbList" style="margin-top:8px"><div class="help" style="text-align:center;padding:16px">Memuat...</div></div>
+</div>
+<div class="field" style="border-top:1px solid var(--border);padding-top:14px">
+<label style="display:flex;align-items:center;gap:10px;cursor:pointer">
+<input type="checkbox" id="kbAutoToggle" style="width:auto">
+<span style="font-size:13.5px;font-weight:600">Gunakan Knowledge Base otomatis di chat</span>
+</label>
+<div class="help">Kalau aktif, setiap chat, AI cari konteks dari dokumen kamu dulu.</div>
+</div>
+</div>
+</div>
+</div>
+
 <div class="toast" id="toast"></div>
 <div class="net-status" id="netStatus"></div>
 
 <script>
 /* ============================================================
-   SYON AI v23.1 — Part 1/4: Constants & State
+   SYON AI v24 — Part 1/4: Constants & State (with RAG)
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 const API_BASE = '/api/auth';
+const RAG_BASE = '/api/rag';
+const EMBED_DIM = 384;
+
 const LS='syon_data';
-const OLD_LS_KEYS=['syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
+const OLD_LS_KEYS=['syon_v23','syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
@@ -677,6 +717,7 @@ const state = {
   pendingEmail:null,pendingResetEmail:null,
   thinkingMode:false,
   searchMode:false,
+  useKB:false,
   initialized:false
 };
 
@@ -719,6 +760,7 @@ function loadAll(){
       if(d.pinnedChats)state.pinnedChats=d.pinnedChats;
       if(d.thinkingMode!==undefined)state.thinkingMode=d.thinkingMode;
       if(d.searchMode!==undefined)state.searchMode=d.searchMode;
+      if(d.useKB!==undefined)state.useKB=d.useKB;
     }
   }catch(e){console.warn('loadAll:',e);}
   if(!state.chatsByUser)state.chatsByUser={};
@@ -734,7 +776,7 @@ function saveAll(){
       activeProfileId:state.activeProfileId,theme:state.theme,voice:state.voice,
       chatsByUser:state.chatsByUser,activeChatByUser:state.activeChatByUser,
       settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,
-      thinkingMode:state.thinkingMode,searchMode:state.searchMode,
+      thinkingMode:state.thinkingMode,searchMode:state.searchMode,useKB:state.useKB,
       savedAt:Date.now()
     }));
     const ind=$('#saveIndicator');
@@ -932,8 +974,143 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 
 <script>
 /* ============================================================
-   SYON AI v23.1 — Part 2/4: API & Auto-Detect & Web Search
+   SYON AI v24 — Part 2/4: API & RAG & Web Search
    ============================================================ */
+
+let _embedderPromise = null;
+let _embedderReady = false;
+
+async function getEmbedder(){
+  if (_embedderReady && _embedderPromise) return _embedderPromise;
+  if (_embedderPromise) return _embedderPromise;
+  _embedderPromise = (async () => {
+    const wait = () => new Promise(resolve => {
+      if (window.__transformers && window.__transformers.ready) return resolve();
+      window.addEventListener('transformers-ready', resolve, { once: true });
+    });
+    await wait();
+    const { pipeline } = window.__transformers;
+    const pipe = await pipeline(
+      'feature-extraction',
+      'Xenova/paraphrase-multilingual-MiniLM-L12-v2',
+      { quantized: true }
+    );
+    _embedderReady = true;
+    return pipe;
+  })();
+  return _embedderPromise;
+}
+
+async function embedText(text){
+  const pipe = await getEmbedder();
+  const out = await pipe(String(text).slice(0, 2000), { pooling: 'mean', normalize: true });
+  const vec = Array.from(out.data);
+  if (vec.length !== EMBED_DIM) {
+    throw new Error(`Embedding dim mismatch: ${vec.length} vs ${EMBED_DIM}`);
+  }
+  return vec;
+}
+
+async function embedBatch(texts, onProgress){
+  const arr = [];
+  for (let i = 0; i < texts.length; i++) {
+    arr.push(await embedText(texts[i]));
+    if (onProgress) onProgress(i + 1, texts.length);
+  }
+  return arr;
+}
+
+function ragUserKey(){
+  if(state.isGuest) return state.activeProfileId || 'guest';
+  if(state.user && state.user.id) return 'u' + state.user.id;
+  return 'anon';
+}
+
+function chunkDoc(text, maxLen = 900, overlap = 150){
+  const clean = String(text || '').replace(/\r\n/g, '\n').trim();
+  if (!clean) return [];
+  const paragraphs = clean.split(/\n{2,}/).map(p => p.trim()).filter(Boolean);
+  const chunks = [];
+  let buf = '';
+  for (const p of paragraphs) {
+    if ((buf + '\n\n' + p).length <= maxLen) {
+      buf = buf ? buf + '\n\n' + p : p;
+    } else {
+      if (buf) chunks.push(buf);
+      if (p.length <= maxLen) { buf = p; }
+      else {
+        for (let i = 0; i < p.length; i += maxLen - overlap) {
+          chunks.push(p.slice(i, i + maxLen));
+        }
+        buf = '';
+      }
+    }
+  }
+  if (buf) chunks.push(buf);
+  return chunks.filter(c => c.trim().length > 20);
+}
+
+async function kbUpload(title, content){
+  const chunks = chunkDoc(content);
+  if (!chunks.length) throw new Error('Dokumen kosong / terlalu pendek');
+  const embeddings = await embedBatch(chunks, (i, n) => {
+    const btn = document.getElementById('kbUploadBtn');
+    if (btn) btn.innerHTML = '⏳ Embedding ' + i + '/' + n + '...';
+  });
+  const payload = {
+    userKey: ragUserKey(),
+    title, content,
+    chunks: chunks.map((t, i) => ({ text: t, embedding: embeddings[i] }))
+  };
+  const res = await fetch(RAG_BASE + '?action=upload', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+async function kbList(){
+  const res = await fetch(RAG_BASE + '?action=list&userKey=' + encodeURIComponent(ragUserKey()));
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data.documents || [];
+}
+
+async function kbDelete(id){
+  const res = await fetch(RAG_BASE + '?action=delete', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userKey: ragUserKey(), id })
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data;
+}
+
+async function kbSearch(query, topK = 3){
+  const embedding = await embedText(query);
+  const res = await fetch(RAG_BASE + '?action=search', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ userKey: ragUserKey(), embedding, topK })
+  });
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || ('HTTP ' + res.status));
+  return data.results || [];
+}
+
+function buildKbContext(results){
+  if (!results || !results.length) return '';
+  let ctx = '\n\n[KONTEKS DARI KNOWLEDGE BASE USER]\n';
+  results.forEach((r, i) => {
+    ctx += `\n[KB-${i+1}] ${r.title}\n${r.content}\n`;
+  });
+  ctx += '\n[AKHIR KONTEKS KB]\nGunakan info di atas kalau relevan. Kalau pakai, sebut "berdasarkan KB kamu".\n';
+  return ctx;
+}
 
 async function apiCall(action,body={},useAuth=false){
   const headers={'Content-Type':'application/json'};
@@ -1277,7 +1454,19 @@ async function streamChat(onDelta,onReasoning,signal){
       if(searchResults.length)searchContext=buildSearchContext(searchResults);
     }
   }
-  const messages=buildMessages(chat,cfg.vision,searchContext);
+  let kbContext = '';
+  if (state.useKB && cfg.type !== 'syonbot') {
+    const lastUser = [...chat.messages].reverse().find(m => m.role === 'user');
+    if (lastUser && lastUser.content) {
+      try {
+        const kbResults = await kbSearch(lastUser.content, 3);
+        if (kbResults.length) kbContext = buildKbContext(kbResults);
+      } catch (e) {
+        console.warn('[KB] search gagal:', e.message);
+      }
+    }
+  }
+  const messages=buildMessages(chat,cfg.vision,searchContext + kbContext);
   let finalModel=s.model;
   if(!finalModel||finalModel==='gemini-api'||finalModel==='(belum ada model)'){
     finalModel=cfg.models[0];
@@ -1551,7 +1740,7 @@ async function runDiagnoseAll(){
 
 <script>
 /* ============================================================
-   SYON AI v23.1 — Part 3/4: Chat, Auth, Init
+   SYON AI v24 — Part 3/4: Chat, Auth, Init
    ============================================================ */
 
 function createChat(){
@@ -1770,7 +1959,6 @@ async function regenerateFrom(userIdx){
     saveAll();renderChat();
   }finally{state.generating=false;currentAbort=null;updateSendBtn();}
 }
-
 let autoScroll=true;
 function isNearBottom(el,threshold=80){
   if(!el)return true;
@@ -2376,8 +2564,108 @@ async function init(){
     $('#thinkModeBtn')?.addEventListener('click',toggleThinkingMode);
     $('#searchModeBtn')?.addEventListener('click',toggleSearchMode);
 
+    const kbModal = $('#kbModal');
+    const kbModelStatus = $('#kbModelStatus');
+    const kbUploadBtn = $('#kbUploadBtn');
+
+    (async () => {
+      try {
+        await getEmbedder();
+        if (kbModelStatus) {
+          kbModelStatus.textContent = '✅ Model embedding siap (jalan di browser, nggak butuh API)';
+          kbModelStatus.style.color = 'var(--success)';
+        }
+        if (kbUploadBtn) kbUploadBtn.disabled = false;
+      } catch (e) {
+        if (kbModelStatus) {
+          kbModelStatus.textContent = '❌ Gagal load model: ' + e.message;
+          kbModelStatus.style.color = 'var(--danger)';
+        }
+      }
+    })();
+
+    function renderKbList(){
+      const list = $('#kbList'); if(!list) return;
+      list.innerHTML = '<div class="help" style="text-align:center;padding:16px">Memuat...</div>';
+      kbList().then(docs => {
+        if (!docs.length) {
+          list.innerHTML = '<div class="help" style="text-align:center;padding:16px">Belum ada dokumen. Upload dulu di atas.</div>';
+          return;
+        }
+        list.innerHTML = '';
+        docs.forEach(d => {
+          const el = document.createElement('div');
+          el.className = 'provider-card';
+          el.style.marginBottom = '8px';
+          const created = d.created_at ? new Date(d.created_at).toLocaleDateString('id-ID') : '';
+          el.innerHTML = '<div class="top"><div class="pname">📄 ' + esc(d.title) + '</div>' +
+            '<span class="status-tag ok">' + (d.chunk_count||0) + ' chunk</span></div>' +
+            '<div style="font-size:11px;color:var(--text-2);margin-bottom:6px">' +
+            ((d.content_length||0).toLocaleString('id-ID')) + ' karakter • ' + created + '</div>' +
+            '<div class="actions"><button data-del="' + d.id + '" style="color:var(--danger)">Hapus</button></div>';
+          list.appendChild(el);
+        });
+        list.querySelectorAll('[data-del]').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (!confirm('Hapus dokumen ini?')) return;
+            try {
+              await kbDelete(parseInt(btn.dataset.del));
+              toast('Dokumen dihapus');
+              renderKbList();
+            } catch (e) { toast('Gagal: ' + e.message, true); }
+          });
+        });
+      }).catch(e => {
+        list.innerHTML = '<div class="help" style="text-align:center;padding:16px;color:var(--danger)">Gagal load: ' + esc(e.message) + '</div>';
+      });
+    }
+
+    $('#kbBtn')?.addEventListener('click', () => {
+      kbModal.classList.add('show');
+      renderKbList();
+      const tg = $('#kbAutoToggle');
+      if (tg) tg.checked = !!state.useKB;
+    });
+    $('#closeKb')?.addEventListener('click', () => kbModal.classList.remove('show'));
+    kbModal?.addEventListener('click', e => { if (e.target.id === 'kbModal') e.currentTarget.classList.remove('show'); });
+
+    const kbContentEl = $('#kbContent');
+    const kbCharEl = $('#kbCharCount');
+    kbContentEl?.addEventListener('input', () => {
+      if (kbCharEl) kbCharEl.textContent = kbContentEl.value.length.toLocaleString('id-ID') + ' karakter';
+    });
+
+    kbUploadBtn?.addEventListener('click', async () => {
+      const title = ($('#kbTitle')?.value || '').trim();
+      const content = ($('#kbContent')?.value || '').trim();
+      if (!title) { toast('Isi judul dulu', true); return; }
+      if (!content) { toast('Isi dokumen dulu', true); return; }
+      const old = kbUploadBtn.innerHTML;
+      kbUploadBtn.disabled = true;
+      kbUploadBtn.innerHTML = '⏳ Menyiapkan model...';
+      try {
+        await kbUpload(title, content);
+        toast('✓ Dokumen tersimpan & ter-embed!');
+        $('#kbTitle').value = '';
+        $('#kbContent').value = '';
+        if (kbCharEl) kbCharEl.textContent = '0 karakter';
+        renderKbList();
+      } catch (e) {
+        toast('Gagal: ' + e.message, true);
+      } finally {
+        kbUploadBtn.disabled = false;
+        kbUploadBtn.innerHTML = old;
+      }
+    });
+
+    $('#kbAutoToggle')?.addEventListener('change', e => {
+      state.useKB = !!e.target.checked;
+      saveAll();
+      toast(state.useKB ? '📚 Knowledge Base ON' : 'Knowledge Base OFF');
+    });
+
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v23',exportedAt:new Date().toISOString(),state:{profiles:state.profiles,chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v24',exportedAt:new Date().toISOString(),state:{profiles:state.profiles,chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2513,7 +2801,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v23.1 — Fixed: streamChat + handleGoogleCredential');
+    console.log('✅ Syon AI v24 — Knowledge Base + RAG (Transformers.js) ready');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
@@ -2525,4 +2813,4 @@ async function init(){
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-                                                                                                                               </html>
+</html>
