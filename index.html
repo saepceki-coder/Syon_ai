@@ -178,6 +178,7 @@ body{display:flex;height:100vh;height:100dvh}
 [data-theme="dark"] .msg .content code{color:#e9b1c9}
 .msg .content pre{background:var(--bg-1)!important;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:14px 0;overflow-x:auto;font-size:13px;line-height:1.6}
 .msg .content pre code{background:none;border:none;padding:0;color:var(--text-0);font-size:13px}
+.msg .content img{max-width:100%;border-radius:12px;margin:8px 0;border:1px solid var(--border);display:block}
 .code-head{display:flex;justify-content:space-between;align-items:center;background:var(--bg-2);border:1px solid var(--border);border-bottom:none;padding:8px 14px;border-radius:10px 10px 0 0;font-size:11.5px;color:var(--text-2);font-family:var(--font-mono);margin-top:14px}
 .code-head + pre{margin-top:0!important;border-radius:0 0 10px 10px!important}
 .code-actions{display:flex;gap:4px;align-items:center}
@@ -621,7 +622,7 @@ Simpan & Embed</button>
 
 <script>
 /* ============================================================
-   SYON AI v24 — Part 1/4: Constants & State (with RAG)
+   SYON AI v25 — Part 1/4: Constants & State
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
@@ -630,7 +631,7 @@ const RAG_BASE = '/api/rag';
 const EMBED_DIM = 384;
 
 const LS='syon_data';
-const OLD_LS_KEYS=['syon_v23','syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
+const OLD_LS_KEYS=['syon_v24','syon_v23','syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
@@ -642,15 +643,12 @@ const KB = [
   {q:['apa itu coding','pengertian coding'],a:'**Coding** = nulis instruksi ke komputer. 💻\n\nBahasa populer:\n- **Python** → pemula, AI, data\n- **JavaScript** → web\n- **Java** → Android\n- **C++** → game'},
   {q:['apa itu python'],a:'**Python** bahasa pemrograman populer. 🐍\n\n```python\nnama = "Dunia"\nprint(f"Halo, {nama}!")\n```'},
   {q:['apa itu javascript'],a:'**JavaScript** = bahasa yang jalan di browser. ⚡\n\n```javascript\nconst nama = "Dunia";\nconsole.log(`Halo, ${nama}!`);\n```'},
-  {q:['apa itu html'],a:'**HTML** = struktur halaman web. 🏠\n\n```html\n<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Halo Dunia</h1>\n  </body>\n</html>\n```\n\nCoba tombol **Preview** di atas kode itu!'},
+  {q:['apa itu html'],a:'**HTML** = struktur halaman web. 🏠\n\n```html\n<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Halo Dunia</h1>\n  </body>\n</html>\n```'},
   {q:['apa itu css'],a:'**CSS** = ngatur tampilan web. 🎨'},
   {q:['ibu kota indonesia'],a:'Ibu kota Indonesia: **Jakarta**. 🏙️ IKN Nusantara sedang dibangun.'},
   {q:['siapa presiden indonesia'],a:'Presiden Indonesia (2024–2029): **Prabowo Subianto**, wakil **Gibran Rakabuming Raka**. 🇮🇩'},
-  {q:['apa itu pancasila'],a:'**Pancasila** = dasar negara Indonesia:\n\n1. Ketuhanan Yang Maha Esa\n2. Kemanusiaan yang adil dan beradab\n3. Persatuan Indonesia\n4. Kerakyatan yang dipimpin oleh hikmat kebijaksanaan\n5. Keadilan sosial'},
-  {q:['cara belajar coding','tips belajar coding'],a:'Tips belajar coding 🚀\n\n1. **Pilih 1 bahasa dulu**\n2. **Latihan tiap hari**\n3. **Bikin project kecil**\n4. **Baca kode orang lain**\n5. **Jangan takut error**'},
   {q:['contoh python'],a:'Contoh Python 🐍\n\n```python\nnama = input("Nama kamu? ")\nprint(f"Halo, {nama}!")\n```'},
   {q:['contoh javascript'],a:'Contoh JavaScript ⚡\n\n```javascript\nconst nama = "Budi";\nfunction sapa(nama) {\n  return `Halo, ${nama}!`;\n}\n```'},
-  {q:['contoh html'],a:'Contoh HTML + CSS 👇\n\n```html\n<!DOCTYPE html>\n<html>\n<head>\n  <style>\n    body { font-family: sans-serif; padding: 40px; text-align: center; background: #f0f0f0; }\n    h1 { color: #0b5cff; }\n  </style>\n</head>\n<body>\n  <h1>Halo Dunia! 👋</h1>\n</body>\n</html>\n```\n\nTekan **Preview**!'},
 ];
 
 const PROMPT_LIBRARY = [
@@ -725,7 +723,7 @@ function defaultSettings(){
   return {
     provider:'syonbot',model:'syon-v2',
     keys:{},keyStatus:{},fetchedModels:{},
-    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap.',
+    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap. Kalau ada konteks [TOOL: X] di atas, pakai data itu untuk menjawab.',
     customUrl:'',customModels:'',
     thinking:false,temperature:0.7,maxTokens:2048,
     favModels:[]
@@ -845,7 +843,7 @@ function renderMarkdown(text){
   if(thinking){
     html+='<details class="thinking-block" open><summary><span class="brain-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg></span> Proses Berpikir Syon</summary><div class="think-body">'+esc(thinking)+'</div></details>';
   }
-  html+=DOMPurify.sanitize(marked.parse(main||''));
+  html+=DOMPurify.sanitize(marked.parse(main||''), {ADD_TAGS:['img'], ADD_ATTR:['src','alt','width','height','loading']});
   return html;
 }
 function openArtifact(htmlCode){
@@ -974,9 +972,205 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 
 <script>
 /* ============================================================
-   SYON AI v24 — Part 2/4: API & RAG & Web Search
+   SYON AI v25 — Part 2/4: RAG, Tools, API
    ============================================================ */
 
+/* ============ TOOLS TIER 1 ============ */
+const CITY_COORDS = {
+  jakarta:{lat:-6.2088,lon:106.8456,name:'Jakarta'},
+  surabaya:{lat:-7.2575,lon:112.7521,name:'Surabaya'},
+  bandung:{lat:-6.9175,lon:107.6191,name:'Bandung'},
+  medan:{lat:3.5952,lon:98.6722,name:'Medan'},
+  semarang:{lat:-6.9667,lon:110.4167,name:'Semarang'},
+  makassar:{lat:-5.1477,lon:119.4327,name:'Makassar'},
+  palembang:{lat:-2.9761,lon:104.7754,name:'Palembang'},
+  denpasar:{lat:-8.6705,lon:115.2126,name:'Denpasar'},
+  bali:{lat:-8.4095,lon:115.1889,name:'Bali'},
+  yogyakarta:{lat:-7.7956,lon:110.3695,name:'Yogyakarta'},
+  jogja:{lat:-7.7956,lon:110.3695,name:'Yogyakarta'},
+  malang:{lat:-7.9666,lon:112.6326,name:'Malang'},
+  padang:{lat:-0.9471,lon:100.4172,name:'Padang'},
+  pekanbaru:{lat:0.5071,lon:101.4478,name:'Pekanbaru'},
+  manado:{lat:1.4748,lon:124.8421,name:'Manado'},
+  banjarmasin:{lat:-3.3186,lon:114.5944,name:'Banjarmasin'},
+  pontianak:{lat:-0.0263,lon:109.3425,name:'Pontianak'},
+  balikpapan:{lat:-1.2379,lon:116.8529,name:'Balikpapan'},
+  'kuala lumpur':{lat:3.1390,lon:101.6869,name:'Kuala Lumpur'},
+  singapore:{lat:1.3521,lon:103.8198,name:'Singapore'},
+  singapura:{lat:1.3521,lon:103.8198,name:'Singapore'},
+  tokyo:{lat:35.6762,lon:139.6503,name:'Tokyo'},
+  osaka:{lat:34.6937,lon:135.5023,name:'Osaka'},
+  seoul:{lat:37.5665,lon:126.9780,name:'Seoul'},
+  beijing:{lat:39.9042,lon:116.4074,name:'Beijing'},
+  shanghai:{lat:31.2304,lon:121.4737,name:'Shanghai'},
+  hongkong:{lat:22.3193,lon:114.1694,name:'Hong Kong'},
+  bangkok:{lat:13.7563,lon:100.5018,name:'Bangkok'},
+  manila:{lat:14.5995,lon:120.9842,name:'Manila'},
+  hanoi:{lat:21.0285,lon:105.8542,name:'Hanoi'},
+  newyork:{lat:40.7128,lon:-74.0060,name:'New York'},
+  'new york':{lat:40.7128,lon:-74.0060,name:'New York'},
+  losangeles:{lat:34.0522,lon:-118.2437,name:'Los Angeles'},
+  'los angeles':{lat:34.0522,lon:-118.2437,name:'Los Angeles'},
+  london:{lat:51.5074,lon:-0.1278,name:'London'},
+  paris:{lat:48.8566,lon:2.3522,name:'Paris'},
+  berlin:{lat:52.5200,lon:13.4050,name:'Berlin'},
+  moskow:{lat:55.7558,lon:37.6173,name:'Moscow'},
+  dubai:{lat:25.2048,lon:55.2708,name:'Dubai'},
+  sydney:{lat:-33.8688,lon:151.2093,name:'Sydney'},
+  melbourne:{lat:-37.8136,lon:144.9631,name:'Melbourne'},
+  cairo:{lat:30.0444,lon:31.2357,name:'Cairo'},
+  mekah:{lat:21.3891,lon:39.8579,name:'Mekah'},
+  mekkah:{lat:21.3891,lon:39.8579,name:'Mekah'},
+  madinah:{lat:24.5247,lon:39.5692,name:'Madinah'}
+};
+
+function extractCity(text) {
+  const lower = text.toLowerCase();
+  for (const key in CITY_COORDS) {
+    if (lower.includes(key)) return { key, ...CITY_COORDS[key] };
+  }
+  return null;
+}
+
+function weatherCodeToText(code) {
+  const map = {
+    0:'Cerah', 1:'Cerah berawan', 2:'Berawan sebagian', 3:'Mendung',
+    45:'Berkabut', 48:'Kabut beku',
+    51:'Gerimis ringan', 53:'Gerimis', 55:'Gerimis lebat',
+    61:'Hujan ringan', 63:'Hujan', 65:'Hujan lebat',
+    71:'Salju ringan', 73:'Salju', 75:'Salju lebat',
+    80:'Hujan lokal', 81:'Hujan lokal lebat', 82:'Hujan sangat lebat',
+    95:'Badai petir', 96:'Badai petir hujan es', 99:'Badai petir hebat'
+  };
+  return map[code] || 'Tidak diketahui';
+}
+
+async function toolWeather(city) {
+  const url = `https://api.open-meteo.com/v1/forecast?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,relative_humidity_2m,weather_code,wind_speed_10m&timezone=auto`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('Gagal ambil cuaca');
+  const j = await r.json();
+  const c = j.current;
+  return {
+    city: city.name,
+    temp: c.temperature_2m,
+    humidity: c.relative_humidity_2m,
+    wind: c.wind_speed_10m,
+    desc: weatherCodeToText(c.weather_code)
+  };
+}
+
+async function toolImage(prompt) {
+  const clean = encodeURIComponent(prompt.trim().slice(0, 200));
+  const seed = Math.floor(Math.random() * 1000000);
+  const url = `https://image.pollinations.ai/prompt/${clean}?width=768&height=768&nologo=true&seed=${seed}`;
+  return { url, prompt };
+}
+
+function toolDateTime(tz) {
+  const timeZone = tz || 'Asia/Jakarta';
+  const now = new Date();
+  const waktu = now.toLocaleString('id-ID', { timeZone, dateStyle:'full', timeStyle:'short' });
+  const jam = now.toLocaleTimeString('id-ID', { timeZone });
+  const hari = now.toLocaleDateString('id-ID', { timeZone, weekday:'long' });
+  return { waktu, jam, hari, timeZone };
+}
+
+async function toolExchange(from, to, amount) {
+  const url = `https://api.exchangerate.host/convert?from=${from}&to=${to}&amount=${amount}`;
+  const r = await fetch(url);
+  if (!r.ok) throw new Error('Gagal ambil kurs');
+  const j = await r.json();
+  if (!j.result && !(j.info && j.info.rate)) throw new Error('Kurs tidak tersedia');
+  return {
+    from, to, amount,
+    result: j.result || (j.info && j.info.rate ? amount * j.info.rate : null),
+    rate: j.info && j.info.rate
+  };
+}
+
+function toolCalc(expr) {
+  const clean = String(expr).replace(/[^0-9+\-*/().^% ]/g, '').replace(/\^/g, '**').trim();
+  if (!clean) return null;
+  try {
+    const r = Function('"use strict"; return (' + clean + ')')();
+    if (typeof r === 'number' && isFinite(r)) {
+      return { expr: clean, result: Number.isInteger(r) ? r : parseFloat(r.toFixed(10)) };
+    }
+  } catch (e) {}
+  return null;
+}
+
+async function detectAndRunTools(userMessage) {
+  if (!userMessage || !userMessage.trim()) return '';
+  const msg = userMessage;
+  const lower = msg.toLowerCase();
+  let ctx = '';
+
+  // 1. Cuaca
+  if (/\b(cuaca|hujan|panas|suhu|berawan|mendung|gerimis)\b/.test(lower)) {
+    const city = extractCity(msg);
+    if (city) {
+      try {
+        const w = await toolWeather(city);
+        ctx += `\n[TOOL: CUACA]\nKota: ${w.city}\nSuhu: ${w.temp}°C\nKondisi: ${w.desc}\nKelembaban: ${w.humidity}%\nAngin: ${w.wind} km/h\n`;
+      } catch (e) {
+        ctx += `\n[TOOL: CUACA] Gagal: ${e.message}\n`;
+      }
+    }
+  }
+
+  // 2. Gambar
+  const imgMatch = msg.match(/(?:gambar|image|buatkan|bikin|generate|draw|ilustrasi)\s+(?:tentang|dari)?\s*(.+)/i);
+  if (imgMatch && imgMatch[1] && imgMatch[1].trim().length > 2) {
+    const prompt = imgMatch[1].trim();
+    if (!/^(apa|siapa|kenapa|mengapa|bagaimana|kapan|dimana)/i.test(prompt)) {
+      try {
+        const img = await toolImage(prompt);
+        ctx += `\n[TOOL: GAMBAR]\nPrompt: ${img.prompt}\nURL_GAMBAR: ${img.url}\n\nINSTRUKSI: Tampilkan gambar ini ke user pakai format markdown:\n![${img.prompt}](${img.url})\n`;
+      } catch (e) {
+        ctx += `\n[TOOL: GAMBAR] Gagal: ${e.message}\n`;
+      }
+    }
+  }
+
+  // 3. Waktu/Tanggal
+  if (/\b(jam berapa|sekarang jam|tanggal berapa|hari ini tanggal|hari apa|sekarang hari)\b/.test(lower)) {
+    const dt = toolDateTime();
+    ctx += `\n[TOOL: WAKTU]\nSekarang: ${dt.waktu}\nJam: ${dt.jam}\nHari: ${dt.hari}\nTimezone: ${dt.timeZone}\n`;
+  }
+
+  // 4. Kurs
+  const kursMatch = msg.match(/(\d+(?:[.,]\d+)?)\s*(usd|dollar|idr|rp|rupiah|eur|sgd|myr|jpy|cny|gbp)\s*(?:ke|to|=|berapa)?\s*(idr|rp|rupiah|usd|dollar|eur|sgd|myr|jpy|cny|gbp)?/i);
+  if (kursMatch) {
+    const amount = parseFloat(kursMatch[1].replace(',', '.'));
+    const fromRaw = kursMatch[2].toLowerCase();
+    const toRaw = (kursMatch[3] || 'idr').toLowerCase();
+    const map = {usd:'USD',dollar:'USD',idr:'IDR',rp:'IDR',rupiah:'IDR',eur:'EUR',sgd:'SGD',myr:'MYR',jpy:'JPY',cny:'CNY',gbp:'GBP'};
+    const from = map[fromRaw], to = map[toRaw] || 'IDR';
+    try {
+      const k = await toolExchange(from, to, amount);
+      if (k.result) {
+        ctx += `\n[TOOL: KURS]\n${amount} ${from} = ${k.result.toFixed(2)} ${to}\nRate: 1 ${from} = ${k.rate ? k.rate.toFixed(4) : '?'} ${to}\n`;
+      }
+    } catch (e) {
+      ctx += `\n[TOOL: KURS] Gagal: ${e.message}\n`;
+    }
+  }
+
+  // 5. Kalkulator
+  if (/\b(hitung|berapa|hasil)\b/.test(lower) && /[0-9]/.test(msg) && /[+\-*/^%]/.test(msg)) {
+    const exprMatch = msg.match(/([0-9+\-*/^%().\s]+)/);
+    if (exprMatch) {
+      const calc = toolCalc(exprMatch[1]);
+      if (calc) ctx += `\n[TOOL: KALKULATOR]\n${calc.expr} = ${calc.result}\n`;
+    }
+  }
+
+  return ctx;
+}
+
+/* ============ RAG ============ */
 let _embedderPromise = null;
 let _embedderReady = false;
 
@@ -1005,9 +1199,7 @@ async function embedText(text){
   const pipe = await getEmbedder();
   const out = await pipe(String(text).slice(0, 2000), { pooling: 'mean', normalize: true });
   const vec = Array.from(out.data);
-  if (vec.length !== EMBED_DIM) {
-    throw new Error(`Embedding dim mismatch: ${vec.length} vs ${EMBED_DIM}`);
-  }
+  if (vec.length !== EMBED_DIM) throw new Error(`Embedding dim mismatch: ${vec.length} vs ${EMBED_DIM}`);
   return vec;
 }
 
@@ -1105,13 +1297,12 @@ async function kbSearch(query, topK = 3){
 function buildKbContext(results){
   if (!results || !results.length) return '';
   let ctx = '\n\n[KONTEKS DARI KNOWLEDGE BASE USER]\n';
-  results.forEach((r, i) => {
-    ctx += `\n[KB-${i+1}] ${r.title}\n${r.content}\n`;
-  });
+  results.forEach((r, i) => { ctx += `\n[KB-${i+1}] ${r.title}\n${r.content}\n`; });
   ctx += '\n[AKHIR KONTEKS KB]\nGunakan info di atas kalau relevan. Kalau pakai, sebut "berdasarkan KB kamu".\n';
   return ctx;
 }
 
+/* ============ BACKEND AUTH ============ */
 async function apiCall(action,body={},useAuth=false){
   const headers={'Content-Type':'application/json'};
   if(useAuth&&state.token)headers['Authorization']='Bearer '+state.token;
@@ -1131,6 +1322,7 @@ async function apiMe(){
   }catch(e){return null;}
 }
 
+/* ============ WEB SEARCH ============ */
 async function searchWikipedia(query){
   try{
     const r=await fetch('https://id.wikipedia.org/w/api.php?action=query&format=json&origin=*&list=search&srlimit=3&srsearch='+encodeURIComponent(query));
@@ -1148,7 +1340,6 @@ async function searchWikipedia(query){
     return{title,url:'https://id.wikipedia.org/wiki/'+encodeURIComponent(title),snippet,extract:extract.slice(0,1500)};
   }catch(e){return null;}
 }
-
 async function searchWeb(query){
   const results=[];
   try{
@@ -1167,20 +1358,20 @@ async function searchWeb(query){
   }catch(e){}
   return results.slice(0,4);
 }
-
 function buildSearchContext(results){
   if(!results||!results.length)return '';
   let ctx='\n\n[KONTEKS HASIL PENCARIAN WEB]\n';
   results.forEach((r,i)=>{ctx+=`\n[${i+1}] ${r.title}\nURL: ${r.url}\n${r.snippet}\n`;});
-  ctx+='\n[AKHIR KONTEKS]\nGunakan informasi di atas untuk menjawab. Sebutkan sumber dengan [1], [2] sesuai nomor. Kalau info tidak relevan atau tidak ada, katakan tidak tahu.\n';
+  ctx+='\n[AKHIR KONTEKS]\nGunakan informasi di atas untuk menjawab. Sebutkan sumber dengan [1], [2] sesuai nomor.\n';
   return ctx;
 }
 
+/* ============ BUILD MESSAGES ============ */
 function buildMessages(chat,forVision,extraContext){
   const s=currentSettings();const msgs=[];
   let sys=s.systemPrompt||'';
   if(state.thinkingMode){
-    sys+='\n\nINSTRUKSI MODE BERPIKIR: Sebelum memberikan jawaban final, tuliskan proses berpikirmu secara detail di dalam tag <thinking>...</thinking>. Jelaskan langkah-langkah analisis, pertimbangan, dan penalaranmu. Setelah tag penutup </thinking>, berikan jawaban final yang rapi dan ringkas.';
+    sys+='\n\nINSTRUKSI MODE BERPIKIR: Sebelum jawaban final, tuliskan proses berpikirmu di dalam tag <thinking>...</thinking>. Setelah tag penutup, berikan jawaban final yang rapi.';
   }
   if(extraContext){ sys+='\n\n'+extraContext; }
   if(sys)msgs.push({role:'system',content:sys});
@@ -1309,7 +1500,6 @@ async function callGemini(apiKey,model,messages,onDelta,onReasoning,signal){
   }
   while(sanitized.length&&sanitized[sanitized.length-1].role==='model')sanitized.pop();
   if(!sanitized.length)sanitized.push({role:'user',parts:[{text:'Halo'}]});
-
   const body={contents:sanitized,generationConfig:{temperature:s.temperature,maxOutputTokens:s.maxTokens}};
   if(systemText)body.systemInstruction={parts:[{text:systemText.trim()}]};
   const url=PROVIDERS.gemini.url+'/models/'+model+':streamGenerateContent?alt=sse';
@@ -1354,12 +1544,11 @@ async function callGeminiSmart(key,model,messages,onDelta,onReasoning,signal,att
     const isDeprecated = msg.includes('404')||msg.includes('no longer available')||msg.includes('not found')||msg.includes('not supported')||msg.includes('is not found');
     const isAuthError = msg.includes('401')||msg.includes('403')||msg.includes('api key not valid')||msg.includes('permission denied')||msg.includes('api_key_invalid');
     const isSafety = msg.includes('safety')||msg.includes('blocked')||msg.includes('recitation');
-    if(isAuthError){throw new Error('API key Gemini tidak valid. Ambil di aistudio.google.com/apikey');}
-    if(isSafety){throw new Error('Konten diblokir safety filter Gemini. Coba ubah pertanyaan.');}
+    if(isAuthError)throw new Error('API key Gemini tidak valid.');
+    if(isSafety)throw new Error('Konten diblokir safety filter Gemini.');
     if((isQuota||isRateLimit||isServerBusy) && attempt<=3){
       const delay=Math.min(1000*Math.pow(2,attempt-1),8000);
-      const label=isQuota?'📊 Kuota penuh':isRateLimit?'🚦 Rate limit':'⏳ Server sibuk';
-      toast(`${label} (${attempt}/3) — tunggu ${delay/1000}s...`);
+      toast(`⏳ Server sibuk (${attempt}/3) — tunggu ${delay/1000}s...`);
       await new Promise(r=>setTimeout(r,delay));
       if(signal&&signal.aborted)throw err;
       return callGeminiSmart(key,model,messages,onDelta,onReasoning,signal,attempt+1,modelIndex);
@@ -1367,19 +1556,19 @@ async function callGeminiSmart(key,model,messages,onDelta,onReasoning,signal,att
     if(isDeprecated){
       const suggested=parseModelSuggestion(originalMsg);
       if(suggested && suggested!==model){
-        toast('⚠️ Model deprecated → pindah ke '+suggested);
+        toast('⚠️ Model deprecated → '+suggested);
         const s=currentSettings();s.model=suggested;saveAll();updateTopbar();
         return callGeminiSmart(key,suggested,messages,onDelta,onReasoning,signal,1,0);
       }
       if(modelIndex<GEMINI_FALLBACKS.length){
         const fallback=GEMINI_FALLBACKS[modelIndex];
         if(fallback!==model){
-          toast('⚠️ Coba model '+fallback);
+          toast('⚠️ Coba '+fallback);
           const s=currentSettings();s.model=fallback;saveAll();updateTopbar();
           return callGeminiSmart(key,fallback,messages,onDelta,onReasoning,signal,1,modelIndex+1);
         }
       }
-      throw new Error('Semua model Gemini tidak tersedia. Cek daftar model di aistudio.google.com');
+      throw new Error('Semua model Gemini tidak tersedia.');
     }
     throw err;
   }
@@ -1446,27 +1635,39 @@ async function streamChat(onDelta,onReasoning,signal){
   if(!key&&p!=='custom')throw new Error('API key belum diisi untuk '+cfg.name);
   if(p==='custom'&&!s.customUrl)throw new Error('URL endpoint custom belum diisi');
   const chat=getActiveChat();
-  let searchContext='';let searchResults=[];
-  if(state.searchMode){
-    const lastUser=[...chat.messages].reverse().find(m=>m.role==='user');
-    if(lastUser&&lastUser.content){
-      searchResults=await searchWeb(lastUser.content);
-      if(searchResults.length)searchContext=buildSearchContext(searchResults);
-    }
+  const lastUser = [...chat.messages].reverse().find(m=>m.role==='user');
+
+  // Web search
+  let searchContext='';
+  if(state.searchMode && lastUser && lastUser.content){
+    try{
+      const results=await searchWeb(lastUser.content);
+      if(results.length)searchContext=buildSearchContext(results);
+    }catch(e){}
   }
+
+  // RAG
   let kbContext = '';
-  if (state.useKB && cfg.type !== 'syonbot') {
-    const lastUser = [...chat.messages].reverse().find(m => m.role === 'user');
-    if (lastUser && lastUser.content) {
-      try {
-        const kbResults = await kbSearch(lastUser.content, 3);
-        if (kbResults.length) kbContext = buildKbContext(kbResults);
-      } catch (e) {
-        console.warn('[KB] search gagal:', e.message);
-      }
+  if (state.useKB && lastUser && lastUser.content) {
+    try {
+      const kbResults = await kbSearch(lastUser.content, 3);
+      if (kbResults.length) kbContext = buildKbContext(kbResults);
+    } catch (e) {
+      console.warn('[KB] search gagal:', e.message);
     }
   }
-  const messages=buildMessages(chat,cfg.vision,searchContext + kbContext);
+
+  // Tools
+  let toolContext = '';
+  if (lastUser && lastUser.content) {
+    try {
+      toolContext = await detectAndRunTools(lastUser.content);
+    } catch (e) {
+      console.warn('[tools] error:', e.message);
+    }
+  }
+
+  const messages=buildMessages(chat,cfg.vision,searchContext + kbContext + toolContext);
   let finalModel=s.model;
   if(!finalModel||finalModel==='gemini-api'||finalModel==='(belum ada model)'){
     finalModel=cfg.models[0];
@@ -1490,7 +1691,6 @@ async function fetchDirect(url,headers,timeoutMs=7000){
   try{return await fetch(url,{headers,signal:ctrl.signal});}
   finally{clearTimeout(t);}
 }
-
 async function fetchViaProxy(url,headers,timeoutMs=15000){
   const proxies=[
     'https://api.allorigins.win/raw?url='+encodeURIComponent(url),
@@ -1543,18 +1743,17 @@ async function detectProviderFromKey(apiKey){
   const log=(status,msg)=>{
     const line=document.createElement('div');
     line.className='line '+status;
-    let icoHtml='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="9"/></svg>';
-    if(status==='ok')icoHtml='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-    else if(status==='bad')icoHtml='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
-    else if(status==='info')icoHtml='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>';
-    else if(status==='warn')icoHtml='<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>';
+    let icoHtml='•';
+    if(status==='ok')icoHtml='✓';
+    else if(status==='bad')icoHtml='✗';
+    else if(status==='info')icoHtml='→';
+    else if(status==='warn')icoHtml='⚠';
     line.innerHTML='<span class="ico">'+icoHtml+'</span><span>'+esc(msg)+'</span>';
     logEl.appendChild(line);logEl.scrollTop=logEl.scrollHeight;
   };
   const trimmed=apiKey.trim();
   if(!trimmed){log('bad','API key kosong');return null;}
   log('info','Panjang: '+trimmed.length+' karakter');
-  log('info','Prefix: '+trimmed.slice(0,12)+'...');
   const priority=[];
   const byPrefix=(prefix,id,score)=>{if(trimmed.startsWith(prefix))priority.push({id,score});};
   byPrefix('sk-harbor-','tokenharbor',100);
@@ -1641,7 +1840,7 @@ async function handleAutoDetect(){
       $('#autoDetectLog').innerHTML='';$('#autoDetectLog').classList.remove('show');
     });
   }catch(e){toast('Gagal: '+e.message,true);}
-  finally{btn.disabled=false;btn.innerHTML='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>Deteksi & Tambah';}
+  finally{btn.disabled=false;btn.innerHTML='Deteksi & Tambah';}
 }
 
 async function diagnoseProvider(pid,apiKey){
@@ -1730,17 +1929,17 @@ async function runDiagnoseAll(){
   html+='</tbody></table>';
   const corsBlocked=results.filter(r=>r.chat==='cors');
   if(corsBlocked.length){
-    html+='<div class="diagnose-summary" style="border-color:var(--warn)"><b>CORS block:</b> '+corsBlocked.map(r=>r.name).join(', ')+'. Pakai Groq, Gemini, atau OpenRouter.</div>';
+    html+='<div class="diagnose-summary" style="border-color:var(--warn)"><b>CORS block:</b> '+corsBlocked.map(r=>r.name).join(', ')+'.</div>';
   }
   resultEl.innerHTML=html;
-  btn.disabled=false;btn.innerHTML='<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg> Cek Semua AI (Full Diagnostic)';
+  btn.disabled=false;btn.innerHTML='Cek Semua AI (Full Diagnostic)';
   toast('Diagnostic selesai');
 }
 </script>
 
 <script>
 /* ============================================================
-   SYON AI v24 — Part 3/4: Chat, Auth, Init
+   SYON AI v25 — Part 3/4: Chat, Auth, Init
    ============================================================ */
 
 function createChat(){
@@ -1813,7 +2012,7 @@ function renderChatList(){
   };
   if(pinned.length){
     const sec=document.createElement('div');sec.className='sidebar-section';
-    sec.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><path d="M16 12V4h1a1 1 0 0 0 0-2H7a1 1 0 0 0 0 2h1v8l-2 2v2h5.2v6h1.6v-6H18v-2l-2-2z"/></svg>Dipin';
+    sec.innerHTML='Dipin';
     list.appendChild(sec);pinned.forEach(c=>list.appendChild(createItem(c)));
   }
   const groups={};
@@ -1844,13 +2043,13 @@ function renderChat(){
     inner.innerHTML='<div class="welcome">'+
       '<img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon">'+
       '<h1>Halo, <span>'+esc(pname)+'</span></h1>'+
-      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode. Pakai tombol 🧠 untuk Mode Berpikir, dan 🔍 untuk Cari Web.</p>'+
-      '<button class="welcome-add-ai" id="welcomeAddAiBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Tambah AI dengan API Key</button>'+
+      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode. Coba juga: cuaca, gambar, kurs, jam.</p>'+
+      '<button class="welcome-add-ai" id="welcomeAddAiBtn">Tambah AI dengan API Key</button>'+
       '<div class="suggestions">'+
-      '<div class="suggestion" data-p="2+3*5"><b>Hitung</b>2 + 3 × 5 = ?</div>'+
-      '<div class="suggestion" data-p="contoh html"><b>Buat web</b>Contoh halaman HTML</div>'+
-      '<div class="suggestion" data-p="apa itu ai"><b>Tanya</b>Apa itu AI?</div>'+
-      '<div class="suggestion" data-p="contoh python"><b>Coding</b>Contoh Python dasar</div>'+
+      '<div class="suggestion" data-p="cuaca di Jakarta"><b>Cuaca</b>Cek cuaca Jakarta</div>'+
+      '<div class="suggestion" data-p="gambar kucing lucu"><b>Gambar</b>Generate gambar</div>'+
+      '<div class="suggestion" data-p="sekarang jam berapa?"><b>Waktu</b>Sekarang jam berapa?</div>'+
+      '<div class="suggestion" data-p="100 USD berapa rupiah?"><b>Kurs</b>Konversi mata uang</div>'+
       '</div></div>';
     inner.querySelectorAll('.suggestion').forEach(s=>{
       s.addEventListener('click',()=>{$('#input').value=s.dataset.p;autoGrow($('#input'));sendMessage();});
@@ -1872,11 +2071,10 @@ function renderChat(){
       if(m.hasError){
         html += '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">'+
           '<button class="btn-primary" style="max-width:200px;padding:9px 16px;font-size:13px" onclick="retryLastMessage()">🔄 Coba Lagi</button>'+
-          '<button class="btn-secondary" style="max-width:200px;padding:9px 16px;font-size:13px;margin-top:0" onclick="document.getElementById(\'settingsBtn\').click()">⚙️ Ganti Model</button>'+
           '</div>';
       }
       if(m.sources&&m.sources.length){
-        html+='<div class="sources"><div class="sources-label"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>Sumber:</div>';
+        html+='<div class="sources"><div class="sources-label">Sumber:</div>';
         m.sources.forEach((s,i)=>{
           html+='<div class="source-item"><span class="source-num">'+(i+1)+'</span><a href="'+esc(s.url)+'" target="_blank" rel="noopener">'+esc(s.title)+'</a></div>';
         });
@@ -1959,11 +2157,8 @@ async function regenerateFrom(userIdx){
     saveAll();renderChat();
   }finally{state.generating=false;currentAbort=null;updateSendBtn();}
 }
+
 let autoScroll=true;
-function isNearBottom(el,threshold=80){
-  if(!el)return true;
-  return (el.scrollHeight-el.scrollTop-el.clientHeight) < threshold;
-}
 function scrollToBottom(force){
   const el=$('#chatScroll');if(!el)return;
   if(force===true){autoScroll=true;el.scrollTop=el.scrollHeight;return;}
@@ -1994,7 +2189,8 @@ function _doUpdateStreamingBot(html){
     content.innerHTML=html+'<span class="cursor-blink"></span>';
     last.dataset.hasContent='1';
   } else if(!last.dataset.hasContent){
-    content.innerHTML='<div class="thinking-pulse"><span class="pulse-dot"></span><span class="shimmer-text">Syon sedang berpikir</span><span class="loading-dots"><span></span><span></span><span></span></span></div>';
+    const lt = state.thinkingMode ? 'Syon sedang berpikir' : 'Syon sedang menulis';
+    content.innerHTML='<div class="thinking-pulse"><span class="pulse-dot"></span><span class="shimmer-text">'+lt+'</span><span class="loading-dots"><span></span><span></span><span></span></span></div>';
   }
   scrollToBottom();
 }
@@ -2019,10 +2215,6 @@ async function sendMessage(){
     const controller=new AbortController();currentAbort=controller;let acc='';
     let reasoningBuf='';
     updateStreamingBot('');
-    if(state.searchMode){
-      const c=$('#chatInner').querySelector('.msg.bot:last-child .content');
-      if(c)c.innerHTML='<div class="searching-indicator"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="shimmer-text">Mencari di web</span></div>';
-    }
     try{
       await streamChat(
         delta=>{
@@ -2164,21 +2356,12 @@ function renderSettingsModal(){
   if(sp&&!sp.dataset.bound){
     sp.dataset.bound='1';
     let t;
-    sp.addEventListener('input',()=>{
-      clearTimeout(t);
-      t=setTimeout(()=>{currentSettings().systemPrompt=sp.value.trim();saveAll();},500);
-    });
+    sp.addEventListener('input',()=>{clearTimeout(t);t=setTimeout(()=>{currentSettings().systemPrompt=sp.value.trim();saveAll();},500);});
   }
   const tp=$('#tempInput');
-  if(tp&&!tp.dataset.bound){
-    tp.dataset.bound='1';
-    tp.addEventListener('input',()=>{currentSettings().temperature=parseFloat(tp.value)||0.7;saveAll();});
-  }
+  if(tp&&!tp.dataset.bound){tp.dataset.bound='1';tp.addEventListener('input',()=>{currentSettings().temperature=parseFloat(tp.value)||0.7;saveAll();});}
   const mt=$('#maxTokenInput');
-  if(mt&&!mt.dataset.bound){
-    mt.dataset.bound='1';
-    mt.addEventListener('input',()=>{currentSettings().maxTokens=parseInt(mt.value)||2048;saveAll();});
-  }
+  if(mt&&!mt.dataset.bound){mt.dataset.bound='1';mt.addEventListener('input',()=>{currentSettings().maxTokens=parseInt(mt.value)||2048;saveAll();});}
 }
 function renderModelSelect(selId,providerId,current){
   const s=currentSettings();const sel=$(selId);if(!sel)return;
@@ -2526,12 +2709,12 @@ async function init(){
       if(!netEl)return;
       if(navigator.onLine){
         netEl.className='net-status online show';
-        netEl.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg> Online';
+        netEl.textContent='Online';
         if(!initial)setTimeout(()=>netEl.classList.remove('show'),2000);
         else netEl.classList.remove('show');
       } else {
         netEl.className='net-status show';
-        netEl.innerHTML='<svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg> Offline';
+        netEl.textContent='Offline';
       }
     }
     updateNet(true);
@@ -2665,7 +2848,7 @@ async function init(){
     });
 
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v24',exportedAt:new Date().toISOString(),state:{profiles:state.profiles,chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v25',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2801,7 +2984,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v24 — Knowledge Base + RAG (Transformers.js) ready');
+    console.log('✅ Syon AI v25 — Tools Tier 1 + RAG + fix thinking mode');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
@@ -2813,4 +2996,4 @@ async function init(){
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-</html>
+  </html>
