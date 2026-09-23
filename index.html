@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -55,8 +56,6 @@ body{display:flex;height:100vh;height:100dvh}
 .thinking-block[open] summary::before{transform:rotate(90deg)}
 .thinking-block .brain-icon{color:var(--accent);display:flex}
 .thinking-block .think-body{padding:12px 16px;color:var(--text-1);font-size:13px;line-height:1.75;border-top:1px solid var(--border);white-space:pre-wrap;font-family:inherit}
-.thinking-block .think-body p{margin-bottom:8px}
-.thinking-block .think-body code{background:var(--bg-2);padding:2px 6px;border-radius:4px;font-family:var(--font-mono);font-size:12px}
 .sources{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12.5px}
 .sources-label{color:var(--text-2);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600}
 .source-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;color:var(--text-1)}
@@ -444,7 +443,7 @@ Obrolan Baru</button>
 <div class="attach-preview" id="attachPreview"></div>
 <div class="input-box">
 <div class="input-row-top">
-<textarea id="input" placeholder="Tanya apa saja..." rows="1"></textarea>
+<textarea id="input" placeholder="Tanya apa saja... (cuaca, gambar, kurs, jam, hitung)" rows="1"></textarea>
 </div>
 <div class="input-row-bottom">
 <div class="mode-pills">
@@ -474,8 +473,6 @@ Obrolan Baru</button>
 <div class="modal">
 <div class="modal-head"><h2>Pengaturan</h2><button class="close" id="closeSettings">×</button></div>
 <div class="modal-body">
-<div class="field"><label>Provider Aktif</label><select id="activeProvider"></select></div>
-<div class="field"><label>Model</label><select id="modelSelect"></select></div>
 <div class="field">
 <button class="btn-primary" id="openAddAiBtn" style="padding:13px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>Tambah AI Baru (Auto-Detect)</button>
 <div class="help">Paste API key dari provider apa aja — sistem otomatis deteksi.</div>
@@ -555,14 +552,17 @@ Paste dari Clipboard
 </div>
 
 <div class="modal-backdrop" id="modelModal">
-<div class="modal" style="max-width:420px">
-<div class="modal-head"><h2>Ganti Model</h2><button class="close" id="closeModel">×</button></div>
+<div class="modal" style="max-width:520px">
+<div class="modal-head"><h2>🎯 Pilih Model</h2><button class="close" id="closeModel">×</button></div>
 <div class="modal-body">
-<div class="field"><label>Provider</label><select id="quickProvider"></select></div>
-<div class="field"><label>Model</label><select id="quickModel"></select>
-<button type="button" class="btn-secondary" id="favModelBtn" style="margin-top:8px;font-size:12.5px;padding:8px">★ Tandai Favorit</button>
+<div class="field">
+<input type="text" id="modelSearch" placeholder="🔍 Cari model... (contoh: gemini, gpt, llama)" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
 </div>
-<button class="btn-primary" id="applyModel">Terapkan</button>
+<div id="quickModelList" style="max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:14px"></div>
+<div style="display:flex;gap:8px">
+<button type="button" class="btn-secondary" id="favModelBtn" style="margin-top:0;flex:1">★ Favorit</button>
+<button class="btn-primary" id="applyModel" style="margin-top:0;flex:1">Terapkan</button>
+</div>
 </div>
 </div>
 </div>
@@ -622,7 +622,7 @@ Simpan & Embed</button>
 
 <script>
 /* ============================================================
-   SYON AI v25 — Part 1/4: Constants & State
+   SYON AI v26 — Part 1/4: Constants & State
    ============================================================ */
 
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
@@ -631,7 +631,7 @@ const RAG_BASE = '/api/rag';
 const EMBED_DIM = 384;
 
 const LS='syon_data';
-const OLD_LS_KEYS=['syon_v24','syon_v23','syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
+const OLD_LS_KEYS=['syon_v25','syon_v24','syon_v23','syon_v20','syon_v19','syon_v18','syon_v17','syon_v16','syon_v15','syon_v14','syon_v13','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja, hitung soal, atau minta contoh kode.'},
@@ -639,16 +639,13 @@ const KB = [
   {q:['apa kabar','kabar kamu'],a:'Aku baik! 😄 Kamu gimana?'},
   {q:['terima kasih','makasih','thanks','thank you','thx'],a:'Sama-sama! 🙌'},
   {q:['bye','dadah','sampai jumpa'],a:'Dadah! 👋'},
-  {q:['apa itu ai','pengertian ai'],a:'**AI (Artificial Intelligence)** = program komputer yang bisa melakukan tugas yang biasanya butuh kecerdasan manusia. 🧠\n\nContoh:\n- Chatbot (kayak aku 😄)\n- Rekomendasi YouTube\n- Google Translate'},
-  {q:['apa itu coding','pengertian coding'],a:'**Coding** = nulis instruksi ke komputer. 💻\n\nBahasa populer:\n- **Python** → pemula, AI, data\n- **JavaScript** → web\n- **Java** → Android\n- **C++** → game'},
-  {q:['apa itu python'],a:'**Python** bahasa pemrograman populer. 🐍\n\n```python\nnama = "Dunia"\nprint(f"Halo, {nama}!")\n```'},
-  {q:['apa itu javascript'],a:'**JavaScript** = bahasa yang jalan di browser. ⚡\n\n```javascript\nconst nama = "Dunia";\nconsole.log(`Halo, ${nama}!`);\n```'},
-  {q:['apa itu html'],a:'**HTML** = struktur halaman web. 🏠\n\n```html\n<!DOCTYPE html>\n<html>\n  <body>\n    <h1>Halo Dunia</h1>\n  </body>\n</html>\n```'},
-  {q:['apa itu css'],a:'**CSS** = ngatur tampilan web. 🎨'},
+  {q:['apa itu ai','pengertian ai'],a:'**AI (Artificial Intelligence)** = program komputer yang bisa melakukan tugas yang biasanya butuh kecerdasan manusia. 🧠'},
+  {q:['apa itu coding','pengertian coding'],a:'**Coding** = nulis instruksi ke komputer. 💻'},
+  {q:['apa itu python'],a:'**Python** bahasa pemrograman populer. 🐍'},
+  {q:['apa itu javascript'],a:'**JavaScript** = bahasa yang jalan di browser. ⚡'},
+  {q:['apa itu html'],a:'**HTML** = struktur halaman web. 🏠'},
   {q:['ibu kota indonesia'],a:'Ibu kota Indonesia: **Jakarta**. 🏙️ IKN Nusantara sedang dibangun.'},
   {q:['siapa presiden indonesia'],a:'Presiden Indonesia (2024–2029): **Prabowo Subianto**, wakil **Gibran Rakabuming Raka**. 🇮🇩'},
-  {q:['contoh python'],a:'Contoh Python 🐍\n\n```python\nnama = input("Nama kamu? ")\nprint(f"Halo, {nama}!")\n```'},
-  {q:['contoh javascript'],a:'Contoh JavaScript ⚡\n\n```javascript\nconst nama = "Budi";\nfunction sapa(nama) {\n  return `Halo, ${nama}!`;\n}\n```'},
 ];
 
 const PROMPT_LIBRARY = [
@@ -723,7 +720,7 @@ function defaultSettings(){
   return {
     provider:'syonbot',model:'syon-v2',
     keys:{},keyStatus:{},fetchedModels:{},
-    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown agar jawaban mudah dibaca. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap. Kalau ada konteks [TOOL: X] di atas, pakai data itu untuk menjawab.',
+    systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap. Kalau ada konteks [TOOL: X] di atas, pakai data itu untuk menjawab.',
     customUrl:'',customModels:'',
     thinking:false,temperature:0.7,maxTokens:2048,
     favModels:[]
@@ -841,7 +838,7 @@ function renderMarkdown(text){
   if(m){thinking=m[1].trim();main=text.replace(m[0],'').trim();}
   let html='';
   if(thinking){
-    html+='<details class="thinking-block" open><summary><span class="brain-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/><path d="M14.5 2A2.5 2.5 0 0 0 12 4.5v15a2.5 2.5 0 0 0 4.96.44 2.5 2.5 0 0 0 2.96-3.08 3 3 0 0 0 .34-5.58 2.5 2.5 0 0 0-1.32-4.24 2.5 2.5 0 0 0-1.98-3A2.5 2.5 0 0 0 14.5 2z"/></svg></span> Proses Berpikir Syon</summary><div class="think-body">'+esc(thinking)+'</div></details>';
+    html+='<details class="thinking-block" open><summary><span class="brain-icon">🧠</span> Proses Berpikir Syon</summary><div class="think-body">'+esc(thinking)+'</div></details>';
   }
   html+=DOMPurify.sanitize(marked.parse(main||''), {ADD_TAGS:['img'], ADD_ATTR:['src','alt','width','height','loading']});
   return html;
@@ -863,7 +860,7 @@ function decorateContent(el){
     const actions=document.createElement('div');actions.className='code-actions';
     if(isHtml){
       const pv=document.createElement('button');pv.className='code-btn primary';
-      pv.innerHTML='<svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg> Preview';
+      pv.innerHTML='▶ Preview';
       pv.addEventListener('click',()=>openArtifact(codeText));
       actions.appendChild(pv);
     }
@@ -925,9 +922,9 @@ function findInKB(query){
 function syonBotReply(t){
   if(!t.trim())return 'Ketik sesuatu dong.';
   const math=tryMath(t);
-  if(math)return '**'+math.expr+' = '+math.result+'**\n\n_Kalkulator deterministik_';
+  if(math)return '**'+math.expr+' = '+math.result+'**';
   const kb=findInKB(t);if(kb)return kb;
-  return 'Hmm, aku belum punya jawaban itu. 🤔\n\n**Yang aku kuasai:**\n- 🧮 **Matematika** — coba `12*8+5`\n- 💻 **Coding** — coba `contoh python`\n- 💡 **Umum** — coba `apa itu ai`\n\n**Mau jawaban lebih luas?** Klik tombol **"Tambah AI dengan API Key"** di atas! ✨';
+  return 'Hmm, aku belum punya jawaban itu. 🤔\n\n**Coba:**\n- 🧮 Matematika: `12*8+5`\n- 💻 Coding: `contoh python`\n- 🌤️ Cuaca: `cuaca di Jakarta`\n- 🎨 Gambar: `gambar kucing`\n\n**Mau jawaban lebih luas?** Klik **Tambah AI dengan API Key** di atas! ✨';
 }
 
 let voicesList=[];
@@ -972,7 +969,7 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 
 <script>
 /* ============================================================
-   SYON AI v25 — Part 2/4: RAG, Tools, API
+   SYON AI v26 — Part 2/4: RAG, Tools, API
    ============================================================ */
 
 /* ============ TOOLS TIER 1 ============ */
@@ -1033,15 +1030,7 @@ function extractCity(text) {
 }
 
 function weatherCodeToText(code) {
-  const map = {
-    0:'Cerah', 1:'Cerah berawan', 2:'Berawan sebagian', 3:'Mendung',
-    45:'Berkabut', 48:'Kabut beku',
-    51:'Gerimis ringan', 53:'Gerimis', 55:'Gerimis lebat',
-    61:'Hujan ringan', 63:'Hujan', 65:'Hujan lebat',
-    71:'Salju ringan', 73:'Salju', 75:'Salju lebat',
-    80:'Hujan lokal', 81:'Hujan lokal lebat', 82:'Hujan sangat lebat',
-    95:'Badai petir', 96:'Badai petir hujan es', 99:'Badai petir hebat'
-  };
+  const map = {0:'Cerah',1:'Cerah berawan',2:'Berawan sebagian',3:'Mendung',45:'Berkabut',48:'Kabut beku',51:'Gerimis ringan',53:'Gerimis',55:'Gerimis lebat',61:'Hujan ringan',63:'Hujan',65:'Hujan lebat',71:'Salju ringan',73:'Salju',75:'Salju lebat',80:'Hujan lokal',81:'Hujan lokal lebat',82:'Hujan sangat lebat',95:'Badai petir',96:'Badai petir hujan es',99:'Badai petir hebat'};
   return map[code] || 'Tidak diketahui';
 }
 
@@ -1051,13 +1040,7 @@ async function toolWeather(city) {
   if (!r.ok) throw new Error('Gagal ambil cuaca');
   const j = await r.json();
   const c = j.current;
-  return {
-    city: city.name,
-    temp: c.temperature_2m,
-    humidity: c.relative_humidity_2m,
-    wind: c.wind_speed_10m,
-    desc: weatherCodeToText(c.weather_code)
-  };
+  return { city: city.name, temp: c.temperature_2m, humidity: c.relative_humidity_2m, wind: c.wind_speed_10m, desc: weatherCodeToText(c.weather_code) };
 }
 
 async function toolImage(prompt) {
@@ -1082,11 +1065,7 @@ async function toolExchange(from, to, amount) {
   if (!r.ok) throw new Error('Gagal ambil kurs');
   const j = await r.json();
   if (!j.result && !(j.info && j.info.rate)) throw new Error('Kurs tidak tersedia');
-  return {
-    from, to, amount,
-    result: j.result || (j.info && j.info.rate ? amount * j.info.rate : null),
-    rate: j.info && j.info.rate
-  };
+  return { from, to, amount, result: j.result || (j.info && j.info.rate ? amount * j.info.rate : null), rate: j.info && j.info.rate };
 }
 
 function toolCalc(expr) {
@@ -1094,53 +1073,47 @@ function toolCalc(expr) {
   if (!clean) return null;
   try {
     const r = Function('"use strict"; return (' + clean + ')')();
-    if (typeof r === 'number' && isFinite(r)) {
-      return { expr: clean, result: Number.isInteger(r) ? r : parseFloat(r.toFixed(10)) };
-    }
+    if (typeof r === 'number' && isFinite(r)) return { expr: clean, result: Number.isInteger(r) ? r : parseFloat(r.toFixed(10)) };
   } catch (e) {}
   return null;
 }
 
+let _lastToolImage = null;
+
 async function detectAndRunTools(userMessage) {
+  _lastToolImage = null;
   if (!userMessage || !userMessage.trim()) return '';
   const msg = userMessage;
   const lower = msg.toLowerCase();
   let ctx = '';
 
-  // 1. Cuaca
   if (/\b(cuaca|hujan|panas|suhu|berawan|mendung|gerimis)\b/.test(lower)) {
     const city = extractCity(msg);
     if (city) {
       try {
         const w = await toolWeather(city);
         ctx += `\n[TOOL: CUACA]\nKota: ${w.city}\nSuhu: ${w.temp}°C\nKondisi: ${w.desc}\nKelembaban: ${w.humidity}%\nAngin: ${w.wind} km/h\n`;
-      } catch (e) {
-        ctx += `\n[TOOL: CUACA] Gagal: ${e.message}\n`;
-      }
+      } catch (e) {}
     }
   }
 
-  // 2. Gambar
   const imgMatch = msg.match(/(?:gambar|image|buatkan|bikin|generate|draw|ilustrasi)\s+(?:tentang|dari)?\s*(.+)/i);
   if (imgMatch && imgMatch[1] && imgMatch[1].trim().length > 2) {
-    const prompt = imgMatch[1].trim();
+    const prompt = imgMatch[1].trim().replace(/[?.,!]+$/,'');
     if (!/^(apa|siapa|kenapa|mengapa|bagaimana|kapan|dimana)/i.test(prompt)) {
       try {
         const img = await toolImage(prompt);
-        ctx += `\n[TOOL: GAMBAR]\nPrompt: ${img.prompt}\nURL_GAMBAR: ${img.url}\n\nINSTRUKSI: Tampilkan gambar ini ke user pakai format markdown:\n![${img.prompt}](${img.url})\n`;
-      } catch (e) {
-        ctx += `\n[TOOL: GAMBAR] Gagal: ${e.message}\n`;
-      }
+        _lastToolImage = { url: img.url, prompt: img.prompt };
+        ctx += `\n[TOOL: GAMBAR]\nPrompt: ${img.prompt}\nURL_GAMBAR: ${img.url}\n`;
+      } catch (e) {}
     }
   }
 
-  // 3. Waktu/Tanggal
   if (/\b(jam berapa|sekarang jam|tanggal berapa|hari ini tanggal|hari apa|sekarang hari)\b/.test(lower)) {
     const dt = toolDateTime();
     ctx += `\n[TOOL: WAKTU]\nSekarang: ${dt.waktu}\nJam: ${dt.jam}\nHari: ${dt.hari}\nTimezone: ${dt.timeZone}\n`;
   }
 
-  // 4. Kurs
   const kursMatch = msg.match(/(\d+(?:[.,]\d+)?)\s*(usd|dollar|idr|rp|rupiah|eur|sgd|myr|jpy|cny|gbp)\s*(?:ke|to|=|berapa)?\s*(idr|rp|rupiah|usd|dollar|eur|sgd|myr|jpy|cny|gbp)?/i);
   if (kursMatch) {
     const amount = parseFloat(kursMatch[1].replace(',', '.'));
@@ -1150,15 +1123,10 @@ async function detectAndRunTools(userMessage) {
     const from = map[fromRaw], to = map[toRaw] || 'IDR';
     try {
       const k = await toolExchange(from, to, amount);
-      if (k.result) {
-        ctx += `\n[TOOL: KURS]\n${amount} ${from} = ${k.result.toFixed(2)} ${to}\nRate: 1 ${from} = ${k.rate ? k.rate.toFixed(4) : '?'} ${to}\n`;
-      }
-    } catch (e) {
-      ctx += `\n[TOOL: KURS] Gagal: ${e.message}\n`;
-    }
+      if (k.result) ctx += `\n[TOOL: KURS]\n${amount} ${from} = ${k.result.toFixed(2)} ${to}\nRate: 1 ${from} = ${k.rate ? k.rate.toFixed(4) : '?'} ${to}\n`;
+    } catch (e) {}
   }
 
-  // 5. Kalkulator
   if (/\b(hitung|berapa|hasil)\b/.test(lower) && /[0-9]/.test(msg) && /[+\-*/^%]/.test(msg)) {
     const exprMatch = msg.match(/([0-9+\-*/^%().\s]+)/);
     if (exprMatch) {
@@ -1184,11 +1152,7 @@ async function getEmbedder(){
     });
     await wait();
     const { pipeline } = window.__transformers;
-    const pipe = await pipeline(
-      'feature-extraction',
-      'Xenova/paraphrase-multilingual-MiniLM-L12-v2',
-      { quantized: true }
-    );
+    const pipe = await pipeline('feature-extraction', 'Xenova/paraphrase-multilingual-MiniLM-L12-v2', { quantized: true });
     _embedderReady = true;
     return pipe;
   })();
@@ -1231,9 +1195,7 @@ function chunkDoc(text, maxLen = 900, overlap = 150){
       if (buf) chunks.push(buf);
       if (p.length <= maxLen) { buf = p; }
       else {
-        for (let i = 0; i < p.length; i += maxLen - overlap) {
-          chunks.push(p.slice(i, i + maxLen));
-        }
+        for (let i = 0; i < p.length; i += maxLen - overlap) chunks.push(p.slice(i, i + maxLen));
         buf = '';
       }
     }
@@ -1298,7 +1260,7 @@ function buildKbContext(results){
   if (!results || !results.length) return '';
   let ctx = '\n\n[KONTEKS DARI KNOWLEDGE BASE USER]\n';
   results.forEach((r, i) => { ctx += `\n[KB-${i+1}] ${r.title}\n${r.content}\n`; });
-  ctx += '\n[AKHIR KONTEKS KB]\nGunakan info di atas kalau relevan. Kalau pakai, sebut "berdasarkan KB kamu".\n';
+  ctx += '\n[AKHIR KONTEKS KB]\nGunakan info di atas kalau relevan.\n';
   return ctx;
 }
 
@@ -1362,7 +1324,7 @@ function buildSearchContext(results){
   if(!results||!results.length)return '';
   let ctx='\n\n[KONTEKS HASIL PENCARIAN WEB]\n';
   results.forEach((r,i)=>{ctx+=`\n[${i+1}] ${r.title}\nURL: ${r.url}\n${r.snippet}\n`;});
-  ctx+='\n[AKHIR KONTEKS]\nGunakan informasi di atas untuk menjawab. Sebutkan sumber dengan [1], [2] sesuai nomor.\n';
+  ctx+='\n[AKHIR KONTEKS]\nGunakan informasi di atas untuk menjawab.\n';
   return ctx;
 }
 
@@ -1620,10 +1582,59 @@ async function callAnthropic(apiKey,model,messages,onDelta,onReasoning,signal){
 
 async function streamChat(onDelta,onReasoning,signal){
   const s=currentSettings();const p=s.provider;const cfg=PROVIDERS[p];
+  const chatEarly=getActiveChat();
+  const lastUserEarly = [...chatEarly.messages].reverse().find(m=>m.role==='user');
+
+  // ============ TOOLS (dijalankan buat semua provider) ============
+  let toolContext = '';
+  if (lastUserEarly && lastUserEarly.content) {
+    try {
+      toolContext = await detectAndRunTools(lastUserEarly.content);
+    } catch (e) {
+      console.warn('[tools] error:', e.message);
+    }
+  }
+
   if(cfg.type==='syonbot'){
-    const chat=getActiveChat();
-    const lastUser=[...chat.messages].reverse().find(m=>m.role==='user');
-    const reply=syonBotReply(lastUser?.content||'');
+    // Bypass gambar untuk SyonBot
+    if (_lastToolImage) {
+      const imgUrl = _lastToolImage.url;
+      const imgPrompt = _lastToolImage.prompt;
+      const imgMd = `🎨 **Gambar: ${imgPrompt}**\n\n![${imgPrompt}](${imgUrl})\n\n_Mohon tunggu 5-15 detik jika gambar belum muncul, lalu refresh._\n`;
+      for (let i = 0; i < imgMd.length; i++) {
+        if (signal && signal.aborted) break;
+        onDelta(imgMd[i]);
+        if (i % 5 === 0) await new Promise(r => setTimeout(r, 4));
+      }
+      _lastToolImage = null;
+      return;
+    }
+    // Kalau ada data tool lain, tampilkan langsung
+    if (toolContext && toolContext.trim()) {
+      let out = '';
+      if (/\[TOOL: CUACA\]/.test(toolContext)) {
+        const m = toolContext.match(/Kota: (.+?)\nSuhu: (.+?)\nKondisi: (.+?)\nKelembaban: (.+?)\nAngin: (.+)/);
+        if (m) out = `**Cuaca ${m[1]}**\n\n🌡️ Suhu: ${m[2]}\n☁️ Kondisi: ${m[3]}\n💧 Kelembaban: ${m[4]}\n💨 Angin: ${m[5]}`;
+      } else if (/\[TOOL: WAKTU\]/.test(toolContext)) {
+        const m = toolContext.match(/Sekarang: (.+)\nJam: (.+)\nHari: (.+)/);
+        if (m) out = `🕐 **${m[3]}**\n${m[1]}`;
+      } else if (/\[TOOL: KALKULATOR\]/.test(toolContext)) {
+        const m = toolContext.match(/(.+?) = (.+)/);
+        if (m) out = `🧮 **${m[1].trim()} = ${m[2].trim()}**`;
+      } else if (/\[TOOL: KURS\]/.test(toolContext)) {
+        const m = toolContext.match(/(\d+.*?) = (.+)/);
+        if (m) out = `💱 **${m[1].trim()} = ${m[2].trim()}**`;
+      }
+      if (out) {
+        for(let i=0;i<out.length;i++){
+          if(signal&&signal.aborted)break;
+          onDelta(out[i]);
+          if(i%3===0)await new Promise(r=>setTimeout(r,6));
+        }
+        return;
+      }
+    }
+    const reply=syonBotReply(lastUserEarly?.content||'');
     for(let i=0;i<reply.length;i++){
       if(signal&&signal.aborted)break;
       onDelta(reply[i]);
@@ -1631,13 +1642,13 @@ async function streamChat(onDelta,onReasoning,signal){
     }
     return;
   }
+
   const key=s.keys[p];
   if(!key&&p!=='custom')throw new Error('API key belum diisi untuk '+cfg.name);
   if(p==='custom'&&!s.customUrl)throw new Error('URL endpoint custom belum diisi');
-  const chat=getActiveChat();
-  const lastUser = [...chat.messages].reverse().find(m=>m.role==='user');
+  const chat=chatEarly;
+  const lastUser=lastUserEarly;
 
-  // Web search
   let searchContext='';
   if(state.searchMode && lastUser && lastUser.content){
     try{
@@ -1646,7 +1657,6 @@ async function streamChat(onDelta,onReasoning,signal){
     }catch(e){}
   }
 
-  // RAG
   let kbContext = '';
   if (state.useKB && lastUser && lastUser.content) {
     try {
@@ -1657,14 +1667,18 @@ async function streamChat(onDelta,onReasoning,signal){
     }
   }
 
-  // Tools
-  let toolContext = '';
-  if (lastUser && lastUser.content) {
-    try {
-      toolContext = await detectAndRunTools(lastUser.content);
-    } catch (e) {
-      console.warn('[tools] error:', e.message);
+  // Bypass AI untuk gambar
+  if (_lastToolImage) {
+    const imgUrl = _lastToolImage.url;
+    const imgPrompt = _lastToolImage.prompt;
+    const imgMd = `🎨 **Gambar: ${imgPrompt}**\n\n![${imgPrompt}](${imgUrl})\n\n_Mohon tunggu 5-15 detik jika gambar belum muncul, lalu refresh._\n`;
+    for (let i = 0; i < imgMd.length; i++) {
+      if (signal && signal.aborted) break;
+      onDelta(imgMd[i]);
+      if (i % 5 === 0) await new Promise(r => setTimeout(r, 4));
     }
+    _lastToolImage = null;
+    toolContext = toolContext.replace(/\[TOOL: GAMBAR\][\s\S]*?(?=\n\[TOOL:|$)/, '').trim();
   }
 
   const messages=buildMessages(chat,cfg.vision,searchContext + kbContext + toolContext);
@@ -1813,7 +1827,7 @@ async function handleAutoDetect(){
     resultEl.style.display='block';
     resultEl.innerHTML='<div class="detect-result-card">'+
       '<h3>Terdeteksi <span class="badge-provider">'+esc(cfg.name)+'</span></h3>'+
-      '<div class="model-info">Key ini valid untuk <b>'+esc(cfg.name)+'</b>. Ditemukan <b>'+result.models.length+'</b> model chat.</div>'+
+      '<div class="model-info">Ditemukan <b>'+result.models.length+'</b> model chat.</div>'+
       '<div class="provider-list-mini">'+result.models.slice(0,15).map(m=>esc(m)).join(', ')+(result.models.length>15?' ... +'+(result.models.length-15)+' lagi':'')+'</div>'+
       '<div class="actions">'+
       '<button class="cancel" id="cancelDetectBtn">Batal</button>'+
@@ -1927,10 +1941,6 @@ async function runDiagnoseAll(){
     html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+badge(r.models)+(r.modelCount?'<div class="note">'+r.modelCount+'</div>':'')+'</td><td>'+badge(r.chat)+'</td></tr>';
   });
   html+='</tbody></table>';
-  const corsBlocked=results.filter(r=>r.chat==='cors');
-  if(corsBlocked.length){
-    html+='<div class="diagnose-summary" style="border-color:var(--warn)"><b>CORS block:</b> '+corsBlocked.map(r=>r.name).join(', ')+'.</div>';
-  }
   resultEl.innerHTML=html;
   btn.disabled=false;btn.innerHTML='Cek Semua AI (Full Diagnostic)';
   toast('Diagnostic selesai');
@@ -1939,7 +1949,7 @@ async function runDiagnoseAll(){
 
 <script>
 /* ============================================================
-   SYON AI v25 — Part 3/4: Chat, Auth, Init
+   SYON AI v26 — Part 3/4: Chat, Auth, Init
    ============================================================ */
 
 function createChat(){
@@ -2012,7 +2022,7 @@ function renderChatList(){
   };
   if(pinned.length){
     const sec=document.createElement('div');sec.className='sidebar-section';
-    sec.innerHTML='Dipin';
+    sec.textContent='Dipin';
     list.appendChild(sec);pinned.forEach(c=>list.appendChild(createItem(c)));
   }
   const groups={};
@@ -2043,13 +2053,13 @@ function renderChat(){
     inner.innerHTML='<div class="welcome">'+
       '<img class="big-logo" src="https://i.postimg.cc/ydJRkztp/file-00000000012881fa913ecb4abd7b8485.png" alt="Syon">'+
       '<h1>Halo, <span>'+esc(pname)+'</span></h1>'+
-      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode. Coba juga: cuaca, gambar, kurs, jam.</p>'+
+      '<p>Aku Syon. Tanya apa aja, hitung soal, atau minta contoh kode. Coba juga tools: cuaca, gambar, kurs, jam.</p>'+
       '<button class="welcome-add-ai" id="welcomeAddAiBtn">Tambah AI dengan API Key</button>'+
       '<div class="suggestions">'+
-      '<div class="suggestion" data-p="cuaca di Jakarta"><b>Cuaca</b>Cek cuaca Jakarta</div>'+
-      '<div class="suggestion" data-p="gambar kucing lucu"><b>Gambar</b>Generate gambar</div>'+
-      '<div class="suggestion" data-p="sekarang jam berapa?"><b>Waktu</b>Sekarang jam berapa?</div>'+
-      '<div class="suggestion" data-p="100 USD berapa rupiah?"><b>Kurs</b>Konversi mata uang</div>'+
+      '<div class="suggestion" data-p="cuaca di Jakarta"><b>🌤️ Cuaca</b>Cek cuaca Jakarta</div>'+
+      '<div class="suggestion" data-p="gambar kucing lucu"><b>🎨 Gambar</b>Generate gambar</div>'+
+      '<div class="suggestion" data-p="sekarang jam berapa?"><b>⏰ Waktu</b>Sekarang jam berapa?</div>'+
+      '<div class="suggestion" data-p="100 USD berapa rupiah?"><b>💱 Kurs</b>Konversi mata uang</div>'+
       '</div></div>';
     inner.querySelectorAll('.suggestion').forEach(s=>{
       s.addEventListener('click',()=>{$('#input').value=s.dataset.p;autoGrow($('#input'));sendMessage();});
@@ -2069,9 +2079,7 @@ function renderChat(){
     } else {
       html=renderMarkdown(m.content);
       if(m.hasError){
-        html += '<div style="margin-top:12px;display:flex;gap:6px;flex-wrap:wrap">'+
-          '<button class="btn-primary" style="max-width:200px;padding:9px 16px;font-size:13px" onclick="retryLastMessage()">🔄 Coba Lagi</button>'+
-          '</div>';
+        html += '<div style="margin-top:12px"><button class="btn-primary" style="max-width:200px;padding:9px 16px;font-size:13px" onclick="retryLastMessage()">🔄 Coba Lagi</button></div>';
       }
       if(m.sources&&m.sources.length){
         html+='<div class="sources"><div class="sources-label">Sumber:</div>';
@@ -2139,7 +2147,7 @@ async function regenerateFrom(userIdx){
       (r)=>{
         if(reasoningBuf)reasoningBuf+='\n'+r;
         else reasoningBuf=r;
-        const preview='<details class="thinking-block" open><summary><span class="brain-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/></svg></span> Proses Berpikir Syon</summary><div class="think-body">'+esc(reasoningBuf)+'</div></details>';
+        const preview='<details class="thinking-block" open><summary><span class="brain-icon">🧠</span> Proses Berpikir Syon</summary><div class="think-body">'+esc(reasoningBuf)+'</div></details>';
         updateStreamingBot(preview+renderMarkdown(acc));
       },
       controller.signal
@@ -2215,6 +2223,10 @@ async function sendMessage(){
     const controller=new AbortController();currentAbort=controller;let acc='';
     let reasoningBuf='';
     updateStreamingBot('');
+    if(state.searchMode){
+      const c=$('#chatInner').querySelector('.msg.bot:last-child .content');
+      if(c)c.innerHTML='<div class="searching-indicator"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg><span class="shimmer-text">Mencari di web</span></div>';
+    }
     try{
       await streamChat(
         delta=>{
@@ -2222,14 +2234,14 @@ async function sendMessage(){
           chat.messages[botIdx].content=acc;
           let finalHtml='';
           if(reasoningBuf){
-            finalHtml='<details class="thinking-block" open><summary><span class="brain-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/></svg></span> Proses Berpikir Syon</summary><div class="think-body">'+esc(reasoningBuf)+'</div></details>';
+            finalHtml='<details class="thinking-block" open><summary><span class="brain-icon">🧠</span> Proses Berpikir Syon</summary><div class="think-body">'+esc(reasoningBuf)+'</div></details>';
           }
           updateStreamingBot(finalHtml+renderMarkdown(acc));
         },
         (r)=>{
           if(reasoningBuf)reasoningBuf+='\n'+r;
           else reasoningBuf=r;
-          let finalHtml='<details class="thinking-block" open><summary><span class="brain-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v15a2.5 2.5 0 0 1-4.96.44 2.5 2.5 0 0 1-2.96-3.08 3 3 0 0 1-.34-5.58 2.5 2.5 0 0 1 1.32-4.24 2.5 2.5 0 0 1 1.98-3A2.5 2.5 0 0 1 9.5 2z"/></svg></span> Proses Berpikir Syon</summary><div class="think-body">'+esc(reasoningBuf)+'</div></details>';
+          let finalHtml='<details class="thinking-block" open><summary><span class="brain-icon">🧠</span> Proses Berpikir Syon</summary><div class="think-body">'+esc(reasoningBuf)+'</div></details>';
           updateStreamingBot(finalHtml+renderMarkdown(acc));
         },
         controller.signal
@@ -2331,23 +2343,10 @@ function captureCurrentInputs(){
   const sp=$('#systemPrompt');if(sp)s.systemPrompt=sp.value.trim();
   const tp=$('#tempInput');if(tp)s.temperature=parseFloat(tp.value)||0.7;
   const mt=$('#maxTokenInput');if(mt)s.maxTokens=parseInt(mt.value)||2048;
-  const msel=$('#modelSelect');if(msel&&msel.value)s.model=msel.value;
-  const psel=$('#activeProvider');if(psel&&psel.value)s.provider=psel.value;
   saveAll();
 }
 function renderSettingsModal(){
   const s=currentSettings();
-  const sel=$('#activeProvider');if(!sel)return;
-  sel.innerHTML='';
-  const available=['syonbot'];
-  Object.keys(s.keys).forEach(k=>{if(s.keys[k]&&s.keys[k].trim())available.push(k);});
-  available.push('custom');
-  [...new Set(available)].forEach(id=>{
-    const p=PROVIDERS[id];if(!p)return;
-    const o=document.createElement('option');o.value=id;o.textContent=p.name;
-    if(s.provider===id)o.selected=true;sel.appendChild(o);
-  });
-  renderModelSelect('#modelSelect',s.provider,s.model);
   renderProviderList();
   $('#systemPrompt').value=s.systemPrompt||'';
   $('#tempInput').value=s.temperature;
@@ -2362,30 +2361,6 @@ function renderSettingsModal(){
   if(tp&&!tp.dataset.bound){tp.dataset.bound='1';tp.addEventListener('input',()=>{currentSettings().temperature=parseFloat(tp.value)||0.7;saveAll();});}
   const mt=$('#maxTokenInput');
   if(mt&&!mt.dataset.bound){mt.dataset.bound='1';mt.addEventListener('input',()=>{currentSettings().maxTokens=parseInt(mt.value)||2048;saveAll();});}
-}
-function renderModelSelect(selId,providerId,current){
-  const s=currentSettings();const sel=$(selId);if(!sel)return;
-  sel.innerHTML='';
-  const p=PROVIDERS[providerId];
-  let models=p.models.slice();
-  if(s.fetchedModels[providerId]?.length)models=s.fetchedModels[providerId].slice();
-  models=models.filter(isChatModel);
-  if(providerId==='custom'){
-    models=(s.customModels||'').split(/[,\n]/).map(x=>x.trim()).filter(Boolean).filter(isChatModel);
-    if(!models.length)models=['gpt-3.5-turbo'];
-  }
-  if(!models.length)models=['(belum ada model)'];
-  if(current==='gemini-api'||!models.includes(current)){
-    if(models[0]!=='(belum ada model)'){current=models[0];s.model=current;saveAll();}
-  }
-  const favs=(s.favModels||[]).filter(f=>models.includes(f));
-  const nonFavs=models.filter(m=>!favs.includes(m));
-  const sorted=favs.concat(nonFavs);
-  sorted.forEach(m=>{
-    const o=document.createElement('option');o.value=m;
-    o.textContent=(favs.includes(m)?'★ ':'')+m;
-    if(m===current)o.selected=true;sel.appendChild(o);
-  });
 }
 function renderProviderList(){
   const s=currentSettings();
@@ -2435,17 +2410,89 @@ function renderProviderList(){
   });
 }
 
+let _selectedModelItem = null;
+
 function openModelModal(){
-  const s=currentSettings();
-  const p=$('#quickProvider');if(!p)return;
-  p.innerHTML='';
-  Object.entries(PROVIDERS).forEach(([id,cfg])=>{
-    if(id!=='syonbot'&&id!=='custom'&&!s.keys[id])return;
-    const o=document.createElement('option');o.value=id;o.textContent=cfg.name;
-    if(s.provider===id)o.selected=true;p.appendChild(o);
+  const s = currentSettings();
+  const listEl = $('#quickModelList');
+  const searchEl = $('#modelSearch');
+  if (!listEl) return;
+
+  const allModels = [];
+  Object.entries(PROVIDERS).forEach(([pid, cfg]) => {
+    if (pid !== 'syonbot' && pid !== 'custom' && !s.keys[pid]) return;
+    if (pid === 'custom' && !s.customUrl) return;
+    let models = [];
+    if (s.fetchedModels[pid]?.length) models = s.fetchedModels[pid].slice();
+    else if (cfg.models?.length) models = cfg.models.slice();
+    models = models.filter(isChatModel);
+    models.forEach(m => {
+      allModels.push({
+        provider: pid,
+        providerName: cfg.name,
+        model: m,
+        active: s.provider === pid && s.model === m,
+        favorite: (s.favModels || []).includes(m)
+      });
+    });
   });
-  renderModelSelect('#quickModel',s.provider,s.model);
-  const m=$('#modelModal');if(m)m.classList.add('show');
+
+  allModels.sort((a, b) => {
+    if (a.active !== b.active) return a.active ? -1 : 1;
+    if (a.favorite !== b.favorite) return a.favorite ? -1 : 1;
+    return a.model.localeCompare(b.model);
+  });
+
+  function render(filter) {
+    listEl.innerHTML = '';
+    const q = String(filter || '').toLowerCase().trim();
+    const filtered = q ? allModels.filter(x =>
+      x.model.toLowerCase().includes(q) ||
+      x.providerName.toLowerCase().includes(q)
+    ) : allModels;
+
+    if (!filtered.length) {
+      listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-2);font-size:13px">' +
+        (q ? 'Tidak ada model yang cocok' : 'Belum ada model. Tambah AI dulu di Setelan.') + '</div>';
+      return;
+    }
+
+    filtered.forEach(item => {
+      const el = document.createElement('div');
+      el.style.cssText = 'padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--bg-1);transition:all .15s';
+      if (item.active) {
+        el.style.borderColor = 'var(--accent)';
+        el.style.background = 'var(--accent-soft)';
+      }
+      el.innerHTML = '<div style="min-width:0;flex:1">' +
+        '<div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
+        (item.favorite ? '★ ' : '') + esc(item.model) + '</div>' +
+        '<div style="font-size:11px;color:var(--text-2);margin-top:2px">' + esc(item.providerName) + '</div>' +
+        '</div>' +
+        (item.active ? '<div style="color:var(--accent);font-size:16px;flex-shrink:0">✓</div>' : '');
+      el.addEventListener('click', () => {
+        _selectedModelItem = item;
+        listEl.querySelectorAll('[data-mcard]').forEach(x => {
+          x.style.borderColor = 'var(--border)';
+          x.style.background = 'var(--bg-1)';
+        });
+        el.style.borderColor = 'var(--accent)';
+        el.style.background = 'var(--accent-soft)';
+      });
+      el.dataset.mcard = '1';
+      if (item.active) _selectedModelItem = item;
+      listEl.appendChild(el);
+    });
+  }
+
+  render('');
+  if (searchEl) {
+    searchEl.value = '';
+    searchEl.oninput = () => render(searchEl.value);
+  }
+
+  $('#modelModal').classList.add('show');
+  if (searchEl) setTimeout(() => searchEl.focus(), 100);
 }
 function openSidebarMobile(){const s=$('#sidebar');if(s)s.classList.add('open');}
 function closeSidebarMobile(){const s=$('#sidebar');if(s)s.classList.remove('open');}
@@ -2848,7 +2895,7 @@ async function init(){
     });
 
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v25',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v26',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2915,17 +2962,6 @@ async function init(){
 
     $('#diagnoseAllBtn')?.addEventListener('click',runDiagnoseAll);
 
-    $('#activeProvider')?.addEventListener('change',e=>{
-      captureCurrentInputs();const s=currentSettings();
-      s.provider=e.target.value;
-      const p=PROVIDERS[s.provider];
-      if(s.fetchedModels[s.provider]?.length)s.model=s.fetchedModels[s.provider][0];
-      else if(p.models.length)s.model=p.models[0];
-      saveAll();renderModelSelect('#modelSelect',s.provider,s.model);renderProviderList();updateTopbar();
-    });
-    $('#modelSelect')?.addEventListener('change',e=>{currentSettings().model=e.target.value;saveAll();updateTopbar();});
-    $('#saveSettings')?.addEventListener('click',()=>{captureCurrentInputs();updateTopbar();toast('Tersimpan');$('#settingsModal').classList.remove('show');});
-
     $('#promptsBtn')?.addEventListener('click',()=>{renderPrompts();$('#promptsModal').classList.add('show');});
     $('#closePrompts')?.addEventListener('click',()=>$('#promptsModal').classList.remove('show'));
     $('#promptsModal')?.addEventListener('click',e=>{if(e.target.id==='promptsModal')e.currentTarget.classList.remove('show');});
@@ -2940,26 +2976,27 @@ async function init(){
     $('#modelPill')?.addEventListener('click',openModelModal);
     $('#closeModel')?.addEventListener('click',()=>$('#modelModal').classList.remove('show'));
     $('#modelModal')?.addEventListener('click',e=>{if(e.target.id==='modelModal')e.currentTarget.classList.remove('show');});
-    $('#quickProvider')?.addEventListener('change',e=>{
-      const p=e.target.value;const s=currentSettings();
-      const first=s.fetchedModels[p]?.[0]||PROVIDERS[p].models[0]||'(belum ada)';
-      renderModelSelect('#quickModel',p,first);
-    });
+
     $('#applyModel')?.addEventListener('click',()=>{
-      const s=currentSettings();const chosen=$('#quickProvider').value;
-      s.provider=chosen;s.model=$('#quickModel').value;
-      saveAll();updateTopbar();toast(s.model);$('#modelModal').classList.remove('show');
+      if(!_selectedModelItem){toast('Pilih model dulu',true);return;}
+      const s=currentSettings();
+      s.provider=_selectedModelItem.provider;
+      s.model=_selectedModelItem.model;
+      saveAll();updateTopbar();
+      toast('✓ '+_selectedModelItem.model);
+      $('#modelModal').classList.remove('show');
     });
 
     $('#favModelBtn')?.addEventListener('click',()=>{
+      if(!_selectedModelItem){toast('Pilih model dulu',true);return;}
       const s=currentSettings();
-      const m=$('#quickModel').value;
-      if(!m||m==='(belum ada model)'){toast('Pilih model dulu',true);return;}
       if(!s.favModels)s.favModels=[];
+      const m=_selectedModelItem.model;
       const i=s.favModels.indexOf(m);
       if(i>=0){s.favModels.splice(i,1);toast('Dihapus dari favorit');}
-      else{s.favModels.push(m);toast('★ Ditambah ke favorit');}
-      saveAll();renderModelSelect('#quickModel',$('#quickProvider').value,m);
+      else{s.favModels.push(m);toast('★ Ditambahkan ke favorit');}
+      saveAll();
+      openModelModal();
     });
 
     document.addEventListener('keydown',e=>{
@@ -2984,7 +3021,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v25 — Tools Tier 1 + RAG + fix thinking mode');
+    console.log('✅ Syon AI v26 — Tools Tier 1 + RAG + Unified Model Picker');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
@@ -2996,4 +3033,4 @@ async function init(){
 window.addEventListener('DOMContentLoaded',init);
 </script>
 </body>
-  </html>
+</html>
