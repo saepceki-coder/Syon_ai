@@ -11,26 +11,26 @@ const EMBED_DIM = 384;
 let schemaReady = false;
 async function ensureSchema() {
   if (schemaReady) return;
-  await sql.query(`CREATE EXTENSION IF NOT EXISTS vector`);
-  await sql.query(`CREATE TABLE IF NOT EXISTS documents (
+  await sql`CREATE EXTENSION IF NOT EXISTS vector`;
+  await sql`CREATE TABLE IF NOT EXISTS documents (
     id SERIAL PRIMARY KEY,
     user_key TEXT NOT NULL,
     title TEXT NOT NULL,
     content_length INTEGER DEFAULT 0,
     created_at TIMESTAMPTZ DEFAULT NOW()
-  )`);
-  await sql.query(`CREATE TABLE IF NOT EXISTS document_chunks (
+  )`;
+  await sql`CREATE TABLE IF NOT EXISTS document_chunks (
     id SERIAL PRIMARY KEY,
     document_id INTEGER REFERENCES documents(id) ON DELETE CASCADE,
     user_key TEXT NOT NULL,
     content TEXT NOT NULL,
-    embedding vector(${EMBED_DIM}),
+    embedding vector(384),
     created_at TIMESTAMPTZ DEFAULT NOW()
-  )`);
-  await sql.query(`CREATE INDEX IF NOT EXISTS idx_documents_user ON documents(user_key)`);
-  await sql.query(`CREATE INDEX IF NOT EXISTS idx_chunks_user ON document_chunks(user_key)`);
+  )`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_documents_user ON documents(user_key)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_chunks_user ON document_chunks(user_key)`;
   try {
-    await sql.query(`CREATE INDEX IF NOT EXISTS idx_chunks_embedding ON document_chunks USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100)`);
+    await sql`CREATE INDEX IF NOT EXISTS idx_chunks_embedding ON document_chunks USING ivfflat (embedding vector_cosine_ops) WITH (lists = 100)`;
   } catch (e) {
     console.warn('[rag] ivfflat index skip:', e.message);
   }
@@ -62,18 +62,19 @@ async function handleUpload(req, res) {
     }
   }
 
-  const docRows = await sql.query(
-    `INSERT INTO documents (user_key, title, content_length) VALUES ($1, $2, $3) RETURNING id`,
-    [userKey, String(title).slice(0, 200), String(content || '').length]
-  );
-  const docId = docRows[0].id;
+  const inserted = await sql`
+    INSERT INTO documents (user_key, title, content_length)
+    VALUES (${userKey}, ${String(title).slice(0, 200)}, ${String(content || '').length})
+    RETURNING id
+  `;
+  const docId = inserted[0].id;
 
   for (const c of chunks) {
     const vec = vecStr(c.embedding);
-    await sql.query(
-      `INSERT INTO document_chunks (document_id, user_key, content, embedding) VALUES ($1, $2, $3, $4::vector)`,
-      [docId, userKey, String(c.text).slice(0, 2000), vec]
-    );
+    await sql`
+      INSERT INTO document_chunks (document_id, user_key, content, embedding)
+      VALUES (${docId}, ${userKey}, ${String(c.text).slice(0, 2000)}, ${vec}::vector)
+    `;
   }
 
   return res.status(200).json({ ok: true, documentId: docId, chunks: chunks.length });
@@ -82,21 +83,20 @@ async function handleUpload(req, res) {
 async function handleList(req, res) {
   const userKey = (req.query && req.query.userKey) || (req.body && req.body.userKey);
   if (!userKey) return res.status(400).json({ error: 'userKey wajib' });
-  const rows = await sql.query(
-    `SELECT d.id, d.title, d.content_length, d.created_at,
-            (SELECT COUNT(*) FROM document_chunks c WHERE c.document_id = d.id) AS chunk_count
-     FROM documents d
-     WHERE d.user_key = $1
-     ORDER BY d.id DESC`,
-    [userKey]
-  );
+  const rows = await sql`
+    SELECT d.id, d.title, d.content_length, d.created_at,
+           (SELECT COUNT(*) FROM document_chunks c WHERE c.document_id = d.id) AS chunk_count
+    FROM documents d
+    WHERE d.user_key = ${userKey}
+    ORDER BY d.id DESC
+  `;
   return res.status(200).json({ ok: true, documents: rows });
 }
 
 async function handleDelete(req, res) {
   const { userKey, id } = req.body || {};
   if (!userKey || !id) return res.status(400).json({ error: 'userKey & id wajib' });
-  await sql.query(`DELETE FROM documents WHERE id = $1 AND user_key = $2`, [id, userKey]);
+  await sql`DELETE FROM documents WHERE id = ${id} AND user_key = ${userKey}`;
   return res.status(200).json({ ok: true });
 }
 
@@ -110,16 +110,15 @@ async function handleSearch(req, res) {
   }
   const k = Math.min(Math.max(parseInt(topK) || 3, 1), 10);
   const vec = vecStr(embedding);
-  const rows = await sql.query(
-    `SELECT c.content, d.title,
-            1 - (c.embedding <=> $1::vector) AS similarity
-     FROM document_chunks c
-     JOIN documents d ON d.id = c.document_id
-     WHERE c.user_key = $2
-     ORDER BY c.embedding <=> $1::vector
-     LIMIT $3`,
-    [vec, userKey, k]
-  );
+  const rows = await sql`
+    SELECT c.content, d.title,
+           1 - (c.embedding <=> ${vec}::vector) AS similarity
+    FROM document_chunks c
+    JOIN documents d ON d.id = c.document_id
+    WHERE c.user_key = ${userKey}
+    ORDER BY c.embedding <=> ${vec}::vector
+    LIMIT ${k}
+  `;
   return res.status(200).json({ ok: true, results: rows });
 }
 
