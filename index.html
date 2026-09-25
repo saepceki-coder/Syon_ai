@@ -44,19 +44,16 @@ body{display:flex;height:100vh;height:100dvh}
 @keyframes pulse-glow{0%,100%{box-shadow:0 0 0 0 rgba(77,142,255,.7)}50%{box-shadow:0 0 0 8px rgba(77,142,255,0)}}
 .shimmer-text{background:linear-gradient(90deg,var(--text-2) 0%,var(--text-0) 50%,var(--text-2) 100%);background-size:200% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shimmer 2s infinite linear;font-weight:500}
 @keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
-.searching-indicator{display:inline-flex;gap:8px;align-items:center;padding:8px 12px;background:rgba(11,92,255,.08);border:1px solid var(--accent);border-radius:12px;font-size:12.5px;color:var(--accent);margin-bottom:10px}
-.searching-indicator svg{animation:rotate 1.5s linear infinite}
-@keyframes rotate{to{transform:rotate(360deg)}}
-.thinking-block{border:1px solid var(--border);border-radius:12px;background:linear-gradient(135deg,rgba(99,102,241,.04),rgba(168,85,247,.04));margin-bottom:14px;overflow:hidden;transition:border-color .2s}
+.thinking-block{border:1px solid var(--border);border-radius:12px;background:linear-gradient(135deg,rgba(99,102,241,.04),rgba(168,85,247,.04));margin-bottom:14px;overflow:hidden}
 .thinking-block[open]{border-color:rgba(99,102,241,.3)}
 .thinking-block summary{padding:11px 14px;cursor:pointer;font-size:12.5px;color:var(--text-1);display:flex;align-items:center;gap:8px;list-style:none;font-weight:600;user-select:none}
 .thinking-block summary::-webkit-details-marker{display:none}
 .thinking-block summary::before{content:'';width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--text-2);transition:transform .2s}
 .thinking-block[open] summary::before{transform:rotate(90deg)}
 .thinking-block .brain-icon{color:var(--accent);display:flex}
-.thinking-block .think-body{padding:12px 16px;color:var(--text-1);font-size:13px;line-height:1.75;border-top:1px solid var(--border);white-space:pre-wrap;font-family:inherit}
+.thinking-block .think-body{padding:12px 16px;color:var(--text-1);font-size:13px;line-height:1.75;border-top:1px solid var(--border);white-space:pre-wrap}
 .sources{margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:12.5px}
-.sources-label{color:var(--text-2);margin-bottom:8px;display:flex;align-items:center;gap:6px;font-weight:600}
+.sources-label{color:var(--text-2);margin-bottom:8px;font-weight:600}
 .source-item{display:flex;gap:8px;align-items:flex-start;padding:6px 0;color:var(--text-1)}
 .source-item a{color:var(--accent);text-decoration:none;word-break:break-all}
 .source-num{width:20px;height:20px;border-radius:50%;background:var(--bg-2);color:var(--text-2);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;font-weight:600}
@@ -129,7 +126,7 @@ body{display:flex;height:100vh;height:100dvh}
 .model-pill .dot.warn{background:var(--warn)}
 .model-pill .name{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:500}
 .topbar .spacer{flex:1}
-.icon-top{background:none;border:none;color:var(--text-1);cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s}
+.icon-top{background:none;border:none;color:var(--text-1);cursor:pointer;padding:8px;border-radius:8px;display:flex;align-items:center;justify-content:center}
 .icon-top:hover{background:var(--bg-2);color:var(--text-0)}
 .icon-top.active{color:var(--accent)}
 .chat-scroll{flex:1;overflow-y:auto;padding:8px 16px 180px;scroll-behavior:smooth;-webkit-overflow-scrolling:touch}
@@ -154,7 +151,6 @@ body{display:flex;height:100vh;height:100dvh}
 .msg.bot .body{flex:1;align-items:stretch}
 .msg.user .content{background:var(--bg-2);padding:10px 16px;border-radius:20px 20px 4px 20px;display:inline-block;text-align:left;max-width:100%;line-height:1.55;word-wrap:break-word;overflow-wrap:anywhere}
 .msg.bot .content{display:block;line-height:1.75;font-size:15px;word-wrap:break-word;overflow-wrap:anywhere}
-.msg .avatar,.msg .name{display:none!important}
 .msg.user .msg-toolbar{justify-content:flex-end}
 .msg .content p{margin-bottom:14px}
 .msg .content p:last-child{margin-bottom:0}
@@ -178,7 +174,6 @@ body{display:flex;height:100vh;height:100dvh}
 .code-actions{display:flex;gap:4px;align-items:center}
 .code-btn{background:none;border:none;color:var(--text-2);cursor:pointer;font-size:11.5px;padding:5px 10px;border-radius:5px;font-family:inherit;font-weight:600;display:flex;align-items:center;gap:4px}
 .code-btn:hover{background:var(--bg-3);color:var(--text-0)}
-.code-btn.primary{background:var(--accent);color:#fff}
 .code-btn.copied{background:var(--success)!important;color:#fff!important}
 .msg-toolbar{display:flex;gap:2px;margin-top:8px;opacity:0;transition:opacity .15s;flex-wrap:wrap}
 .msg:hover .msg-toolbar{opacity:1}
@@ -200,6 +195,7 @@ body{display:flex;height:100vh;height:100dvh}
 .input-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
 textarea#input{width:100%;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:6px 4px;max-height:200px;line-height:1.5;min-height:28px}
 textarea#input::placeholder{color:var(--text-2)}
+textarea#input:disabled{opacity:.6;cursor:not-allowed}
 .attach-preview{position:absolute;bottom:100%;left:0;right:0;margin-bottom:8px;display:none;gap:8px;flex-wrap:wrap}
 .attach-preview.show{display:flex}
 .attach-item{position:relative;width:60px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg-1)}
@@ -255,7 +251,6 @@ textarea#input::placeholder{color:var(--text-2)}
 .detect-log .line.bad{color:var(--danger)}
 .detect-log .line.info{color:var(--text-2)}
 .detect-log .line.warn{color:var(--warn)}
-.detect-log .line .ico{flex-shrink:0;width:14px;display:flex;align-items:center;margin-top:2px}
 .detect-result-card{padding:14px;border:2px solid var(--success);border-radius:12px;background:rgba(16,163,127,.06);margin-bottom:12px}
 .detect-result-card h3{font-size:15px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .detect-result-card .badge-provider{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--success);color:#fff;font-weight:700;text-transform:uppercase}
@@ -421,7 +416,7 @@ Obrolan Baru</button>
 <div style="position:relative;max-width:740px;margin:0 auto">
 <div class="attach-preview" id="attachPreview"></div>
 <div class="input-box">
-<textarea id="input" placeholder="Tanya apa saja... (cuaca, gambar, kurs, jam, hitung)" rows="1"></textarea>
+<textarea id="input" placeholder="Tanya apa saja..." rows="1"></textarea>
 <div class="input-row-bottom">
 <div class="mode-pills">
 <button class="mode-pill" id="thinkModeBtn" title="Mode Berpikir">
@@ -589,14 +584,14 @@ Obrolan Baru</button>
 <div class="net-status" id="netStatus"></div>
 
 <script>
-/* SYON AI v29 — Part 1/4 */
+/* SYON AI v30 — Part 1/4 */
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 const API_BASE = '/api/auth';
 const RAG_BASE = '/api/rag';
 const CHAT_BASE = '/api/chats';
 const EMBED_DIM = 384;
 const LS='syon_data';
-const OLD_LS_KEYS=['syon_v28','syon_v27','syon_v26','syon_v25','syon_v24','syon_v23','syon_v20','syon_chats_v1'];
+const OLD_LS_KEYS=['syon_v29','syon_v28','syon_v27','syon_v26','syon_v25','syon_v24','syon_v23','syon_v20','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja.'},
@@ -739,29 +734,11 @@ function renderMarkdown(text){
   if(m){thinking=m[1].trim();main=text.replace(m[0],'').trim();}
   let html='';
   if(thinking)html+='<details class="thinking-block" open><summary><span class="brain-icon">🧠</span> Proses Berpikir Syon</summary><div class="think-body">'+esc(thinking)+'</div></details>';
-  html+=DOMPurify.sanitize(marked.parse(main||''), {ADD_TAGS:['img'], ADD_ATTR:['src','alt','width','height','loading']});
+  html+=DOMPurify.sanitize(marked.parse(main||''), {ADD_TAGS:['img'], ADD_ATTR:['src','alt','width','height','loading','onerror','onload','id','data-tries']});
   return html;
 }
 
 function decorateContent(el){
-  el.querySelectorAll('img').forEach(img => {
-    if(img.dataset.hooked) return;
-    img.dataset.hooked = '1';
-    img.addEventListener('error', function(){
-      this.style.display = 'none';
-      const wrap = this.parentElement;
-      if(wrap && !wrap.querySelector('.img-error-msg')){
-        const err = document.createElement('div');
-        err.className = 'img-error-msg';
-        err.style.cssText = 'padding:20px;text-align:center;background:var(--bg-1);border:1px solid var(--border);border-radius:12px;color:var(--text-2);font-size:12.5px;margin:8px 0';
-        err.innerHTML = '⚠️ Gambar gagal load. Coba kirim ulang: <b>"gambar ' + (this.alt||'anime') + '"</b>';
-        wrap.appendChild(err);
-      }
-    });
-    if(img.complete && img.naturalWidth === 0){
-      img.dispatchEvent(new Event('error'));
-    }
-  });
   el.querySelectorAll('pre').forEach(pre=>{
     if(pre.previousElementSibling&&pre.previousElementSibling.classList.contains('code-head'))return;
     const codeEl=pre.querySelector('code');
@@ -829,7 +806,7 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 </script>
 
 <script>
-/* SYON AI v29 — Part 2/4 */
+/* SYON AI v30 — Part 2/4 */
 
 let _geoCache = null;
 let _geoPromise = null;
@@ -936,6 +913,23 @@ function toolCalc(expr) {
 
 let _lastToolImage = null;
 
+window.__retryImage = function(imgId, promptTxt){
+  const img = document.getElementById(imgId);
+  const load = document.getElementById(imgId + '-load');
+  if(!img) return;
+  let tries = parseInt(img.dataset.tries || '0');
+  if(tries >= 3){
+    if(load) load.innerHTML = '⚠️ Gambar gagal load. Coba kirim ulang: <b>"gambar ' + promptTxt + '"</b>';
+    img.style.display = 'none';
+    return;
+  }
+  img.dataset.tries = tries + 1;
+  if(load) load.innerHTML = '🔄 Loading ulang... (' + (tries+1) + '/3)';
+  const seed = Math.floor(Math.random() * 1000000);
+  const clean = encodeURIComponent(promptTxt.slice(0, 150));
+  img.src = 'https://image.pollinations.ai/prompt/' + clean + '?width=768&height=768&nologo=true&seed=' + seed;
+};
+
 function formatToolOutput(toolContext){
   if (!toolContext || !toolContext.trim()) return '';
   let out = '';
@@ -945,7 +939,15 @@ function formatToolOutput(toolContext){
     if (um) {
       const promptTxt = pm ? pm[1] : 'gambar';
       const imgUrl = um[1].trim();
-      out += `<div style="margin:8px 0"><div style="background:var(--bg-1);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;font-size:12.5px;color:var(--text-2);margin-bottom:8px">⏳ Generate gambar... (5-15 detik)</div><img src="${imgUrl}" alt="${promptTxt}" loading="lazy" style="max-width:100%;border-radius:12px;border:1px solid var(--border);display:block"></div>`;
+      const imgId = 'img_' + Date.now() + '_' + Math.floor(Math.random()*1000);
+      const safePrompt = promptTxt.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      out += '<div style="margin:8px 0">' +
+        '<div id="' + imgId + '-load" style="background:var(--bg-1);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;font-size:12.5px;color:var(--text-2);margin-bottom:8px">⏳ Generate gambar... (5-15 detik)</div>' +
+        '<img id="' + imgId + '" src="' + imgUrl + '" alt="' + safePrompt + '" loading="lazy" data-tries="0" ' +
+        'onerror="window.__retryImage(\'' + imgId + '\',\'' + safePrompt + '\')" ' +
+        'onload="(function(){var l=document.getElementById(\'' + imgId + '-load\');if(l)l.style.display=\'none\';})()" ' +
+        'style="max-width:100%;border-radius:12px;border:1px solid var(--border);display:block">' +
+        '</div>';
     }
   }
   if (/\[TOOL: CUACA\]/.test(toolContext)) {
@@ -1105,7 +1107,6 @@ function buildKbContext(results){
   return ctx;
 }
 
-/* ============ CHAT SYNC ============ */
 async function chatSyncList(){
   try { const res = await fetch(CHAT_BASE + '?action=list&userKey=' + encodeURIComponent(getUserId())); if (!res.ok) return null; const data = await res.json(); return data.chats || []; } catch (e) { return null; }
 }
@@ -1424,7 +1425,7 @@ async function handleAutoDetect(){
     if(!result){toast('Tidak terdeteksi',true);return;}
     const cfg=PROVIDERS[result.provider];
     resultEl.style.display='block';
-    resultEl.innerHTML='<div class="detect-result-card"><h3>Terdeteksi <span class="badge-provider">'+esc(cfg.name)+'</span></h3><div class="model-info">Ditemukan <b>'+result.models.length+'</b> model.</div><div class="provider-list-mini">'+result.models.slice(0,15).map(m=>esc(m)).join(', ')+'</div><div class="actions"><button class="cancel" id="cancelDetectBtn">Batal</button><button class="save" id="saveDetectedBtn">Simpan & Pakai</button></div></div>';
+    resultEl.innerHTML='<div class="detect-result-card"><h3>Terdeteksi <span class="badge-provider">'+esc(cfg.name)+'</span></h3><div style="font-size:13px;margin-bottom:10px">Ditemukan <b>'+result.models.length+'</b> model.</div><div class="provider-list-mini">'+result.models.slice(0,15).map(m=>esc(m)).join(', ')+'</div><div class="actions"><button class="cancel" id="cancelDetectBtn">Batal</button><button class="save" id="saveDetectedBtn">Simpan & Pakai</button></div></div>';
     $('#cancelDetectBtn').addEventListener('click',()=>{resultEl.style.display='none';input.value='';$('#autoDetectLog').innerHTML='';});
     $('#saveDetectedBtn').addEventListener('click',()=>{
       const s=currentSettings();
@@ -1463,7 +1464,7 @@ async function runDiagnoseAll(){
 </script>
 
 <script>
-/* SYON AI v29 — Part 3/4 */
+/* SYON AI v30 — Part 3/4 */
 
 function createChat(){
   const chat={id:uid(),title:'Obrolan Baru',messages:[],createdAt:Date.now(),updatedAt:Date.now()};
@@ -1543,7 +1544,15 @@ function messageToolbar(role,idx){
 
 let _lastRenderedChatId = null;
 
+function cancelStreamRAF(){
+  if(_streamRAF){cancelAnimationFrame(_streamRAF);_streamRAF=null;}
+  _streamPendingHtml=null;
+  const inner=$('#chatInner');
+  if(inner)inner.querySelectorAll('.msg.bot[data-streaming="1"]').forEach(el=>el.remove());
+}
+
 function renderChat(){
+  cancelStreamRAF();
   const inner=$('#chatInner');if(!inner)return;
   const chat=getActiveChat();inner.innerHTML='';
   if(!chat||!chat.messages.length){
@@ -1566,7 +1575,6 @@ function renderChat(){
     return;
   }
   chat.messages.forEach((m,idx)=>{
-    // Skip assistant placeholder yang kosong saat lagi streaming
     if(m.role==='assistant' && !m.content && idx===chat.messages.length-1 && state.generating){
       return;
     }
@@ -1747,9 +1755,15 @@ function updateSendBtn(){
   if(state.generating){
     btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
     btn.disabled=true;
+    btn.style.pointerEvents='none';
+    btn.style.opacity='.35';
+    btn.title='Tunggu AI selesai...';
   } else {
     btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
     btn.disabled=false;
+    btn.style.pointerEvents='auto';
+    btn.style.opacity='1';
+    btn.title='Kirim';
   }
 }
 
@@ -1812,7 +1826,7 @@ function renderProviderList(){
   const list=$('#providerList');if(!list)return;
   list.innerHTML='';
   const userKeys=Object.keys(s.keys).filter(k=>s.keys[k]&&s.keys[k].trim().length>0);
-  if(!userKeys.length){list.innerHTML='<div class="help" style="text-align:center;padding:20px">Belum ada AI. Klik Tambah AI di atas.</div>';return;}
+  if(!userKeys.length){list.innerHTML='<div class="help" style="text-align:center;padding:20px">Belum ada AI.</div>';return;}
   userKeys.forEach(id=>{
     const p=PROVIDERS[id];if(!p)return;
     const status=s.keyStatus[id];
@@ -1869,7 +1883,7 @@ function openModelModal(){
     listEl.innerHTML = '';
     const q = String(filter || '').toLowerCase().trim();
     const filtered = q ? allModels.filter(x => x.model.toLowerCase().includes(q) || x.providerName.toLowerCase().includes(q)) : allModels;
-    if (!filtered.length) { listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-2);font-size:13px">' + (q ? 'Tidak ada model yang cocok' : 'Belum ada model. Tambah AI dulu di Setelan.') + '</div>'; return; }
+    if (!filtered.length) { listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-2);font-size:13px">' + (q ? 'Tidak ada model yang cocok' : 'Belum ada model.') + '</div>'; return; }
     filtered.forEach(item => {
       const el = document.createElement('div');
       el.style.cssText = 'padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--bg-1);transition:all .15s';
@@ -2126,7 +2140,7 @@ async function init(){
 
     $('#newChatBtn')?.addEventListener('click',()=>{createChat();closeSidebarMobile();});
     $('#menuBtn')?.addEventListener('click',openSidebarMobile);
-    $('#sendBtn')?.addEventListener('click',()=>{if(state.generating&&currentAbort){currentAbort.abort();return;}sendMessage();});
+    $('#sendBtn')?.addEventListener('click',()=>{if(state.generating)return;sendMessage();});
     const ta=$('#input');
     if(ta){ta.addEventListener('input',()=>autoGrow(ta));ta.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();if(!state.generating)sendMessage();}});}
     $('#attachBtn')?.addEventListener('click',()=>$('#fileInput').click());
@@ -2190,7 +2204,7 @@ async function init(){
     $('#kbAutoToggle')?.addEventListener('change', e => { state.useKB = !!e.target.checked; saveAll(); toast(state.useKB ? '📚 KB ON' : 'KB OFF'); });
 
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v29',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v30',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2276,7 +2290,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v29 — Chat sync + Race fix + Image fix');
+    console.log('✅ Syon AI v30 — RAF cancel + Button disable + Image retry');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
