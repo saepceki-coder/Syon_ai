@@ -195,7 +195,6 @@ body{display:flex;height:100vh;height:100dvh}
 .input-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
 textarea#input{width:100%;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:6px 4px;max-height:200px;line-height:1.5;min-height:28px}
 textarea#input::placeholder{color:var(--text-2)}
-textarea#input:disabled{opacity:.6;cursor:not-allowed}
 .attach-preview{position:absolute;bottom:100%;left:0;right:0;margin-bottom:8px;display:none;gap:8px;flex-wrap:wrap}
 .attach-preview.show{display:flex}
 .attach-item{position:relative;width:60px;height:60px;border-radius:8px;overflow:hidden;border:1px solid var(--border);background:var(--bg-1)}
@@ -251,10 +250,11 @@ textarea#input:disabled{opacity:.6;cursor:not-allowed}
 .detect-log .line.bad{color:var(--danger)}
 .detect-log .line.info{color:var(--text-2)}
 .detect-log .line.warn{color:var(--warn)}
+.detect-log .line .ico{flex-shrink:0;width:14px;display:flex;align-items:center;margin-top:2px}
 .detect-result-card{padding:14px;border:2px solid var(--success);border-radius:12px;background:rgba(16,163,127,.06);margin-bottom:12px}
 .detect-result-card h3{font-size:15px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .detect-result-card .badge-provider{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--success);color:#fff;font-weight:700;text-transform:uppercase}
-.detect-result-card .actions{display:flex;gap:8px}
+.detect-result-card .actions{display:flex;gap:8px;margin-top:10px}
 .detect-result-card .actions button{flex:1;padding:11px;border-radius:9px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer}
 .detect-result-card .actions .save{background:var(--accent);color:#fff;border:none}
 .detect-result-card .actions .cancel{background:var(--bg-2);color:var(--text-0);border:1px solid var(--border)}
@@ -584,14 +584,14 @@ Obrolan Baru</button>
 <div class="net-status" id="netStatus"></div>
 
 <script>
-/* SYON AI v30 — Part 1/4 */
+/* SYON AI v31 — Part 1/4 */
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 const API_BASE = '/api/auth';
 const RAG_BASE = '/api/rag';
 const CHAT_BASE = '/api/chats';
 const EMBED_DIM = 384;
 const LS='syon_data';
-const OLD_LS_KEYS=['syon_v29','syon_v28','syon_v27','syon_v26','syon_v25','syon_v24','syon_v23','syon_v20','syon_chats_v1'];
+const OLD_LS_KEYS=['syon_v30','syon_v29','syon_v28','syon_v27','syon_v26','syon_v25','syon_v24','syon_v23','syon_v20','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja.'},
@@ -734,7 +734,7 @@ function renderMarkdown(text){
   if(m){thinking=m[1].trim();main=text.replace(m[0],'').trim();}
   let html='';
   if(thinking)html+='<details class="thinking-block" open><summary><span class="brain-icon">🧠</span> Proses Berpikir Syon</summary><div class="think-body">'+esc(thinking)+'</div></details>';
-  html+=DOMPurify.sanitize(marked.parse(main||''), {ADD_TAGS:['img'], ADD_ATTR:['src','alt','width','height','loading','onerror','onload','id','data-tries']});
+  html+=DOMPurify.sanitize(marked.parse(main||''), {ADD_TAGS:['img'], ADD_ATTR:['src','alt','width','height','loading','onerror','onload','id','data-tries','referrerpolicy','crossorigin']});
   return html;
 }
 
@@ -806,7 +806,7 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 </script>
 
 <script>
-/* SYON AI v30 — Part 2/4 */
+/* SYON AI v31 — Part 2/4 */
 
 let _geoCache = null;
 let _geoPromise = null;
@@ -883,9 +883,9 @@ async function toolWeather(city) {
 }
 
 async function toolImage(prompt) {
-  const clean = encodeURIComponent(prompt.trim().slice(0, 150));
+  const clean = encodeURIComponent(prompt.trim().slice(0, 100));
   const seed = Math.floor(Math.random() * 1000000);
-  const url = `https://image.pollinations.ai/prompt/${clean}?width=768&height=768&nologo=true&seed=${seed}`;
+  const url = `https://image.pollinations.ai/prompt/${clean}?width=768&height=768&seed=${seed}`;
   return { url, prompt };
 }
 
@@ -919,15 +919,17 @@ window.__retryImage = function(imgId, promptTxt){
   if(!img) return;
   let tries = parseInt(img.dataset.tries || '0');
   if(tries >= 3){
-    if(load) load.innerHTML = '⚠️ Gambar gagal load. Coba kirim ulang: <b>"gambar ' + promptTxt + '"</b>';
+    const clean = encodeURIComponent(promptTxt.slice(0, 100));
+    const manualUrl = 'https://image.pollinations.ai/prompt/' + clean + '?width=768&height=768';
+    if(load) load.innerHTML = '⚠️ Gagal 3x. <a href="' + manualUrl + '" target="_blank" style="color:var(--accent)">Buka di tab baru</a> atau kirim ulang: <b>"gambar ' + promptTxt + '"</b>';
     img.style.display = 'none';
     return;
   }
   img.dataset.tries = tries + 1;
   if(load) load.innerHTML = '🔄 Loading ulang... (' + (tries+1) + '/3)';
   const seed = Math.floor(Math.random() * 1000000);
-  const clean = encodeURIComponent(promptTxt.slice(0, 150));
-  img.src = 'https://image.pollinations.ai/prompt/' + clean + '?width=768&height=768&nologo=true&seed=' + seed;
+  const clean = encodeURIComponent(promptTxt.slice(0, 100));
+  img.src = 'https://image.pollinations.ai/prompt/' + clean + '?width=768&height=768&seed=' + seed;
 };
 
 function formatToolOutput(toolContext){
@@ -940,10 +942,11 @@ function formatToolOutput(toolContext){
       const promptTxt = pm ? pm[1] : 'gambar';
       const imgUrl = um[1].trim();
       const imgId = 'img_' + Date.now() + '_' + Math.floor(Math.random()*1000);
-      const safePrompt = promptTxt.replace(/'/g,"\\'").replace(/"/g,'&quot;');
+      const safePrompt = promptTxt.replace(/'/g,"\\'").replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+      const manualUrl = 'https://image.pollinations.ai/prompt/' + encodeURIComponent(promptTxt.slice(0, 100)) + '?width=768&height=768';
       out += '<div style="margin:8px 0">' +
-        '<div id="' + imgId + '-load" style="background:var(--bg-1);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;font-size:12.5px;color:var(--text-2);margin-bottom:8px">⏳ Generate gambar... (5-15 detik)</div>' +
-        '<img id="' + imgId + '" src="' + imgUrl + '" alt="' + safePrompt + '" loading="lazy" data-tries="0" ' +
+        '<div id="' + imgId + '-load" style="background:var(--bg-1);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;font-size:12.5px;color:var(--text-2);margin-bottom:8px">⏳ Generate gambar... (5-15 detik)<br><small>Kalau gagal, <a href="' + manualUrl + '" target="_blank" rel="noopener" style="color:var(--accent)">buka di tab baru</a></small></div>' +
+        '<img id="' + imgId + '" src="' + imgUrl + '" alt="' + safePrompt + '" loading="lazy" referrerpolicy="no-referrer" crossorigin="anonymous" data-tries="0" ' +
         'onerror="window.__retryImage(\'' + imgId + '\',\'' + safePrompt + '\')" ' +
         'onload="(function(){var l=document.getElementById(\'' + imgId + '-load\');if(l)l.style.display=\'none\';})()" ' +
         'style="max-width:100%;border-radius:12px;border:1px solid var(--border);display:block">' +
@@ -1464,7 +1467,7 @@ async function runDiagnoseAll(){
 </script>
 
 <script>
-/* SYON AI v30 — Part 3/4 */
+/* SYON AI v31 — Part 3/4 */
 
 function createChat(){
   const chat={id:uid(),title:'Obrolan Baru',messages:[],createdAt:Date.now(),updatedAt:Date.now()};
@@ -2204,7 +2207,7 @@ async function init(){
     $('#kbAutoToggle')?.addEventListener('change', e => { state.useKB = !!e.target.checked; saveAll(); toast(state.useKB ? '📚 KB ON' : 'KB OFF'); });
 
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v30',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v31',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2290,7 +2293,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v30 — RAF cancel + Button disable + Image retry');
+    console.log('✅ Syon AI v31 — referrerpolicy no-referrer');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
