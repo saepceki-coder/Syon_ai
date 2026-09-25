@@ -104,10 +104,8 @@ body{display:flex;height:100vh;height:100dvh}
 .new-chat-btn:hover{background:var(--bg-2)}
 .search-box{margin:0 12px 8px;display:flex;align-items:center;gap:8px;background:var(--bg-0);border:1px solid var(--border);border-radius:9px;padding:8px 11px}
 .search-box input{flex:1;background:none;border:none;color:var(--text-0);font-size:13px;outline:none}
-.search-box input::placeholder{color:var(--text-2)}
 .chat-list{flex:1;overflow-y:auto;padding:0 8px 10px}
 .sidebar-section{padding:14px 12px 4px;font-size:11px;font-weight:600;color:var(--text-2);text-transform:uppercase;letter-spacing:.5px;display:flex;align-items:center;gap:5px}
-.sidebar-section:first-child{padding-top:8px}
 .chat-item{padding:9px 11px 9px 14px;position:relative;border-radius:9px;color:var(--text-1);font-size:13.5px;cursor:pointer;display:flex;align-items:center;gap:8px;margin-bottom:2px;white-space:nowrap;overflow:hidden}
 .chat-item:hover{background:var(--bg-2)}
 .chat-item.active{background:var(--bg-2);color:var(--text-0);font-weight:500}
@@ -143,7 +141,6 @@ body{display:flex;height:100vh;height:100dvh}
 .welcome h1 span{color:var(--text-1);font-weight:400}
 .welcome p{color:var(--text-2);max-width:420px;line-height:1.6;font-size:14px}
 .welcome-add-ai{margin-top:8px;padding:14px 22px;background:linear-gradient(135deg,var(--accent),#8b5cf6);color:#fff;border:none;border-radius:12px;font-weight:600;font-size:14px;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(11,92,255,.25)}
-.welcome-add-ai:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(11,92,255,.35)}
 .suggestions{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:20px;width:100%;max-width:560px}
 .suggestion{padding:13px 14px;background:var(--bg-1);border:1px solid var(--border);border-radius:12px;text-align:left;cursor:pointer;color:var(--text-1);font-size:13px;font-family:inherit}
 .suggestion:hover{border-color:var(--accent);background:var(--bg-0);transform:translateY(-2px)}
@@ -175,7 +172,7 @@ body{display:flex;height:100vh;height:100dvh}
 [data-theme="dark"] .msg .content code{color:#e9b1c9}
 .msg .content pre{background:var(--bg-1)!important;border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:14px 0;overflow-x:auto;font-size:13px;line-height:1.6}
 .msg .content pre code{background:none;border:none;padding:0;color:var(--text-0);font-size:13px}
-.msg .content img{max-width:100%;border-radius:12px;margin:8px 0;border:1px solid var(--border);display:block;object-fit:cover;aspect-ratio:1/1}
+.msg .content img{max-width:100%;border-radius:12px;margin:8px 0;border:1px solid var(--border);display:block}
 .code-head{display:flex;justify-content:space-between;align-items:center;background:var(--bg-2);border:1px solid var(--border);border-bottom:none;padding:8px 14px;border-radius:10px 10px 0 0;font-size:11.5px;color:var(--text-2);font-family:var(--font-mono);margin-top:14px}
 .code-head + pre{margin-top:0!important;border-radius:0 0 10px 10px!important}
 .code-actions{display:flex;gap:4px;align-items:center}
@@ -187,7 +184,6 @@ body{display:flex;height:100vh;height:100dvh}
 .msg:hover .msg-toolbar{opacity:1}
 .msg-toolbar button{background:none;border:none;color:var(--text-2);cursor:pointer;padding:5px 8px;border-radius:6px;display:flex;align-items:center;gap:5px;font-size:11.5px;font-family:inherit;font-weight:500}
 .msg-toolbar button:hover{background:var(--bg-2);color:var(--text-0)}
-.msg-toolbar button svg{width:13px;height:13px}
 .cursor-blink::after{content:'';display:inline-block;width:7px;height:14px;background:var(--text-0);margin-left:2px;animation:blink 1s infinite;vertical-align:middle}
 @keyframes blink{50%{opacity:0}}
 .media-thumb{max-width:240px;border-radius:10px;margin:8px 0;border:1px solid var(--border);display:block}
@@ -195,14 +191,12 @@ body{display:flex;height:100vh;height:100dvh}
 .input-wrap{position:absolute;bottom:0;left:0;right:0;padding:14px 16px calc(18px + env(safe-area-inset-bottom,0px));background:linear-gradient(to top,var(--bg-0) 65%,transparent);pointer-events:none;z-index:10}
 .input-box{max-width:740px;margin:0 auto;background:var(--bg-1);border:1px solid var(--border);border-radius:22px;padding:10px 12px;pointer-events:auto;display:flex;flex-direction:column;gap:4px}
 .input-box:focus-within{border-color:var(--accent);box-shadow:0 2px 12px rgba(11,92,255,.1)}
-.input-row-top{display:flex;flex-direction:column}
 .input-row-bottom{display:flex;align-items:center;gap:6px;justify-content:space-between}
 .mode-pills{display:flex;gap:6px;flex-wrap:wrap}
 .mode-pill{display:flex;align-items:center;gap:6px;padding:6px 12px;background:transparent;border:1px solid var(--border);border-radius:99px;color:var(--text-1);font-size:12.5px;font-weight:500;cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap}
 .mode-pill:hover{background:var(--bg-2);color:var(--text-0)}
 .mode-pill.active{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
 [data-theme="dark"] .mode-pill.active{background:rgba(77,142,255,.15);color:var(--accent)}
-.mode-pill svg{flex-shrink:0}
 .input-actions{display:flex;align-items:center;gap:4px;flex-shrink:0}
 textarea#input{width:100%;background:none;border:none;color:var(--text-0);font-size:15px;font-family:inherit;resize:none;outline:none;padding:6px 4px;max-height:200px;line-height:1.5;min-height:28px}
 textarea#input::placeholder{color:var(--text-2)}
@@ -231,7 +225,6 @@ textarea#input::placeholder{color:var(--text-2)}
 .field label{display:block;font-size:12.5px;color:var(--text-1);margin-bottom:6px;font-weight:500}
 .field input,.field select,.field textarea{width:100%;padding:10px 12px;background:var(--bg-1);border:1px solid var(--border);border-radius:9px;color:var(--text-0);font-size:14px;font-family:inherit;outline:none}
 .field textarea{resize:vertical;min-height:70px;line-height:1.5}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--accent)}
 .field .help{font-size:11.5px;color:var(--text-2);margin-top:6px;line-height:1.5}
 .key-input-wrap{position:relative}
 .key-input-wrap input{padding-right:44px!important;font-family:var(--font-mono)!important;font-size:13px!important}
@@ -254,7 +247,6 @@ textarea#input::placeholder{color:var(--text-2)}
 .status-tag.pending{background:var(--bg-2);color:var(--text-2)}
 .provider-card .actions{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
 .provider-card .actions button{flex:1;min-width:100px;padding:8px;background:var(--bg-2);border:1px solid var(--border);color:var(--text-1);border-radius:7px;cursor:pointer;font-size:12.5px;font-weight:500;font-family:inherit}
-.provider-card .actions button:hover{background:var(--bg-3);color:var(--text-0)}
 .provider-card .actions button.test{background:var(--accent);color:#fff;border-color:var(--accent)}
 .detect-log{margin-top:12px;padding:12px 14px;background:var(--bg-1);border:1px solid var(--border);border-radius:10px;font-family:var(--font-mono);font-size:11.5px;line-height:1.9;color:var(--text-1);max-height:220px;overflow-y:auto;display:none}
 .detect-log.show{display:block}
@@ -267,7 +259,6 @@ textarea#input::placeholder{color:var(--text-2)}
 .detect-result-card{padding:14px;border:2px solid var(--success);border-radius:12px;background:rgba(16,163,127,.06);margin-bottom:12px}
 .detect-result-card h3{font-size:15px;font-weight:700;margin-bottom:6px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .detect-result-card .badge-provider{font-size:11px;padding:3px 9px;border-radius:99px;background:var(--success);color:#fff;font-weight:700;text-transform:uppercase}
-.detect-result-card .model-info{font-size:13px;color:var(--text-1);margin-bottom:10px;line-height:1.6}
 .detect-result-card .actions{display:flex;gap:8px}
 .detect-result-card .actions button{flex:1;padding:11px;border-radius:9px;font-size:13.5px;font-weight:600;font-family:inherit;cursor:pointer}
 .detect-result-card .actions .save{background:var(--accent);color:#fff;border:none}
@@ -281,12 +272,10 @@ textarea#input::placeholder{color:var(--text-2)}
 .diagnose-table .badge-fail{color:var(--danger);font-weight:700}
 .diagnose-table .note{font-size:10.5px;color:var(--text-2);margin-top:3px;line-height:1.5}
 .diagnose-summary{padding:12px;background:var(--bg-1);border:1px solid var(--border);border-radius:10px;font-size:12.5px;line-height:1.7;margin-bottom:10px}
-.diagnose-summary b{color:var(--text-0)}
 .btn-primary{width:100%;padding:11px;background:var(--accent);border:none;border-radius:9px;color:#fff;font-weight:600;cursor:pointer;font-size:13.5px;font-family:inherit}
 .btn-primary:hover{opacity:.92}
 .btn-primary:disabled{opacity:.5;cursor:wait}
 .btn-secondary{width:100%;padding:11px;background:var(--bg-2);border:1px solid var(--border);border-radius:9px;color:var(--text-0);font-weight:600;cursor:pointer;font-size:13.5px;font-family:inherit;margin-top:8px}
-.btn-secondary:hover{background:var(--bg-3)}
 .prompt-item{padding:12px 14px;background:var(--bg-1);border:1px solid var(--border);border-radius:9px;cursor:pointer;margin-bottom:6px;font-size:13px;color:var(--text-1)}
 .prompt-item:hover{background:var(--bg-0);color:var(--text-0);border-color:var(--accent)}
 .prompt-item b{color:var(--text-0);display:block;margin-bottom:2px;font-size:13.5px;font-weight:600}
@@ -327,10 +316,7 @@ textarea#input::placeholder{color:var(--text-2)}
 </head>
 <body>
 
-<div id="loadingOverlay">
-<div class="loader-spinner"></div>
-<div class="loader-text">Memuat...</div>
-</div>
+<div id="loadingOverlay"><div class="loader-spinner"></div><div class="loader-text">Memuat...</div></div>
 
 <div class="save-indicator" id="saveIndicator" title="Data tersimpan">
 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
@@ -435,9 +421,7 @@ Obrolan Baru</button>
 <div style="position:relative;max-width:740px;margin:0 auto">
 <div class="attach-preview" id="attachPreview"></div>
 <div class="input-box">
-<div class="input-row-top">
 <textarea id="input" placeholder="Tanya apa saja... (cuaca, gambar, kurs, jam, hitung)" rows="1"></textarea>
-</div>
 <div class="input-row-bottom">
 <div class="mode-pills">
 <button class="mode-pill" id="thinkModeBtn" title="Mode Berpikir">
@@ -468,12 +452,12 @@ Obrolan Baru</button>
 <div class="modal-body">
 <div class="field">
 <button class="btn-primary" id="openAddAiBtn" style="padding:13px;font-size:14px">+ Tambah AI Baru (Auto-Detect)</button>
-<div class="help">Paste API key dari provider apa aja — sistem otomatis deteksi.</div>
+<div class="help">Paste API key dari provider apa aja.</div>
 </div>
 <div class="field"><label>Parameter</label>
 <div style="display:flex;gap:12px">
-<div style="flex:1"><label style="font-size:11px;color:var(--text-2);margin-bottom:4px;display:block">Temperature</label><input type="number" id="tempInput" min="0" max="2" step="0.1" value="0.7" /></div>
-<div style="flex:1"><label style="font-size:11px;color:var(--text-2);margin-bottom:4px;display:block">Max Tokens</label><input type="number" id="maxTokenInput" min="100" max="8192" step="100" value="2048" /></div>
+<div style="flex:1"><input type="number" id="tempInput" min="0" max="2" step="0.1" value="0.7" /></div>
+<div style="flex:1"><input type="number" id="maxTokenInput" min="100" max="8192" step="100" value="2048" /></div>
 </div>
 </div>
 <div class="field">
@@ -495,11 +479,10 @@ Obrolan Baru</button>
 <div class="field">
 <label style="font-size:14px;font-weight:600">All Detect Model AI</label>
 <div class="key-input-wrap" id="keyInputWrap">
-<input type="text" id="autoDetectKeyInput" placeholder="Paste API key di sini..." autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+<input type="text" id="autoDetectKeyInput" placeholder="Paste API key di sini..." autocomplete="off">
 <button type="button" class="key-toggle-btn" id="toggleKeyVisibility">👁</button>
 </div>
 <button type="button" class="btn-secondary" id="pasteKeyBtn" style="margin-top:8px">📋 Paste dari Clipboard</button>
-<div class="help">Paste key dari <b>Gemini, Groq, OpenAI, OpenRouter, Anthropic, DeepSeek, Mistral, xAI, Aerolink</b>, dan 50+ lainnya.</div>
 </div>
 <button class="btn-primary" id="autoDetectSubmit" style="padding:14px">Deteksi & Tambah</button>
 <div class="detect-log" id="autoDetectLog"></div>
@@ -544,7 +527,7 @@ Obrolan Baru</button>
 <div class="modal-head"><h2>🎯 Pilih Model</h2><button class="close" id="closeModel">×</button></div>
 <div class="modal-body">
 <div class="field">
-<input type="text" id="modelSearch" placeholder="🔍 Cari model... (contoh: gemini, gpt, llama)" autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false">
+<input type="text" id="modelSearch" placeholder="🔍 Cari model..." autocomplete="off">
 </div>
 <div id="quickModelList" style="max-height:50vh;overflow-y:auto;display:flex;flex-direction:column;gap:6px;margin-bottom:14px"></div>
 <div style="display:flex;gap:8px">
@@ -595,7 +578,7 @@ Obrolan Baru</button>
 <div class="field" style="border-top:1px solid var(--border);padding-top:14px">
 <label style="display:flex;align-items:center;gap:10px;cursor:pointer">
 <input type="checkbox" id="kbAutoToggle" style="width:auto">
-<span style="font-size:13.5px;font-weight:600">Gunakan Knowledge Base otomatis di chat</span>
+<span style="font-size:13.5px;font-weight:600">Gunakan Knowledge Base otomatis</span>
 </label>
 </div>
 </div>
@@ -606,13 +589,14 @@ Obrolan Baru</button>
 <div class="net-status" id="netStatus"></div>
 
 <script>
-/* SYON AI v28 — Part 1/4 */
+/* SYON AI v29 — Part 1/4 */
 const GOOGLE_CLIENT_ID = '119383914932-8s2ltp64kncsanklhmo6u2bi8eblvije.apps.googleusercontent.com';
 const API_BASE = '/api/auth';
 const RAG_BASE = '/api/rag';
+const CHAT_BASE = '/api/chats';
 const EMBED_DIM = 384;
 const LS='syon_data';
-const OLD_LS_KEYS=['syon_v27','syon_v26','syon_v25','syon_v24','syon_v23','syon_v20','syon_chats_v1'];
+const OLD_LS_KEYS=['syon_v28','syon_v27','syon_v26','syon_v25','syon_v24','syon_v23','syon_v20','syon_chats_v1'];
 
 const KB = [
   {q:['halo','hai','hi','hey','hello','assalamualaikum'],a:'Halo! 👋 Aku Syon. Coba tanya apa aja.'},
@@ -679,8 +663,7 @@ function defaultSettings(){
     provider:'syonbot',model:'syon-v2',
     keys:{},keyStatus:{},fetchedModels:{},
     systemPrompt:'Kamu adalah Syon, asisten AI yang ramah, hangat, dan cerdas. Jawab dalam bahasa yang sama dengan pengguna. Gunakan format markdown. Boleh pakai emoji secukupnya. Jujur kalau tidak tahu. Jawab ringkas tapi lengkap.',
-    customUrl:'',customModels:'',
-    thinking:false,temperature:0.7,maxTokens:2048,favModels:[]
+    customUrl:'',customModels:'',thinking:false,temperature:0.7,maxTokens:2048,favModels:[]
   };
 }
 
@@ -695,10 +678,8 @@ function loadAll(){
     }
     if(raw){
       const d=JSON.parse(raw);
-      ['token','user','isGuest','activeProfileId','theme','voice','chatsByUser','activeChatByUser','settingsByUser','pinnedChats','thinkingMode','searchMode','useKB'].forEach(k=>{
-        if(d[k]!==undefined) state[k]=d[k];
-      });
-      if(!state.voice) state.voice={enabled:false,voiceURI:'',rate:1,pitch:1,volume:1};
+      ['token','user','isGuest','activeProfileId','theme','voice','chatsByUser','activeChatByUser','settingsByUser','pinnedChats','thinkingMode','searchMode','useKB'].forEach(k=>{if(d[k]!==undefined)state[k]=d[k];});
+      if(!state.voice)state.voice={enabled:false,voiceURI:'',rate:1,pitch:1,volume:1};
     }
   }catch(e){console.warn('loadAll:',e);}
   ['chatsByUser','activeChatByUser','settingsByUser','pinnedChats'].forEach(k=>{if(!state[k])state[k]={};});
@@ -763,6 +744,24 @@ function renderMarkdown(text){
 }
 
 function decorateContent(el){
+  el.querySelectorAll('img').forEach(img => {
+    if(img.dataset.hooked) return;
+    img.dataset.hooked = '1';
+    img.addEventListener('error', function(){
+      this.style.display = 'none';
+      const wrap = this.parentElement;
+      if(wrap && !wrap.querySelector('.img-error-msg')){
+        const err = document.createElement('div');
+        err.className = 'img-error-msg';
+        err.style.cssText = 'padding:20px;text-align:center;background:var(--bg-1);border:1px solid var(--border);border-radius:12px;color:var(--text-2);font-size:12.5px;margin:8px 0';
+        err.innerHTML = '⚠️ Gambar gagal load. Coba kirim ulang: <b>"gambar ' + (this.alt||'anime') + '"</b>';
+        wrap.appendChild(err);
+      }
+    });
+    if(img.complete && img.naturalWidth === 0){
+      img.dispatchEvent(new Event('error'));
+    }
+  });
   el.querySelectorAll('pre').forEach(pre=>{
     if(pre.previousElementSibling&&pre.previousElementSibling.classList.contains('code-head'))return;
     const codeEl=pre.querySelector('code');
@@ -830,7 +829,7 @@ function stopSpeaking(){if('speechSynthesis' in window)speechSynthesis.cancel();
 </script>
 
 <script>
-/* SYON AI v28 — Part 2/4: Tools, RAG, API */
+/* SYON AI v29 — Part 2/4 */
 
 let _geoCache = null;
 let _geoPromise = null;
@@ -838,43 +837,26 @@ let _geoPromise = null;
 function getCurrentLocation() {
   if (_geoCache) return Promise.resolve(_geoCache);
   if (_geoPromise) return _geoPromise;
-
   _geoPromise = (async () => {
-    // 1. IP-based dulu (no izin, langsung jalan)
     try {
       const r = await fetch('https://ipapi.co/json/');
       if (r.ok) {
         const j = await r.json();
         if (j.latitude && j.longitude) {
-          _geoCache = {
-            lat: parseFloat(j.latitude),
-            lon: parseFloat(j.longitude),
-            accuracy: 5000,
-            city: j.city || j.region || j.country_name || 'Lokasi kamu',
-            region: j.region || '',
-            source: 'ip'
-          };
+          _geoCache = { lat: parseFloat(j.latitude), lon: parseFloat(j.longitude), accuracy: 5000, city: j.city || j.region || j.country_name || 'Lokasi kamu', region: j.region || '', source: 'ip' };
           return _geoCache;
         }
       }
-    } catch (e) {
-      console.warn('[geo] ipapi failed, fallback GPS:', e.message);
-    }
-
-    // 2. Fallback GPS browser
+    } catch (e) {}
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) { reject(new Error('Browser nggak support GPS')); return; }
       navigator.geolocation.getCurrentPosition(
-        (pos) => {
-          _geoCache = { lat: pos.coords.latitude, lon: pos.coords.longitude, accuracy: pos.coords.accuracy, source: 'gps' };
-          resolve(_geoCache);
-        },
-        (err) => { _geoPromise = null; reject(new Error('Gagal deteksi lokasi. Coba sebut nama kota.')); },
+        (pos) => { _geoCache = { lat: pos.coords.latitude, lon: pos.coords.longitude, accuracy: pos.coords.accuracy, source: 'gps' }; resolve(_geoCache); },
+        (err) => { _geoPromise = null; reject(new Error('Gagal deteksi lokasi')); },
         { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
       );
     });
   })();
-
   return _geoPromise;
 }
 
@@ -900,51 +882,7 @@ async function toolWeatherByCoord(lat, lon, label) {
 }
 
 const CITY_COORDS = {
-  jakarta:{lat:-6.2088,lon:106.8456,name:'Jakarta'},
-  surabaya:{lat:-7.2575,lon:112.7521,name:'Surabaya'},
-  bandung:{lat:-6.9175,lon:107.6191,name:'Bandung'},
-  medan:{lat:3.5952,lon:98.6722,name:'Medan'},
-  semarang:{lat:-6.9667,lon:110.4167,name:'Semarang'},
-  makassar:{lat:-5.1477,lon:119.4327,name:'Makassar'},
-  palembang:{lat:-2.9761,lon:104.7754,name:'Palembang'},
-  denpasar:{lat:-8.6705,lon:115.2126,name:'Denpasar'},
-  bali:{lat:-8.4095,lon:115.1889,name:'Bali'},
-  yogyakarta:{lat:-7.7956,lon:110.3695,name:'Yogyakarta'},
-  jogja:{lat:-7.7956,lon:110.3695,name:'Yogyakarta'},
-  malang:{lat:-7.9666,lon:112.6326,name:'Malang'},
-  padang:{lat:-0.9471,lon:100.4172,name:'Padang'},
-  pekanbaru:{lat:0.5071,lon:101.4478,name:'Pekanbaru'},
-  manado:{lat:1.4748,lon:124.8421,name:'Manado'},
-  banjarmasin:{lat:-3.3186,lon:114.5944,name:'Banjarmasin'},
-  pontianak:{lat:-0.0263,lon:109.3425,name:'Pontianak'},
-  balikpapan:{lat:-1.2379,lon:116.8529,name:'Balikpapan'},
-  'kuala lumpur':{lat:3.1390,lon:101.6869,name:'Kuala Lumpur'},
-  singapore:{lat:1.3521,lon:103.8198,name:'Singapore'},
-  singapura:{lat:1.3521,lon:103.8198,name:'Singapore'},
-  tokyo:{lat:35.6762,lon:139.6503,name:'Tokyo'},
-  osaka:{lat:34.6937,lon:135.5023,name:'Osaka'},
-  seoul:{lat:37.5665,lon:126.9780,name:'Seoul'},
-  beijing:{lat:39.9042,lon:116.4074,name:'Beijing'},
-  shanghai:{lat:31.2304,lon:121.4737,name:'Shanghai'},
-  hongkong:{lat:22.3193,lon:114.1694,name:'Hong Kong'},
-  bangkok:{lat:13.7563,lon:100.5018,name:'Bangkok'},
-  manila:{lat:14.5995,lon:120.9842,name:'Manila'},
-  hanoi:{lat:21.0285,lon:105.8542,name:'Hanoi'},
-  newyork:{lat:40.7128,lon:-74.0060,name:'New York'},
-  'new york':{lat:40.7128,lon:-74.0060,name:'New York'},
-  losangeles:{lat:34.0522,lon:-118.2437,name:'Los Angeles'},
-  'los angeles':{lat:34.0522,lon:-118.2437,name:'Los Angeles'},
-  london:{lat:51.5074,lon:-0.1278,name:'London'},
-  paris:{lat:48.8566,lon:2.3522,name:'Paris'},
-  berlin:{lat:52.5200,lon:13.4050,name:'Berlin'},
-  moskow:{lat:55.7558,lon:37.6173,name:'Moscow'},
-  dubai:{lat:25.2048,lon:55.2708,name:'Dubai'},
-  sydney:{lat:-33.8688,lon:151.2093,name:'Sydney'},
-  melbourne:{lat:-37.8136,lon:144.9631,name:'Melbourne'},
-  cairo:{lat:30.0444,lon:31.2357,name:'Cairo'},
-  mekah:{lat:21.3891,lon:39.8579,name:'Mekah'},
-  mekkah:{lat:21.3891,lon:39.8579,name:'Mekah'},
-  madinah:{lat:24.5247,lon:39.5692,name:'Madinah'}
+  jakarta:{lat:-6.2088,lon:106.8456,name:'Jakarta'},surabaya:{lat:-7.2575,lon:112.7521,name:'Surabaya'},bandung:{lat:-6.9175,lon:107.6191,name:'Bandung'},medan:{lat:3.5952,lon:98.6722,name:'Medan'},semarang:{lat:-6.9667,lon:110.4167,name:'Semarang'},makassar:{lat:-5.1477,lon:119.4327,name:'Makassar'},palembang:{lat:-2.9761,lon:104.7754,name:'Palembang'},denpasar:{lat:-8.6705,lon:115.2126,name:'Denpasar'},bali:{lat:-8.4095,lon:115.1889,name:'Bali'},yogyakarta:{lat:-7.7956,lon:110.3695,name:'Yogyakarta'},jogja:{lat:-7.7956,lon:110.3695,name:'Yogyakarta'},malang:{lat:-7.9666,lon:112.6326,name:'Malang'},padang:{lat:-0.9471,lon:100.4172,name:'Padang'},pekanbaru:{lat:0.5071,lon:101.4478,name:'Pekanbaru'},manado:{lat:1.4748,lon:124.8421,name:'Manado'},banjarmasin:{lat:-3.3186,lon:114.5944,name:'Banjarmasin'},pontianak:{lat:-0.0263,lon:109.3425,name:'Pontianak'},balikpapan:{lat:-1.2379,lon:116.8529,name:'Balikpapan'},'kuala lumpur':{lat:3.1390,lon:101.6869,name:'Kuala Lumpur'},singapore:{lat:1.3521,lon:103.8198,name:'Singapore'},singapura:{lat:1.3521,lon:103.8198,name:'Singapore'},tokyo:{lat:35.6762,lon:139.6503,name:'Tokyo'},osaka:{lat:34.6937,lon:135.5023,name:'Osaka'},seoul:{lat:37.5665,lon:126.9780,name:'Seoul'},beijing:{lat:39.9042,lon:116.4074,name:'Beijing'},shanghai:{lat:31.2304,lon:121.4737,name:'Shanghai'},hongkong:{lat:22.3193,lon:114.1694,name:'Hong Kong'},bangkok:{lat:13.7563,lon:100.5018,name:'Bangkok'},manila:{lat:14.5995,lon:120.9842,name:'Manila'},hanoi:{lat:21.0285,lon:105.8542,name:'Hanoi'},newyork:{lat:40.7128,lon:-74.0060,name:'New York'},'new york':{lat:40.7128,lon:-74.0060,name:'New York'},losangeles:{lat:34.0522,lon:-118.2437,name:'Los Angeles'},london:{lat:51.5074,lon:-0.1278,name:'London'},paris:{lat:48.8566,lon:2.3522,name:'Paris'},berlin:{lat:52.5200,lon:13.4050,name:'Berlin'},moskow:{lat:55.7558,lon:37.6173,name:'Moscow'},dubai:{lat:25.2048,lon:55.2708,name:'Dubai'},sydney:{lat:-33.8688,lon:151.2093,name:'Sydney'},melbourne:{lat:-37.8136,lon:144.9631,name:'Melbourne'},cairo:{lat:30.0444,lon:31.2357,name:'Cairo'},mekah:{lat:21.3891,lon:39.8579,name:'Mekah'},mekkah:{lat:21.3891,lon:39.8579,name:'Mekah'},madinah:{lat:24.5247,lon:39.5692,name:'Madinah'}
 };
 
 function extractCity(text) {
@@ -968,21 +906,16 @@ async function toolWeather(city) {
 }
 
 async function toolImage(prompt) {
-  const clean = encodeURIComponent(prompt.trim().slice(0, 200));
+  const clean = encodeURIComponent(prompt.trim().slice(0, 150));
   const seed = Math.floor(Math.random() * 1000000);
-  const url = `https://image.pollinations.ai/prompt/${clean}?width=1024&height=1024&nologo=true&enhance=false&safe=false&private=true&model=flux&seed=${seed}`;
+  const url = `https://image.pollinations.ai/prompt/${clean}?width=768&height=768&nologo=true&seed=${seed}`;
   return { url, prompt };
 }
 
 function toolDateTime(tz) {
   const timeZone = tz || 'Asia/Jakarta';
   const now = new Date();
-  return {
-    waktu: now.toLocaleString('id-ID', { timeZone, dateStyle:'full', timeStyle:'short' }),
-    jam: now.toLocaleTimeString('id-ID', { timeZone }),
-    hari: now.toLocaleDateString('id-ID', { timeZone, weekday:'long' }),
-    timeZone
-  };
+  return { waktu: now.toLocaleString('id-ID', { timeZone, dateStyle:'full', timeStyle:'short' }), jam: now.toLocaleTimeString('id-ID', { timeZone }), hari: now.toLocaleDateString('id-ID', { timeZone, weekday:'long' }), timeZone };
 }
 
 async function toolExchange(from, to, amount) {
@@ -997,10 +930,7 @@ async function toolExchange(from, to, amount) {
 function toolCalc(expr) {
   const clean = String(expr).replace(/[^0-9+\-*/().^% ]/g, '').replace(/\^/g, '**').trim();
   if (!clean) return null;
-  try {
-    const r = Function('"use strict"; return (' + clean + ')')();
-    if (typeof r === 'number' && isFinite(r)) return { expr: clean, result: Number.isInteger(r) ? r : parseFloat(r.toFixed(10)) };
-  } catch (e) {}
+  try { const r = Function('"use strict"; return (' + clean + ')')(); if (typeof r === 'number' && isFinite(r)) return { expr: clean, result: Number.isInteger(r) ? r : parseFloat(r.toFixed(10)) }; } catch (e) {}
   return null;
 }
 
@@ -1012,28 +942,22 @@ function formatToolOutput(toolContext){
   if (/\[TOOL: GAMBAR\]/.test(toolContext)) {
     const pm = toolContext.match(/Prompt: (.+)/);
     const um = toolContext.match(/URL_GAMBAR: (.+)/);
-    if (um) out += `🎨 **Gambar: ${pm ? pm[1] : ''}**\n\n![${pm ? pm[1] : 'gambar'}](${um[1].trim()})\n\n_Mohon tunggu 5-15 detik._\n\n`;
+    if (um) {
+      const promptTxt = pm ? pm[1] : 'gambar';
+      const imgUrl = um[1].trim();
+      out += `<div style="margin:8px 0"><div style="background:var(--bg-1);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;font-size:12.5px;color:var(--text-2);margin-bottom:8px">⏳ Generate gambar... (5-15 detik)</div><img src="${imgUrl}" alt="${promptTxt}" loading="lazy" style="max-width:100%;border-radius:12px;border:1px solid var(--border);display:block"></div>`;
+    }
   }
   if (/\[TOOL: CUACA\]/.test(toolContext)) {
-    if (/Gagal deteksi lokasi/.test(toolContext)) {
-      out += `🌤️ **Cuaca**\n\n⚠️ Gagal deteksi lokasi otomatis.\nCoba: **"cuaca Jakarta"** atau sebut nama kota lain.\n\n`;
-    } else {
+    if (/Gagal deteksi lokasi/.test(toolContext)) { out += `🌤️ **Cuaca**\n\n⚠️ Gagal deteksi lokasi. Coba sebut nama kota, contoh: **"cuaca Jakarta"**\n\n`; }
+    else {
       const m = toolContext.match(/Kota: (.+?)\nSuhu: (.+?)\nKondisi: (.+?)\nKelembaban: (.+?)\nAngin: (.+)/);
       if (m) out += `🌤️ **Cuaca ${m[1]}**\n\n🌡️ Suhu: **${m[2]}**\n☁️ Kondisi: **${m[3]}**\n💧 Kelembaban: ${m[4]}\n💨 Angin: ${m[5]}\n\n`;
     }
   }
-  if (/\[TOOL: WAKTU\]/.test(toolContext)) {
-    const m = toolContext.match(/Sekarang: (.+)\nJam: (.+)\nHari: (.+)/);
-    if (m) out += `🕐 **${m[3]}**\n${m[1]}\n\n`;
-  }
-  if (/\[TOOL: KURS\]/.test(toolContext)) {
-    const m = toolContext.match(/(\d+(?:[.,]\d+)?)\s+([A-Z]{3})\s+=\s+([\d.]+)\s+([A-Z]{3})/);
-    if (m) out += `💱 **${m[1]} ${m[2]} = ${m[3]} ${m[4]}**\n\n`;
-  }
-  if (/\[TOOL: KALKULATOR\]/.test(toolContext)) {
-    const m = toolContext.match(/([^\n]+?) = ([^\n]+)/);
-    if (m) out += `🧮 **${m[1].trim()} = ${m[2].trim()}**\n\n`;
-  }
+  if (/\[TOOL: WAKTU\]/.test(toolContext)) { const m = toolContext.match(/Sekarang: (.+)\nJam: (.+)\nHari: (.+)/); if (m) out += `🕐 **${m[3]}**\n${m[1]}\n\n`; }
+  if (/\[TOOL: KURS\]/.test(toolContext)) { const m = toolContext.match(/(\d+(?:[.,]\d+)?)\s+([A-Z]{3})\s+=\s+([\d.]+)\s+([A-Z]{3})/); if (m) out += `💱 **${m[1]} ${m[2]} = ${m[3]} ${m[4]}**\n\n`; }
+  if (/\[TOOL: KALKULATOR\]/.test(toolContext)) { const m = toolContext.match(/([^\n]+?) = ([^\n]+)/); if (m) out += `🧮 **${m[1].trim()} = ${m[2].trim()}**\n\n`; }
   return out.trim();
 }
 
@@ -1044,48 +968,34 @@ async function detectAndRunTools(userMessage) {
   const lower = msg.toLowerCase();
   let ctx = '';
 
-  // 1. Cuaca
   if (/\b(cuaca|hujan|panas|suhu|berawan|mendung|gerimis)\b/.test(lower)) {
     const city = extractCity(msg);
     if (city) {
-      try {
-        const w = await toolWeather(city);
-        ctx += `\n[TOOL: CUACA]\nKota: ${w.city}\nSuhu: ${w.temp}°C\nKondisi: ${w.desc}\nKelembaban: ${w.humidity}%\nAngin: ${w.wind} km/h\n`;
-      } catch (e) {}
+      try { const w = await toolWeather(city); ctx += `\n[TOOL: CUACA]\nKota: ${w.city}\nSuhu: ${w.temp}°C\nKondisi: ${w.desc}\nKelembaban: ${w.humidity}%\nAngin: ${w.wind} km/h\n`; } catch (e) {}
     } else {
       try {
         const geo = await getCurrentLocation();
         let label = 'Lokasi kamu';
         if (geo.city) label = geo.city + (geo.region ? ', ' + geo.region : '');
-        else { const info = await reverseGeocode(geo.lat, geo.lon); label = info ? (info.city + (info.prov ? ', ' + info.prov : '')) : 'Lokasi kamu'; }
         const w = await toolWeatherByCoord(geo.lat, geo.lon, label);
         ctx += `\n[TOOL: CUACA]\nKota: ${w.city}\nSuhu: ${w.temp}°C\nKondisi: ${w.desc}\nKelembaban: ${w.humidity}%\nAngin: ${w.wind} km/h\n`;
-      } catch (e) {
-        ctx += `\n[TOOL: CUACA] Gagal deteksi lokasi: ${e.message}\n`;
-      }
+      } catch (e) { ctx += `\n[TOOL: CUACA] Gagal deteksi lokasi: ${e.message}\n`; }
     }
   }
 
-  // 2. Gambar
   const imgMatch = msg.match(/(?:gambar|image|buatkan|bikin|generate|draw|ilustrasi)\s+(?:tentang|dari)?\s*(.+)/i);
   if (imgMatch && imgMatch[1] && imgMatch[1].trim().length > 2) {
     const prompt = imgMatch[1].trim().replace(/[?.,!]+$/,'');
     if (!/^(apa|siapa|kenapa|mengapa|bagaimana|kapan|dimana)/i.test(prompt)) {
-      try {
-        const img = await toolImage(prompt);
-        _lastToolImage = { url: img.url, prompt: img.prompt };
-        ctx += `\n[TOOL: GAMBAR]\nPrompt: ${img.prompt}\nURL_GAMBAR: ${img.url}\n`;
-      } catch (e) {}
+      try { const img = await toolImage(prompt); _lastToolImage = { url: img.url, prompt: img.prompt }; ctx += `\n[TOOL: GAMBAR]\nPrompt: ${img.prompt}\nURL_GAMBAR: ${img.url}\n`; } catch (e) {}
     }
   }
 
-  // 3. Waktu
   if (/\b(jam berapa|sekarang jam|tanggal berapa|hari ini tanggal|hari apa|sekarang hari)\b/.test(lower)) {
     const dt = toolDateTime();
     ctx += `\n[TOOL: WAKTU]\nSekarang: ${dt.waktu}\nJam: ${dt.jam}\nHari: ${dt.hari}\nTimezone: ${dt.timeZone}\n`;
   }
 
-  // 4. Kurs
   const kursMatch = msg.match(/(\d+(?:[.,]\d+)?)\s*(usd|dollar|idr|rp|rupiah|eur|sgd|myr|jpy|cny|gbp)\s*(?:ke|to|=|berapa)?\s*(idr|rp|rupiah|usd|dollar|eur|sgd|myr|jpy|cny|gbp)?/i);
   if (kursMatch) {
     const amount = parseFloat(kursMatch[1].replace(',', '.'));
@@ -1093,25 +1003,17 @@ async function detectAndRunTools(userMessage) {
     const toRaw = (kursMatch[3] || 'idr').toLowerCase();
     const map = {usd:'USD',dollar:'USD',idr:'IDR',rp:'IDR',rupiah:'IDR',eur:'EUR',sgd:'SGD',myr:'MYR',jpy:'JPY',cny:'CNY',gbp:'GBP'};
     const from = map[fromRaw], to = map[toRaw] || 'IDR';
-    try {
-      const k = await toolExchange(from, to, amount);
-      if (k.result) ctx += `\n[TOOL: KURS]\n${amount} ${from} = ${k.result.toFixed(2)} ${to}\nRate: 1 ${from} = ${k.rate ? k.rate.toFixed(4) : '?'} ${to}\n`;
-    } catch (e) {}
+    try { const k = await toolExchange(from, to, amount); if (k.result) ctx += `\n[TOOL: KURS]\n${amount} ${from} = ${k.result.toFixed(2)} ${to}\nRate: 1 ${from} = ${k.rate ? k.rate.toFixed(4) : '?'} ${to}\n`; } catch (e) {}
   }
 
-  // 5. Kalkulator
   if (/\b(hitung|berapa|hasil)\b/.test(lower) && /[0-9]/.test(msg) && /[+\-*/^%]/.test(msg)) {
     const exprMatch = msg.match(/([0-9+\-*/^%().\s]+)/);
-    if (exprMatch) {
-      const calc = toolCalc(exprMatch[1]);
-      if (calc) ctx += `\n[TOOL: KALKULATOR]\n${calc.expr} = ${calc.result}\n`;
-    }
+    if (exprMatch) { const calc = toolCalc(exprMatch[1]); if (calc) ctx += `\n[TOOL: KALKULATOR]\n${calc.expr} = ${calc.result}\n`; }
   }
 
   return ctx;
 }
 
-/* RAG */
 let _embedderPromise = null;
 let _embedderReady = false;
 
@@ -1119,10 +1021,7 @@ async function getEmbedder(){
   if (_embedderReady && _embedderPromise) return _embedderPromise;
   if (_embedderPromise) return _embedderPromise;
   _embedderPromise = (async () => {
-    const wait = () => new Promise(resolve => {
-      if (window.__transformers && window.__transformers.ready) return resolve();
-      window.addEventListener('transformers-ready', resolve, { once: true });
-    });
+    const wait = () => new Promise(resolve => { if (window.__transformers && window.__transformers.ready) return resolve(); window.addEventListener('transformers-ready', resolve, { once: true }); });
     await wait();
     const { pipeline } = window.__transformers;
     const pipe = await pipeline('feature-extraction', 'Xenova/paraphrase-multilingual-MiniLM-L12-v2', { quantized: true });
@@ -1142,10 +1041,7 @@ async function embedText(text){
 
 async function embedBatch(texts, onProgress){
   const arr = [];
-  for (let i = 0; i < texts.length; i++) {
-    arr.push(await embedText(texts[i]));
-    if (onProgress) onProgress(i + 1, texts.length);
-  }
+  for (let i = 0; i < texts.length; i++) { arr.push(await embedText(texts[i])); if (onProgress) onProgress(i + 1, texts.length); }
   return arr;
 }
 
@@ -1162,11 +1058,7 @@ function chunkDoc(text, maxLen = 900, overlap = 150){
   const chunks = []; let buf = '';
   for (const p of paragraphs) {
     if ((buf + '\n\n' + p).length <= maxLen) buf = buf ? buf + '\n\n' + p : p;
-    else {
-      if (buf) chunks.push(buf);
-      if (p.length <= maxLen) buf = p;
-      else { for (let i = 0; i < p.length; i += maxLen - overlap) chunks.push(p.slice(i, i + maxLen)); buf = ''; }
-    }
+    else { if (buf) chunks.push(buf); if (p.length <= maxLen) buf = p; else { for (let i = 0; i < p.length; i += maxLen - overlap) chunks.push(p.slice(i, i + maxLen)); buf = ''; } }
   }
   if (buf) chunks.push(buf);
   return chunks.filter(c => c.trim().length > 20);
@@ -1175,10 +1067,7 @@ function chunkDoc(text, maxLen = 900, overlap = 150){
 async function kbUpload(title, content){
   const chunks = chunkDoc(content);
   if (!chunks.length) throw new Error('Dokumen kosong / terlalu pendek');
-  const embeddings = await embedBatch(chunks, (i, n) => {
-    const btn = document.getElementById('kbUploadBtn');
-    if (btn) btn.innerHTML = '⏳ Embedding ' + i + '/' + n + '...';
-  });
+  const embeddings = await embedBatch(chunks, (i, n) => { const btn = document.getElementById('kbUploadBtn'); if (btn) btn.innerHTML = '⏳ Embedding ' + i + '/' + n + '...'; });
   const payload = { userKey: ragUserKey(), title, content, chunks: chunks.map((t, i) => ({ text: t, embedding: embeddings[i] })) };
   const res = await fetch(RAG_BASE + '?action=upload', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   const data = await res.json().catch(() => ({}));
@@ -1216,6 +1105,46 @@ function buildKbContext(results){
   return ctx;
 }
 
+/* ============ CHAT SYNC ============ */
+async function chatSyncList(){
+  try { const res = await fetch(CHAT_BASE + '?action=list&userKey=' + encodeURIComponent(getUserId())); if (!res.ok) return null; const data = await res.json(); return data.chats || []; } catch (e) { return null; }
+}
+async function chatSyncSave(chat){
+  try { const res = await fetch(CHAT_BASE + '?action=save', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userKey: getUserId(), chat }) }); return res.ok; } catch (e) { return false; }
+}
+async function chatSyncDelete(id){
+  try { const res = await fetch(CHAT_BASE + '?action=delete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ userKey: getUserId(), id }) }); return res.ok; } catch (e) { return false; }
+}
+let _syncDebounce = {};
+function syncChatToServer(chat){
+  if (!chat || !chat.id) return;
+  if (state.isGuest) return;
+  clearTimeout(_syncDebounce[chat.id]);
+  _syncDebounce[chat.id] = setTimeout(() => { chatSyncSave(chat); }, 1500);
+}
+async function pullChatsFromServer(){
+  if (!state.user || state.isGuest) return false;
+  const remote = await chatSyncList();
+  if (!remote) return false;
+  if (!remote.length) return false;
+  const userId = getUserId();
+  const localChats = state.chatsByUser[userId] || [];
+  const localMap = {}; localChats.forEach(c => { localMap[c.id] = c; });
+  const remoteIds = new Set(); const merged = [];
+  remote.forEach(r => {
+    remoteIds.add(r.id);
+    const localChat = localMap[r.id];
+    const remoteChat = { id: r.id, title: r.title, messages: Array.isArray(r.messages) ? r.messages : [], pinned: !!r.pinned, createdAt: new Date(r.created_at).getTime(), updatedAt: new Date(r.updated_at).getTime() };
+    if (!localChat) merged.push(remoteChat);
+    else { const localTime = localChat.updatedAt || localChat.createdAt || 0; merged.push(remoteChat.updatedAt > localTime ? remoteChat : localChat); }
+  });
+  localChats.forEach(c => { if (!remoteIds.has(c.id)) merged.push(c); });
+  merged.sort((a, b) => (b.updatedAt || b.createdAt || 0) - (a.updatedAt || a.createdAt || 0));
+  state.chatsByUser[userId] = merged;
+  saveAll();
+  return true;
+}
+
 async function apiCall(action,body={},useAuth=false){
   const headers={'Content-Type':'application/json'};
   if(useAuth&&state.token)headers['Authorization']='Bearer '+state.token;
@@ -1227,12 +1156,7 @@ async function apiCall(action,body={},useAuth=false){
 }
 async function apiMe(){
   if(!state.token)return null;
-  try{
-    const res=await fetch(API_BASE+'?action=me',{headers:{'Authorization':'Bearer '+state.token}});
-    if(!res.ok)return null;
-    const data=await res.json();
-    return data.user||null;
-  }catch(e){return null;}
+  try{ const res=await fetch(API_BASE+'?action=me',{headers:{'Authorization':'Bearer '+state.token}}); if(!res.ok)return null; const data=await res.json(); return data.user||null; }catch(e){return null;}
 }
 
 async function searchWeb(query){
@@ -1244,9 +1168,7 @@ async function searchWeb(query){
       if(j.query&&j.query.search&&j.query.search.length){
         const top=j.query.search[0];
         const r2=await fetch('https://id.wikipedia.org/w/api.php?action=query&format=json&origin=*&prop=extracts&exintro=1&explaintext=1&titles='+encodeURIComponent(top.title));
-        const j2=await r2.json();
-        const pages=j2.query&&j2.query.pages;
-        let ex='';
+        const j2=await r2.json(); const pages=j2.query&&j2.query.pages; let ex='';
         if(pages){const k=Object.keys(pages)[0];ex=pages[k].extract||'';}
         results.push({title:top.title,url:'https://id.wikipedia.org/wiki/'+encodeURIComponent(top.title),snippet:ex.slice(0,1500)});
       }
@@ -1268,7 +1190,6 @@ function buildMessages(chat,forVision,extraContext){
   if(state.thinkingMode)sys+='\n\nINSTRUKSI MODE BERPIKIR: Tuliskan proses berpikirmu di dalam tag <thinking>...</thinking>. Setelah tag penutup, berikan jawaban final.';
   if(extraContext)sys+='\n\n'+extraContext;
   if(sys)msgs.push({role:'system',content:sys});
-
   const MAX_CHARS=6000;const MAX_MSGS=12;let totalChars=0;const trimmed=[];
   for(let i=chat.messages.length-1;i>=0;i--){
     const m=chat.messages[i];const len=String(m.content||'').length;
@@ -1278,11 +1199,8 @@ function buildMessages(chat,forVision,extraContext){
   for(const m of trimmed){
     if(m.role==='user'){
       const images=(m.attachments||[]).filter(a=>a.type==='image');
-      if(images.length&&forVision){
-        const parts=[{type:'text',text:m.content||''}];
-        images.forEach(img=>parts.push({type:'image_url',image_url:{url:img.dataUrl}}));
-        msgs.push({role:'user',content:parts});
-      } else msgs.push({role:'user',content:m.content||''});
+      if(images.length&&forVision){const parts=[{type:'text',text:m.content||''}];images.forEach(img=>parts.push({type:'image_url',image_url:{url:img.dataUrl}}));msgs.push({role:'user',content:parts});}
+      else msgs.push({role:'user',content:m.content||''});
     } else if(m.role==='assistant'){
       if(!m.content||!m.content.trim())continue;
       const clean=m.content.replace(/<thinking>[\s\S]*?<\/thinking>/gi,'').trim();
@@ -1294,9 +1212,7 @@ function buildMessages(chat,forVision,extraContext){
 
 async function fetchWithRetry(url,options,retries=1){
   let lastErr;
-  for(let i=0;i<=retries;i++){
-    try{return await fetch(url,options);}catch(e){lastErr=e;if(e.name==='AbortError')throw e;if(i<retries)await new Promise(r=>setTimeout(r,600));}
-  }
+  for(let i=0;i<=retries;i++){try{return await fetch(url,options);}catch(e){lastErr=e;if(e.name==='AbortError')throw e;if(i<retries)await new Promise(r=>setTimeout(r,600));}}
   throw lastErr;
 }
 
@@ -1314,12 +1230,7 @@ async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,onRea
     res=await fetch(proxyUrl,{method:'POST',signal,headers,body:JSON.stringify(bodyObj)});
     if(res.ok){const j=await res.json();const txt=j.choices?.[0]?.message?.content||'';if(txt)onDelta(txt);return;}
   }
-  if(!res.ok){
-    const t=await res.text().catch(()=>'');let hint='';
-    if(res.status===401)hint=' — API key salah';
-    if(res.status===429)hint=' — rate limit';
-    throw new Error('HTTP '+res.status+hint+'. '+t.slice(0,300));
-  }
+  if(!res.ok){const t=await res.text().catch(()=>'');let hint='';if(res.status===401)hint=' — API key salah';if(res.status===429)hint=' — rate limit';throw new Error('HTTP '+res.status+hint+'. '+t.slice(0,300));}
   const reader=res.body.getReader();const decoder=new TextDecoder();let buf='';
   while(true){
     const{value,done}=await reader.read();if(done)break;
@@ -1328,12 +1239,7 @@ async function callOpenAICompatible(provider,apiKey,model,messages,onDelta,onRea
     for(const line of lines){
       const st=line.trim();if(!st.startsWith('data:'))continue;
       const data=st.slice(5).trim();if(data==='[DONE]')return;
-      try{
-        const j=JSON.parse(data);const delta=j.choices?.[0]?.delta;if(!delta)continue;
-        const reasoning=delta.reasoning_content||delta.reasoning||'';
-        if(reasoning&&onReasoning)onReasoning(reasoning);
-        if(delta.content)onDelta(delta.content);
-      }catch(e){}
+      try{const j=JSON.parse(data);const delta=j.choices?.[0]?.delta;if(!delta)continue;const reasoning=delta.reasoning_content||delta.reasoning||'';if(reasoning&&onReasoning)onReasoning(reasoning);if(delta.content)onDelta(delta.content);}catch(e){}
     }
   }
 }
@@ -1345,9 +1251,8 @@ async function callGemini(apiKey,model,messages,onDelta,onReasoning,signal){
     if(m.role==='system'){systemText+=m.content+'\n';continue;}
     const role=m.role==='assistant'?'model':'user';
     let parts;
-    if(Array.isArray(m.content)){
-      parts=m.content.map(p=>{if(p.type==='text')return{text:p.text};if(p.type==='image_url'){const mm=p.image_url.url.match(/^data:(.+?);base64,(.+)$/);if(mm)return{inline_data:{mime_type:mm[1],data:mm[2]}};}return null;}).filter(Boolean);
-    }else{if(!m.content||!String(m.content).trim())continue;parts=[{text:String(m.content)}];}
+    if(Array.isArray(m.content)){parts=m.content.map(p=>{if(p.type==='text')return{text:p.text};if(p.type==='image_url'){const mm=p.image_url.url.match(/^data:(.+?);base64,(.+)$/);if(mm)return{inline_data:{mime_type:mm[1],data:mm[2]}};}return null;}).filter(Boolean);}
+    else{if(!m.content||!String(m.content).trim())continue;parts=[{text:String(m.content)}];}
     if(!parts.length)continue;
     contents.push({role,parts});
   }
@@ -1368,11 +1273,7 @@ async function callGemini(apiKey,model,messages,onDelta,onReasoning,signal){
     for(const line of lines){
       const st=line.trim();if(!st.startsWith('data:'))continue;
       const data=st.slice(5).trim();if(!data)continue;
-      try{
-        const j=JSON.parse(data);
-        const parts=j.candidates?.[0]?.content?.parts||[];
-        parts.forEach(p=>{if(p.thought&&onReasoning)onReasoning(p.text||'');else if(p.text)onDelta(p.text);});
-      }catch(e){}
+      try{const j=JSON.parse(data);const parts=j.candidates?.[0]?.content?.parts||[];parts.forEach(p=>{if(p.thought&&onReasoning)onReasoning(p.text||'');else if(p.text)onDelta(p.text);});}catch(e){}
     }
   }
 }
@@ -1396,10 +1297,8 @@ async function callAnthropic(apiKey,model,messages,onDelta,onReasoning,signal){
   const s=currentSettings();let system='';const msgs=[];
   for(const m of messages){
     if(m.role==='system'){system+=m.content+'\n';continue;}
-    if(Array.isArray(m.content)){
-      const content=m.content.map(p=>{if(p.type==='text')return{type:'text',text:p.text};if(p.type==='image_url'){const mm=p.image_url.url.match(/^data:(.+?);base64,(.+)$/);if(mm)return{type:'image',source:{type:'base64',media_type:mm[1],data:mm[2]}};}return null;}).filter(Boolean);
-      msgs.push({role:m.role,content});
-    }else{if(!m.content||!String(m.content).trim())continue;msgs.push({role:m.role,content:m.content});}
+    if(Array.isArray(m.content)){const content=m.content.map(p=>{if(p.type==='text')return{type:'text',text:p.text};if(p.type==='image_url'){const mm=p.image_url.url.match(/^data:(.+?);base64,(.+)$/);if(mm)return{type:'image',source:{type:'base64',media_type:mm[1],data:mm[2]}};}return null;}).filter(Boolean);msgs.push({role:m.role,content});}
+    else{if(!m.content||!String(m.content).trim())continue;msgs.push({role:m.role,content:m.content});}
   }
   const res=await fetchWithRetry(PROVIDERS.anthropic.url,{method:'POST',signal,headers:{'Content-Type':'application/json','x-api-key':apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model,max_tokens:s.maxTokens,temperature:s.temperature,system:system.trim()||undefined,messages:msgs,stream:true})},1);
   if(!res.ok){const t=await res.text().catch(()=>'');throw new Error('HTTP '+res.status+': '+(t.slice(0,200)||res.statusText));}
@@ -1420,53 +1319,35 @@ async function streamChat(onDelta,onReasoning,signal){
   const s=currentSettings();const p=s.provider;const cfg=PROVIDERS[p];
   const chatEarly=getActiveChat();
   const lastUserEarly = [...chatEarly.messages].reverse().find(m=>m.role==='user');
-
   let toolContext = '';
-  if (lastUserEarly && lastUserEarly.content) {
-    try { toolContext = await detectAndRunTools(lastUserEarly.content); } catch (e) {}
-  }
+  if (lastUserEarly && lastUserEarly.content) { try { toolContext = await detectAndRunTools(lastUserEarly.content); } catch (e) {} }
 
   const _toolFormatted = formatToolOutput(toolContext);
   if (_toolFormatted) {
-    for (let i = 0; i < _toolFormatted.length; i++) {
-      if (signal && signal.aborted) break;
-      onDelta(_toolFormatted[i]);
-      if (i % 5 === 0) await new Promise(r => setTimeout(r, 4));
-    }
+    for (let i = 0; i < _toolFormatted.length; i++) { if (signal && signal.aborted) break; onDelta(_toolFormatted[i]); if (i % 5 === 0) await new Promise(r => setTimeout(r, 4)); }
     return;
   }
 
   if(cfg.type==='syonbot'){
     const reply=syonBotReply(lastUserEarly?.content||'');
-    for(let i=0;i<reply.length;i++){
-      if(signal&&signal.aborted)break;
-      onDelta(reply[i]);
-      if(i%3===0)await new Promise(r=>setTimeout(r,6));
-    }
+    for(let i=0;i<reply.length;i++){if(signal&&signal.aborted)break;onDelta(reply[i]);if(i%3===0)await new Promise(r=>setTimeout(r,6));}
     return;
   }
 
   const key=s.keys[p];
   if(!key&&p!=='custom')throw new Error('API key belum diisi untuk '+cfg.name);
   if(p==='custom'&&!s.customUrl)throw new Error('URL endpoint custom belum diisi');
-  const chat=chatEarly;
-  const lastUser=lastUserEarly;
+  const chat=chatEarly; const lastUser=lastUserEarly;
 
   let searchContext='';
-  if(state.searchMode && lastUser && lastUser.content){
-    try{const results=await searchWeb(lastUser.content);if(results.length)searchContext=buildSearchContext(results);}catch(e){}
-  }
+  if(state.searchMode && lastUser && lastUser.content){try{const results=await searchWeb(lastUser.content);if(results.length)searchContext=buildSearchContext(results);}catch(e){}}
 
   let kbContext = '';
-  if (state.useKB && lastUser && lastUser.content) {
-    try { const kbResults = await kbSearch(lastUser.content, 3); if (kbResults.length) kbContext = buildKbContext(kbResults); } catch (e) {}
-  }
+  if (state.useKB && lastUser && lastUser.content) { try { const kbResults = await kbSearch(lastUser.content, 3); if (kbResults.length) kbContext = buildKbContext(kbResults); } catch (e) {} }
 
   const messages=buildMessages(chat,cfg.vision,searchContext + kbContext + toolContext);
   let finalModel=s.model;
-  if(!finalModel||finalModel==='gemini-api'||finalModel==='(belum ada model)'){
-    finalModel=cfg.models[0];s.model=finalModel;saveAll();updateTopbar();
-  }
+  if(!finalModel||finalModel==='gemini-api'||finalModel==='(belum ada model)'){finalModel=cfg.models[0];s.model=finalModel;saveAll();updateTopbar();}
   if(cfg.type==='gemini')return await callGeminiSmart(key,finalModel,messages,onDelta,onReasoning,signal);
   if(cfg.type==='anthropic')return callAnthropic(key,finalModel,messages,onDelta,onReasoning,signal);
   const providerCfg=p==='custom'?{...cfg,url:s.customUrl}:cfg;
@@ -1487,12 +1368,7 @@ async function fetchDirect(url,headers,timeoutMs=7000){
 async function fetchViaProxy(url,headers,timeoutMs=15000){
   const proxies=['https://api.allorigins.win/raw?url='+encodeURIComponent(url),'https://corsproxy.io/?'+encodeURIComponent(url)];
   let lastErr=null;
-  for(const proxyUrl of proxies){
-    try{
-      const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),timeoutMs);
-      try{const r=await fetch(proxyUrl,{signal:ctrl.signal});if(r.ok)return r;lastErr=new Error('HTTP '+r.status);}finally{clearTimeout(t);}
-    }catch(e){lastErr=e;continue;}
-  }
+  for(const proxyUrl of proxies){try{const ctrl=new AbortController();const t=setTimeout(()=>ctrl.abort(),timeoutMs);try{const r=await fetch(proxyUrl,{signal:ctrl.signal});if(r.ok)return r;lastErr=new Error('HTTP '+r.status);}finally{clearTimeout(t);}}catch(e){lastErr=e;continue;}}
   throw lastErr||new Error('Semua proxy gagal');
 }
 
@@ -1503,10 +1379,7 @@ async function tryFetchModels(pid,apiKey){
   if(pid==='gemini')headers['x-goog-api-key']=apiKey;
   else if(pid==='anthropic'){headers['x-api-key']=apiKey;headers['anthropic-version']='2023-06-01';headers['anthropic-dangerous-direct-browser-access']='true';}
   else headers['Authorization']='Bearer '+apiKey;
-  try{
-    const r=await fetchDirect(cfg.modelsEndpoint,headers,6000);
-    if(r.ok){const j=await r.json();const models=parseModels(j,cfg.modelsParser);if(models.length){cfg._chatModels=models;return{models};}}
-  }catch(e){}
+  try{const r=await fetchDirect(cfg.modelsEndpoint,headers,6000);if(r.ok){const j=await r.json();const models=parseModels(j,cfg.modelsParser);if(models.length){cfg._chatModels=models;return{models};}}}catch(e){}
   const r2=await fetchViaProxy(cfg.modelsEndpoint,headers,15000);
   if(!r2.ok)throw new Error('Proxy HTTP '+r2.status);
   const j2=await r2.json();
@@ -1518,12 +1391,7 @@ async function tryFetchModels(pid,apiKey){
 async function detectProviderFromKey(apiKey){
   const logEl=$('#autoDetectLog');
   logEl.innerHTML='';logEl.classList.add('show');
-  const log=(status,msg)=>{
-    const line=document.createElement('div');line.className='line '+status;
-    let ico='•';if(status==='ok')ico='✓';else if(status==='bad')ico='✗';else if(status==='info')ico='→';else if(status==='warn')ico='⚠';
-    line.innerHTML='<span class="ico">'+ico+'</span><span>'+esc(msg)+'</span>';
-    logEl.appendChild(line);logEl.scrollTop=logEl.scrollHeight;
-  };
+  const log=(status,msg)=>{const line=document.createElement('div');line.className='line '+status;let ico='•';if(status==='ok')ico='✓';else if(status==='bad')ico='✗';else if(status==='info')ico='→';else if(status==='warn')ico='⚠';line.innerHTML='<span class="ico">'+ico+'</span><span>'+esc(msg)+'</span>';logEl.appendChild(line);logEl.scrollTop=logEl.scrollHeight;};
   const trimmed=apiKey.trim();
   if(!trimmed){log('bad','API key kosong');return null;}
   const priority=[];
@@ -1538,10 +1406,7 @@ async function detectProviderFromKey(apiKey){
     if(pid==='syonbot'||pid==='custom')continue;
     const cfg=PROVIDERS[pid];if(!cfg||!cfg.modelsEndpoint)continue;
     log('info','Mencoba '+cfg.name+'...');
-    try{
-      const result=await tryFetchModels(pid,trimmed);
-      if(result&&result.models&&result.models.length){log('ok',cfg.name+' — '+result.models.length+' model');return{provider:pid,models:result.models,key:trimmed};}
-    }catch(e){}
+    try{const result=await tryFetchModels(pid,trimmed);if(result&&result.models&&result.models.length){log('ok',cfg.name+' — '+result.models.length+' model');return{provider:pid,models:result.models,key:trimmed};}}catch(e){}
   }
   return null;
 }
@@ -1589,9 +1454,7 @@ async function runDiagnoseAll(){
     results.push(res);
   }
   let html='<div class="diagnose-summary"><b>'+results.length+' provider</b></div><table class="diagnose-table"><thead><tr><th>Provider</th><th>Status</th></tr></thead><tbody>';
-  results.forEach(r=>{
-    html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+(r.models==='ok'?'<span class="badge-ok">OK ('+r.modelCount+' model)</span>':'<span class="badge-fail">GAGAL</span>')+'</td></tr>';
-  });
+  results.forEach(r=>{html+='<tr><td><div class="pname-cell">'+esc(r.name)+'</div>'+(r.note?'<div class="note">'+esc(r.note)+'</div>':'')+'</td><td>'+(r.models==='ok'?'<span class="badge-ok">OK ('+r.modelCount+' model)</span>':'<span class="badge-fail">GAGAL</span>')+'</td></tr>';});
   html+='</tbody></table>';
   resultEl.innerHTML=html;
   btn.disabled=false;btn.innerHTML='Cek Semua AI';
@@ -1600,17 +1463,19 @@ async function runDiagnoseAll(){
 </script>
 
 <script>
-/* SYON AI v28 — Part 3/4: Chat, Auth, Init */
+/* SYON AI v29 — Part 3/4 */
 
 function createChat(){
-  const chat={id:uid(),title:'Obrolan Baru',messages:[],createdAt:Date.now()};
+  const chat={id:uid(),title:'Obrolan Baru',messages:[],createdAt:Date.now(),updatedAt:Date.now()};
   currentChats().unshift(chat);setCurrentChatId(chat.id);
   saveAll();renderChatList();renderChat();
+  syncChatToServer(chat);
   return chat;
 }
 function deleteChat(id){
   const arr=currentChats();const i=arr.findIndex(c=>c.id===id);if(i<0)return;
   arr.splice(i,1);
+  chatSyncDelete(id);
   if(currentChatId()===id)setCurrentChatId(arr[0]?.id||null);
   if(state.pinnedChats[getUserId()]===id)delete state.pinnedChats[getUserId()];
   saveAll();renderChatList();renderChat();
@@ -1630,31 +1495,24 @@ function renderChatList(){
   const list=$('#chatList');if(!list)return;
   list.innerHTML='';
   let chats=currentChats();
-  if(state.searchQuery){
-    const q=state.searchQuery.toLowerCase();
-    chats=chats.filter(c=>c.title.toLowerCase().includes(q)||c.messages.some(m=>m.content?.toLowerCase().includes(q)));
-  }
-  if(!chats.length){
-    list.innerHTML='<div style="padding:20px 12px;color:var(--text-2);font-size:12.5px;text-align:center">'+(state.searchQuery?'Tidak ada hasil':'Belum ada obrolan')+'</div>';
-    return;
-  }
+  if(state.searchQuery){const q=state.searchQuery.toLowerCase();chats=chats.filter(c=>c.title.toLowerCase().includes(q)||c.messages.some(m=>m.content?.toLowerCase().includes(q)));}
+  if(!chats.length){list.innerHTML='<div style="padding:20px 12px;color:var(--text-2);font-size:12.5px;text-align:center">'+(state.searchQuery?'Tidak ada hasil':'Belum ada obrolan')+'</div>';return;}
   const pinnedId=state.pinnedChats[getUserId()];
   const pinned=chats.filter(c=>c.id===pinnedId);
   const unpinned=chats.filter(c=>c.id!==pinnedId);
-
   const createItem=(c)=>{
     const el=document.createElement('div');
     const isPinned=c.id===pinnedId;
     el.className='chat-item'+(c.id===currentChatId()?' active':'');
     el.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0;opacity:.6"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span class="title">'+esc(c.title)+'</span><button class="pin'+(isPinned?' active':'')+'" title="Pin">📌</button><button class="del" title="Hapus">✕</button>';
-    el.addEventListener('click',e=>{
-      if(e.target.closest('.del')||e.target.closest('.pin')||e.target.closest('.title-input'))return;
-      setCurrentChatId(c.id);renderChatList();renderChat();closeSidebarMobile();
-    });
+    el.addEventListener('click',e=>{if(e.target.closest('.del')||e.target.closest('.pin')||e.target.closest('.title-input'))return;setCurrentChatId(c.id);renderChatList();renderChat();closeSidebarMobile();});
     el.querySelector('.pin').addEventListener('click',e=>{
       e.stopPropagation();const uid=getUserId();
-      if(state.pinnedChats[uid]===c.id)delete state.pinnedChats[uid];else state.pinnedChats[uid]=c.id;
+      const nowPinned = state.pinnedChats[uid]!==c.id;
+      if(!nowPinned)delete state.pinnedChats[uid];else state.pinnedChats[uid]=c.id;
       saveAll();renderChatList();
+      const ch=currentChats().find(x=>x.id===c.id);
+      if(ch){ch.pinned=nowPinned;syncChatToServer(ch);}
     });
     el.querySelector('.del').addEventListener('click',e=>{e.stopPropagation();deleteChat(c.id);});
     const titleEl=el.querySelector('.title');
@@ -1662,16 +1520,13 @@ function renderChatList(){
       e.stopPropagation();
       const input=document.createElement('input');input.className='title-input';input.value=c.title;input.maxLength=50;
       titleEl.replaceWith(input);input.focus();input.select();
-      const commit=()=>{const nv=input.value.trim();if(nv)c.title=nv;saveAll();renderChatList();};
+      const commit=()=>{const nv=input.value.trim();if(nv)c.title=nv;saveAll();renderChatList();syncChatToServer(c);};
       input.addEventListener('blur',commit);
       input.addEventListener('keydown',ev=>{if(ev.key==='Enter'){ev.preventDefault();input.blur();}if(ev.key==='Escape')renderChatList();});
     });
     return el;
   };
-  if(pinned.length){
-    const sec=document.createElement('div');sec.className='sidebar-section';sec.textContent='Dipin';
-    list.appendChild(sec);pinned.forEach(c=>list.appendChild(createItem(c)));
-  }
+  if(pinned.length){const sec=document.createElement('div');sec.className='sidebar-section';sec.textContent='Dipin';list.appendChild(sec);pinned.forEach(c=>list.appendChild(createItem(c)));}
   const groups={};
   unpinned.forEach(c=>{const g=getDateGroup(c.createdAt||Date.now());if(!groups[g])groups[g]=[];groups[g].push(c);});
   ['Hari Ini','Kemarin','7 Hari Terakhir','Lebih Lama'].forEach(label=>{
@@ -1711,13 +1566,13 @@ function renderChat(){
     return;
   }
   chat.messages.forEach((m,idx)=>{
-  // Skip assistant kosong yang lagi di-stream (biar nggak dobel)
-  if(m.role==='assistant' && !m.content && idx === chat.messages.length-1 && state.generating){
-    return;
-  }
-  const div=document.createElement('div');
-  div.className='msg '+(m.role==='user'?'user':'bot');
-  div.dataset.idx=idx;
+    // Skip assistant placeholder yang kosong saat lagi streaming
+    if(m.role==='assistant' && !m.content && idx===chat.messages.length-1 && state.generating){
+      return;
+    }
+    const div=document.createElement('div');
+    div.className='msg '+(m.role==='user'?'user':'bot');
+    div.dataset.idx=idx;
     let html='';
     if(m.role==='user'){
       html=esc(m.content).replace(/\n/g,'<br>');
@@ -1744,14 +1599,14 @@ function handleMessageAction(act,idx,btnEl){
   const chat=getActiveChat();if(!chat)return;
   const m=chat.messages[idx];if(!m)return;
   if(act==='copy'){navigator.clipboard.writeText(m.content).then(()=>toast('Disalin'));}
-  else if(act==='del'){chat.messages.splice(idx,1);saveAll();renderChat();}
+  else if(act==='del'){chat.messages.splice(idx,1);chat.updatedAt=Date.now();saveAll();renderChat();syncChatToServer(chat);}
   else if(act==='speak'){if(speechSynthesis.speaking){stopSpeaking();return;}speak(m.content,{onStart:()=>{if(btnEl)btnEl.classList.add('speaking');},onEnd:()=>{if(btnEl)btnEl.classList.remove('speaking');}});}
   else if(act==='edit'){
     const msgEl=$('.msg[data-idx="'+idx+'"] .content');if(!msgEl)return;
     msgEl.innerHTML='<textarea class="edit-area">'+esc(m.content)+'</textarea>';
     const ta=msgEl.querySelector('.edit-area');ta.focus();
     const saveBtn=document.createElement('button');saveBtn.className='btn-primary';saveBtn.style.marginTop='8px';saveBtn.textContent='Simpan & Kirim Ulang';
-    saveBtn.addEventListener('click',()=>{const nv=ta.value.trim();if(!nv)return;chat.messages[idx].content=nv;chat.messages=chat.messages.slice(0,idx+1);saveAll();renderChat();regenerateFrom(idx);});
+    saveBtn.addEventListener('click',()=>{const nv=ta.value.trim();if(!nv)return;chat.messages[idx].content=nv;chat.messages=chat.messages.slice(0,idx+1);chat.updatedAt=Date.now();saveAll();renderChat();regenerateFrom(idx);});
     msgEl.appendChild(saveBtn);
   }
   else if(act==='regen'){
@@ -1777,13 +1632,15 @@ async function regenerateFrom(userIdx){
       controller.signal
     );
     delete chat.messages[botIdx].hasError;
-    chat.messages[botIdx].content=acc;saveAll();renderChat();
+    chat.messages[botIdx].content=acc;
+    chat.updatedAt=Date.now();
+    saveAll();renderChat();
     if(state.voice.enabled)speak(acc);
   }catch(err){
     if(err.name==='AbortError')chat.messages[botIdx].content=acc+'\n\n_[Dihentikan]_';
     else{chat.messages[botIdx].content=acc+'\n\n**❌ Error:** '+esc(err.message||'Gagal');chat.messages[botIdx].hasError=true;toast('Gagal: '+(err.message||'').slice(0,60),true);}
     saveAll();renderChat();
-  }finally{state.generating=false;currentAbort=null;updateSendBtn();}
+  }finally{state.generating=false;currentAbort=null;updateSendBtn();syncChatToServer(chat);}
 }
 
 let autoScroll=true;
@@ -1820,18 +1677,21 @@ function _doUpdateStreamingBot(html){
 let currentAbort=null;
 async function sendMessage(){
   if(state.generating)return;
-  const input=$('#input');if(!input)return;
+  state.generating=true;
+  updateSendBtn();
+  const input=$('#input');
+  if(!input){state.generating=false;updateSendBtn();return;}
   const text=input.value.trim();
   const hasAttach=state.attachments.length>0;
-  if(!text&&!hasAttach)return;
+  if(!text&&!hasAttach){state.generating=false;updateSendBtn();return;}
   try{
     let chat=getActiveChat();if(!chat)chat=createChat();
     chat.messages.push({role:'user',content:text,attachments:state.attachments.slice()});
+    chat.updatedAt=Date.now();
     if(chat.messages.filter(m=>m.role==='user').length===1){chat.title=(text||'Gambar').slice(0,40);renderChatList();}
     state.attachments=[];renderAttachments();input.value='';autoGrow(input);
     saveAll();renderChat();
     chat.messages.push({role:'assistant',content:'',sources:[]});const botIdx=chat.messages.length-1;
-    state.generating=true;updateSendBtn();
     const controller=new AbortController();currentAbort=controller;let acc='';let reasoningBuf='';
     updateStreamingBot('');
     try{
@@ -1841,14 +1701,25 @@ async function sendMessage(){
         controller.signal
       );
       delete chat.messages[botIdx].hasError;
-      chat.messages[botIdx].content=acc;saveAll();renderChat();
+      chat.messages[botIdx].content=acc;
+      chat.updatedAt=Date.now();
+      saveAll();renderChat();
       if(state.voice.enabled)speak(acc);
     }catch(err){
       if(err.name==='AbortError')chat.messages[botIdx].content=acc+'\n\n_[Dihentikan]_';
       else{const em=err.message||'Gagal';chat.messages[botIdx].content=acc+'\n\n**❌ Error:** '+esc(em);chat.messages[botIdx].hasError=true;toast('Gagal: '+em.slice(0,60),true);}
       saveAll();renderChat();
-    }finally{state.generating=false;currentAbort=null;updateSendBtn();}
-  }catch(err){toast('Error: '+err.message,true);state.generating=false;updateSendBtn();}
+    }finally{
+      state.generating=false;
+      currentAbort=null;
+      updateSendBtn();
+      syncChatToServer(chat);
+    }
+  }catch(err){
+    toast('Error: '+err.message,true);
+    state.generating=false;
+    updateSendBtn();
+  }
 }
 
 window.retryLastMessage=async function(){
@@ -1865,16 +1736,21 @@ window.retryLastMessage=async function(){
   updateStreamingBot('');
   try{
     await streamChat(delta=>{acc+=delta;chat.messages[botIdx].content=acc;updateStreamingBot(renderMarkdown(acc));},r=>{reasoningBuf+=(reasoningBuf?'\n':'')+r;},controller.signal);
-    delete chat.messages[botIdx].hasError;chat.messages[botIdx].content=acc;saveAll();renderChat();toast('Berhasil! ✓');
+    delete chat.messages[botIdx].hasError;chat.messages[botIdx].content=acc;chat.updatedAt=Date.now();saveAll();renderChat();toast('Berhasil! ✓');
   }catch(err){
     chat.messages[botIdx].content=(acc||'')+'\n\n**❌ Error:** '+esc(err.message||'Gagal');chat.messages[botIdx].hasError=true;saveAll();renderChat();
-  }finally{state.generating=false;currentAbort=null;updateSendBtn();}
+  }finally{state.generating=false;currentAbort=null;updateSendBtn();syncChatToServer(chat);}
 };
 
 function updateSendBtn(){
   const btn=$('#sendBtn');if(!btn)return;
-  if(state.generating)btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
-  else btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+  if(state.generating){
+    btn.innerHTML='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>';
+    btn.disabled=true;
+  } else {
+    btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>';
+    btn.disabled=false;
+  }
 }
 
 function renderAttachments(){
@@ -1978,7 +1854,6 @@ function openModelModal(){
   const listEl = $('#quickModelList');
   const searchEl = $('#modelSearch');
   if (!listEl) return;
-
   const allModels = [];
   Object.entries(PROVIDERS).forEach(([pid, cfg]) => {
     if (pid !== 'syonbot' && pid !== 'custom' && !s.keys[pid]) return;
@@ -1987,47 +1862,25 @@ function openModelModal(){
     if (s.fetchedModels[pid]?.length) models = s.fetchedModels[pid].slice();
     else if (cfg.models?.length) models = cfg.models.slice();
     models = models.filter(isChatModel);
-    models.forEach(m => {
-      allModels.push({
-        provider: pid, providerName: cfg.name, model: m,
-        active: s.provider === pid && s.model === m,
-        favorite: (s.favModels || []).includes(m)
-      });
-    });
+    models.forEach(m => { allModels.push({ provider: pid, providerName: cfg.name, model: m, active: s.provider === pid && s.model === m, favorite: (s.favModels || []).includes(m) }); });
   });
-
-  allModels.sort((a, b) => {
-    if (a.active !== b.active) return a.active ? -1 : 1;
-    if (a.favorite !== b.favorite) return a.favorite ? -1 : 1;
-    return a.model.localeCompare(b.model);
-  });
-
+  allModels.sort((a, b) => { if (a.active !== b.active) return a.active ? -1 : 1; if (a.favorite !== b.favorite) return a.favorite ? -1 : 1; return a.model.localeCompare(b.model); });
   function render(filter) {
     listEl.innerHTML = '';
     const q = String(filter || '').toLowerCase().trim();
     const filtered = q ? allModels.filter(x => x.model.toLowerCase().includes(q) || x.providerName.toLowerCase().includes(q)) : allModels;
-    if (!filtered.length) {
-      listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-2);font-size:13px">' + (q ? 'Tidak ada model yang cocok' : 'Belum ada model. Tambah AI dulu di Setelan.') + '</div>';
-      return;
-    }
+    if (!filtered.length) { listEl.innerHTML = '<div style="padding:20px;text-align:center;color:var(--text-2);font-size:13px">' + (q ? 'Tidak ada model yang cocok' : 'Belum ada model. Tambah AI dulu di Setelan.') + '</div>'; return; }
     filtered.forEach(item => {
       const el = document.createElement('div');
       el.style.cssText = 'padding:12px 14px;border:1px solid var(--border);border-radius:10px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:8px;background:var(--bg-1);transition:all .15s';
       if (item.active) { el.style.borderColor='var(--accent)'; el.style.background='var(--accent-soft)'; }
-      el.innerHTML = '<div style="min-width:0;flex:1"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' +
-        (item.favorite ? '★ ' : '') + esc(item.model) + '</div><div style="font-size:11px;color:var(--text-2);margin-top:2px">' + esc(item.providerName) + '</div></div>' +
-        (item.active ? '<div style="color:var(--accent);font-size:16px;flex-shrink:0">✓</div>' : '');
-      el.addEventListener('click', () => {
-        _selectedModelItem = item;
-        listEl.querySelectorAll('[data-mcard]').forEach(x => { x.style.borderColor='var(--border)'; x.style.background='var(--bg-1)'; });
-        el.style.borderColor='var(--accent)'; el.style.background='var(--accent-soft)';
-      });
+      el.innerHTML = '<div style="min-width:0;flex:1"><div style="font-size:13px;font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + (item.favorite ? '★ ' : '') + esc(item.model) + '</div><div style="font-size:11px;color:var(--text-2);margin-top:2px">' + esc(item.providerName) + '</div></div>' + (item.active ? '<div style="color:var(--accent);font-size:16px;flex-shrink:0">✓</div>' : '');
+      el.addEventListener('click', () => { _selectedModelItem = item; listEl.querySelectorAll('[data-mcard]').forEach(x => { x.style.borderColor='var(--border)'; x.style.background='var(--bg-1)'; }); el.style.borderColor='var(--accent)'; el.style.background='var(--accent-soft)'; });
       el.dataset.mcard = '1';
       if (item.active) _selectedModelItem = item;
       listEl.appendChild(el);
     });
   }
-
   render('');
   if (searchEl) { searchEl.value = ''; searchEl.oninput = () => render(searchEl.value); }
   $('#modelModal').classList.add('show');
@@ -2073,11 +1926,7 @@ function renderPrompts(){
 function renderShortcuts(){
   const list=$('#shortcutsList');if(!list)return;
   list.innerHTML='';
-  SHORTCUTS.forEach(([k,d])=>{
-    const el=document.createElement('div');el.className='shortcut-row';
-    el.innerHTML='<span>'+esc(d)+'</span><span class="kbd">'+esc(k)+'</span>';
-    list.appendChild(el);
-  });
+  SHORTCUTS.forEach(([k,d])=>{const el=document.createElement('div');el.className='shortcut-row';el.innerHTML='<span>'+esc(d)+'</span><span class="kbd">'+esc(k)+'</span>';list.appendChild(el);});
 }
 function renderVoiceModal(){
   populateVoiceSelect();
@@ -2128,12 +1977,25 @@ function enterApp(){
   hideLogin();
   setTimeout(()=>{
     renderProfileHeader();
-    if(!currentChats().length)createChat();
-    else{
+    if(state.user && !state.isGuest){
+      pullChatsFromServer().then(updated=>{
+        if(updated){renderChatList();renderChat();toast('☁️ Chat disinkronkan');}
+        else if(!currentChats().length)createChat();
+        else{ if(!currentChatId()||!currentChats().find(c=>c.id===currentChatId()))setCurrentChatId(currentChats()[0].id); renderChatList();renderChat(); }
+        updateTopbar();
+      }).catch(()=>{
+        if(!currentChats().length)createChat();
+        else{ if(!currentChatId()||!currentChats().find(c=>c.id===currentChatId()))setCurrentChatId(currentChats()[0].id); renderChatList();renderChat(); }
+        updateTopbar();
+      });
+    } else if(!currentChats().length){
+      createChat();
+      updateTopbar();
+    } else {
       if(!currentChatId()||!currentChats().find(c=>c.id===currentChatId()))setCurrentChatId(currentChats()[0].id);
       renderChatList();renderChat();
+      updateTopbar();
     }
-    updateTopbar();
   },50);
 }
 async function afterLogin(user,token,isGuest){
@@ -2280,15 +2142,9 @@ async function init(){
     $('#searchModeBtn')?.addEventListener('click',toggleSearchMode);
 
     const kbModal = $('#kbModal');const kbModelStatus = $('#kbModelStatus');const kbUploadBtn = $('#kbUploadBtn');
-
     (async () => {
-      try {
-        await getEmbedder();
-        if (kbModelStatus) { kbModelStatus.textContent = '✅ Model embedding siap'; kbModelStatus.style.color = 'var(--success)'; }
-        if (kbUploadBtn) kbUploadBtn.disabled = false;
-      } catch (e) {
-        if (kbModelStatus) { kbModelStatus.textContent = '❌ Gagal load model: ' + e.message; kbModelStatus.style.color = 'var(--danger)'; }
-      }
+      try { await getEmbedder(); if (kbModelStatus) { kbModelStatus.textContent = '✅ Model embedding siap'; kbModelStatus.style.color = 'var(--success)'; } if (kbUploadBtn) kbUploadBtn.disabled = false; }
+      catch (e) { if (kbModelStatus) { kbModelStatus.textContent = '❌ Gagal load model: ' + e.message; kbModelStatus.style.color = 'var(--danger)'; } }
     })();
 
     function renderKbList(){
@@ -2326,20 +2182,15 @@ async function init(){
       if (!content) { toast('Isi dokumen dulu', true); return; }
       const old = kbUploadBtn.innerHTML;
       kbUploadBtn.disabled = true; kbUploadBtn.innerHTML = '⏳ Menyiapkan model...';
-      try {
-        await kbUpload(title, content);
-        toast('✓ Tersimpan & ter-embed!');
-        $('#kbTitle').value = ''; $('#kbContent').value = '';
-        if (kbCharEl) kbCharEl.textContent = '0 karakter';
-        renderKbList();
-      } catch (e) { toast('Gagal: ' + e.message, true); }
+      try { await kbUpload(title, content); toast('✓ Tersimpan & ter-embed!'); $('#kbTitle').value = ''; $('#kbContent').value = ''; if (kbCharEl) kbCharEl.textContent = '0 karakter'; renderKbList(); }
+      catch (e) { toast('Gagal: ' + e.message, true); }
       finally { kbUploadBtn.disabled = false; kbUploadBtn.innerHTML = old; }
     });
 
     $('#kbAutoToggle')?.addEventListener('change', e => { state.useKB = !!e.target.checked; saveAll(); toast(state.useKB ? '📚 KB ON' : 'KB OFF'); });
 
     $('#backupBtn')?.addEventListener('click',()=>{
-      const data={version:'v28',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
+      const data={version:'v29',exportedAt:new Date().toISOString(),state:{chatsByUser:state.chatsByUser,settingsByUser:state.settingsByUser,pinnedChats:state.pinnedChats,theme:state.theme,voice:state.voice}};
       const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
       const url=URL.createObjectURL(blob);
       const a=document.createElement('a');a.href=url;a.download='syon-backup-'+new Date().toISOString().slice(0,10)+'.json';
@@ -2349,13 +2200,7 @@ async function init(){
     const chatScrollEl=$('#chatScroll');const scrollBtn=$('#scrollBottomBtn');
     if(chatScrollEl&&scrollBtn){
       let _sd;
-      chatScrollEl.addEventListener('scroll',()=>{
-        clearTimeout(_sd);
-        _sd=setTimeout(()=>{
-          const dist=chatScrollEl.scrollHeight-chatScrollEl.scrollTop-chatScrollEl.clientHeight;
-          if(dist>200){scrollBtn.classList.add('show');autoScroll=false;}else{scrollBtn.classList.remove('show');autoScroll=true;}
-        },60);
-      },{passive:true});
+      chatScrollEl.addEventListener('scroll',()=>{clearTimeout(_sd);_sd=setTimeout(()=>{const dist=chatScrollEl.scrollHeight-chatScrollEl.scrollTop-chatScrollEl.clientHeight;if(dist>200){scrollBtn.classList.add('show');autoScroll=false;}else{scrollBtn.classList.remove('show');autoScroll=true;}},60);},{passive:true});
       scrollBtn.addEventListener('click',()=>{autoScroll=true;chatScrollEl.scrollTo({top:chatScrollEl.scrollHeight,behavior:'smooth'});scrollBtn.classList.remove('show');});
     }
 
@@ -2384,10 +2229,7 @@ async function init(){
     $('#autoDetectSubmit')?.addEventListener('click',handleAutoDetect);
     $('#autoDetectKeyInput')?.addEventListener('keydown',e=>{if(e.key==='Enter')handleAutoDetect();});
     $('#toggleKeyVisibility')?.addEventListener('click',()=>$('#keyInputWrap').classList.toggle('show-key'));
-    $('#pasteKeyBtn')?.addEventListener('click',async()=>{
-      try{const text=await navigator.clipboard.readText();const inp=$('#autoDetectKeyInput');if(inp){inp.value=text.trim();inp.focus();}toast('Key di-paste');}
-      catch(e){toast('Izinkan akses clipboard',true);}
-    });
+    $('#pasteKeyBtn')?.addEventListener('click',async()=>{try{const text=await navigator.clipboard.readText();const inp=$('#autoDetectKeyInput');if(inp){inp.value=text.trim();inp.focus();}toast('Key di-paste');}catch(e){toast('Izinkan akses clipboard',true);}});
     $('#diagnoseAllBtn')?.addEventListener('click',runDiagnoseAll);
 
     $('#promptsBtn')?.addEventListener('click',()=>{renderPrompts();$('#promptsModal').classList.add('show');});
@@ -2434,7 +2276,7 @@ async function init(){
     document.addEventListener('visibilitychange',()=>{if(document.hidden)saveAll();});
 
     state.initialized=true;
-    console.log('✅ Syon AI v28 — IP-based geolocation + Tools bypass');
+    console.log('✅ Syon AI v29 — Chat sync + Race fix + Image fix');
   }catch(err){
     console.error('Init error:',err);
     showLoading(false);
